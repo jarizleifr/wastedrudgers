@@ -5,6 +5,7 @@
     { "cmd": "MoveSouth",     "key": "SDLK_KP_2"   },
     { "cmd": "MoveSouthEast", "key": "SDLK_KP_3"   },
     { "cmd": "MoveWest",      "key": "SDLK_KP_4"   },
+    { "cmd": "Wait",          "key": "SDLK_KP_5"   },
     { "cmd": "MoveEast",      "key": "SDLK_KP_6"   },
     { "cmd": "MoveNorthWest", "key": "SDLK_KP_7"   },
     { "cmd": "MoveNorth",     "key": "SDLK_KP_8"   },

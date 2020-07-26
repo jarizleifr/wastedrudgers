@@ -27,6 +27,7 @@ namespace WasteDrudgers.State
                 Command.MoveNorthWest => Move(world, Direction.NorthWest),
                 Command.MoveNorth => Move(world, Direction.North),
                 Command.MoveNorthEast => Move(world, Direction.NorthEast),
+                Command.Wait => Wait(world),
                 Command.Operate => Operate(world),
                 Command.Inventory => RunState.Inventory(0, 0),
                 Command.CharacterSheet => RunState.CharacterSheet(),
@@ -54,6 +55,14 @@ namespace WasteDrudgers.State
         {
             world.ecs.Assign(playerData.entity, new IntentionMove { transform = Vec2.FromDirection(direction) });
             playerData.turns++;
+            return RunState.Ticking;
+        }
+
+        private IRunState Wait(World world)
+        {
+            ref var actor = ref world.ecs.GetRef<Actor>(playerData.entity);
+            actor.energy -= 1000;
+            world.ecs.Remove<Turn>(playerData.entity);
             return RunState.Ticking;
         }
 
