@@ -1,5 +1,4 @@
 using System.Linq;
-using Blaggard;
 using Blaggard.Common;
 
 using WasteDrudgers.Entities;
@@ -36,6 +35,16 @@ namespace WasteDrudgers.Level
         {
             var pos = GetRandomPassablePosition(world);
             while (world.spatial.TryGetFeature(pos, out var e))
+            {
+                pos = GetRandomPassablePosition(world);
+            }
+            return pos;
+        }
+
+        public static Vec2 GetRandomPassableEmptyPosition(World world)
+        {
+            var pos = GetRandomPassablePosition(world);
+            while (world.spatial.TryGetFeature(pos, out var f) && world.spatial.TryGetCreature(pos, out var c))
             {
                 pos = GetRandomPassablePosition(world);
             }

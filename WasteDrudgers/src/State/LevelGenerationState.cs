@@ -10,6 +10,7 @@ namespace WasteDrudgers.State
     {
         public string levelName;
         public Map map = null;
+        public bool newGame;
 
         public void Run(IContext ctx, World world)
         {
@@ -36,6 +37,14 @@ namespace WasteDrudgers.State
                 world.ecs.SetResource(spawner);
             }
             CreateDecorations(world, map);
+
+            if (newGame)
+            {
+                var playerData = world.ecs.FetchResource<PlayerData>();
+                var pos = LevelUtils.GetRandomPassableEmptyPosition(world);
+                Features.CreateFeature(world, pos, "fea_start_portal");
+                world.ecs.AssignOrReplace(playerData.entity, new Position { coords = pos });
+            }
 
             RNG.Seed();
 

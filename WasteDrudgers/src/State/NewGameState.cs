@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Blaggard.Common;
@@ -18,8 +16,7 @@ namespace WasteDrudgers.State
             var name = GenerateName();
 
             var player = world.ecs.Create();
-            // TODO: Set player position randomly
-            world.ecs.Assign(player, new Position { coords = new Vec2(48, 48) });
+            world.ecs.Assign(player, new Position { coords = new Vec2(0, 0) });
             world.ecs.Assign(player, new Renderable { character = '@', glyph = (char)256, color = world.database.GetColor("c_white") });
             world.ecs.Assign(player, new Actor { energy = 0, speed = 100 });
             world.ecs.Assign(player, new Player { });
@@ -35,24 +32,12 @@ namespace WasteDrudgers.State
             });
 
             var startingLevel = "lvl_starting_cave_01";
-            world.ecs.SetResource(new PlayerData { entity = player, name = name, coords = new Vec2(48, 48), currentLevel = startingLevel, lastTarget = null });
+            world.ecs.SetResource(new PlayerData { entity = player, name = name, coords = new Vec2(0, 0), currentLevel = startingLevel, lastTarget = null });
             world.ecs.SetResource(new ObfuscatedNames());
 
             Creatures.UpdateCreature(world, player);
 
-            // create some test items
-            CreateTestItems(world);
-
-            world.SetState(ctx, RunState.LevelGeneration(startingLevel, null));
-        }
-
-        private static void CreateTestItems(World world)
-        {
-            var playerData = world.ecs.FetchResource<PlayerData>();
-            Items.Create(world, "itm_potion_strength", playerData.coords);
-            Items.Create(world, "itm_potion_health", playerData.coords);
-            Items.Create(world, "itm_potion_vigor", playerData.coords);
-            Items.Create(world, "itm_potion_poison", playerData.coords);
+            world.SetState(ctx, RunState.LevelGeneration(startingLevel, null, true));
         }
 
         public static string GenerateName()

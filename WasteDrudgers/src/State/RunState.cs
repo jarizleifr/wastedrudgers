@@ -1,6 +1,4 @@
 using Blaggard.Common;
-using Blaggard.FileIO;
-using WasteDrudgers.Entities;
 using WasteDrudgers.Level;
 
 namespace WasteDrudgers.State
@@ -26,7 +24,7 @@ namespace WasteDrudgers.State
         public static IRunState PickUp(int selected, int offset) => new PickUpState { selected = selected, offset = offset };
         public static IRunState CharacterSheet() => new CharacterSheetState { };
 
-        public static IRunState LevelGeneration(string levelName, Map map) => new LevelGenerationState { levelName = levelName, map = map };
+        public static IRunState LevelGeneration(string levelName, Map map, bool newGame = false) => new LevelGenerationState { levelName = levelName, map = map, newGame = newGame };
         public static IRunState LevelTransition(string levelName) => new LevelTransitionState { levelName = levelName };
 
         public static readonly IRunState GameOver = new GameOverState();

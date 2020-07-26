@@ -2073,6 +2073,14 @@
 					"description": "a way up",
 					"entryTrigger": 0,
 					"color": "c_grey_light"
+				},
+				{
+					"id": "fea_start_portal",
+					"name": "portal",
+					"character": "Ω",
+					"color": "c_grey_light",
+					"description": "a ruined portal",
+					"entryTrigger": 0
 				}
 			],
 			"separators": [],
