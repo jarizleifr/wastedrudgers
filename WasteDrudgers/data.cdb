@@ -8,7 +8,7 @@
 					"name": "id"
 				},
 				{
-					"typeStr": "5:Misc,ShortBlade,LongBlade,AxeMace,Polearm,Fencing,Whip,Shield,Helmet,Face,Cloak,Pauldron,Armor,Undershirt,Belt,Greaves,Boots,Gloves,Bracers,Earring,Amulet,Ring,Scroll,Book,Food,Potion",
+					"typeStr": "5:Misc,ShortBlade,LongBlade,AxeMace,Polearm,Fencing,Whip,Shield,Helmet,Cloak,Armor,Undershirt,Belt,Boots,Gloves,Bracers,Earring,Amulet,Ring,Scroll,Book,Food,Potion",
 					"name": "type"
 				},
 				{
@@ -359,7 +359,7 @@
 				},
 				{
 					"id": "itm_robes",
-					"type": 12,
+					"type": 10,
 					"name": "robes",
 					"character": "¥",
 					"dangerLevel": 0,
@@ -372,7 +372,7 @@
 				},
 				{
 					"id": "itm_arm_breastplate",
-					"type": 12,
+					"type": 10,
 					"name": "breastplate",
 					"character": "¥",
 					"dangerLevel": 0,
@@ -387,7 +387,7 @@
 				},
 				{
 					"id": "itm_armor_scalearmor",
-					"type": 12,
+					"type": 10,
 					"name": "scale armor",
 					"obfuscated": false,
 					"character": "¥",
@@ -401,7 +401,7 @@
 				},
 				{
 					"id": "itm_paddedshirt",
-					"type": 13,
+					"type": 11,
 					"name": "padded shirt",
 					"character": "φ",
 					"dangerLevel": 0,
@@ -414,7 +414,7 @@
 				},
 				{
 					"id": "itm_hauberk",
-					"type": 13,
+					"type": 11,
 					"name": "hauberk",
 					"character": "φ",
 					"dangerLevel": 0,
@@ -429,7 +429,7 @@
 				},
 				{
 					"id": "itm_boots",
-					"type": 16,
+					"type": 13,
 					"name": "boots",
 					"character": "π",
 					"dangerLevel": 0,
@@ -441,7 +441,7 @@
 				},
 				{
 					"id": "itm_boots_chausses",
-					"type": 16,
+					"type": 13,
 					"name": "chausses",
 					"obfuscated": false,
 					"character": "π",
@@ -455,7 +455,7 @@
 				},
 				{
 					"id": "itm_scroll_identify",
-					"type": 22,
+					"type": 19,
 					"name": "scroll of identify",
 					"obfuscated": true,
 					"character": "?",
@@ -467,7 +467,7 @@
 				},
 				{
 					"id": "itm_potion_strength",
-					"type": 25,
+					"type": 22,
 					"name": "strength mutagen",
 					"character": "¿",
 					"dangerLevel": 0,
@@ -479,7 +479,7 @@
 				},
 				{
 					"id": "itm_potion_endurance",
-					"type": 25,
+					"type": 22,
 					"name": "endurance mutagen",
 					"character": "¿",
 					"dangerLevel": 0,
@@ -491,7 +491,7 @@
 				},
 				{
 					"id": "itm_potion_finesse",
-					"type": 25,
+					"type": 22,
 					"name": "finesse mutagen",
 					"character": "¿",
 					"dangerLevel": 0,
@@ -503,7 +503,7 @@
 				},
 				{
 					"id": "itm_potion_intellect",
-					"type": 25,
+					"type": 22,
 					"name": "intellect mutagen",
 					"character": "¿",
 					"dangerLevel": 0,
@@ -515,7 +515,7 @@
 				},
 				{
 					"id": "itm_potion_resolve",
-					"type": 25,
+					"type": 22,
 					"name": "resolve mutagen",
 					"character": "¿",
 					"dangerLevel": 0,
@@ -527,7 +527,7 @@
 				},
 				{
 					"id": "itm_potion_awareness",
-					"type": 25,
+					"type": 22,
 					"name": "awareness mutagen",
 					"character": "¿",
 					"dangerLevel": 0,
@@ -539,7 +539,7 @@
 				},
 				{
 					"id": "itm_potion_poison",
-					"type": 25,
+					"type": 22,
 					"name": "poison flask",
 					"obfuscated": true,
 					"character": "¿",
@@ -551,7 +551,7 @@
 				},
 				{
 					"id": "itm_potion_health",
-					"type": 25,
+					"type": 22,
 					"name": "health potion",
 					"obfuscated": true,
 					"character": "¿",
@@ -563,7 +563,7 @@
 				},
 				{
 					"id": "itm_potion_vigor",
-					"type": 25,
+					"type": 22,
 					"name": "vigor potion",
 					"obfuscated": true,
 					"character": "¿",
@@ -2376,7 +2376,7 @@
 			"name": "obfuscatedNames",
 			"columns": [
 				{
-					"typeStr": "5:Misc,ShortBlade,LongBlade,AxeMace,Polearm,Fencing,Whip,Shield,Helmet,Face,Cloak,Pauldron,Armor,Undershirt,Belt,Greaves,Boots,Gloves,Bracers,Earring,Amulet,Ring,Scroll,Book,Food,Potion",
+					"typeStr": "5:Misc,ShortBlade,LongBlade,AxeMace,Polearm,Fencing,Whip,Shield,Helmet,Cloak,Armor,Undershirt,Belt,Boots,Gloves,Bracers,Earring,Amulet,Ring,Scroll,Book,Food,Potion",
 					"name": "type"
 				},
 				{
@@ -2387,7 +2387,7 @@
 			],
 			"lines": [
 				{
-					"type": 25,
+					"type": 22,
 					"names": [
 						{
 							"name": "bubbling"
@@ -2419,7 +2419,7 @@
 					]
 				},
 				{
-					"type": 22,
+					"type": 19,
 					"names": [
 						{
 							"name": "xatham-ryaa"

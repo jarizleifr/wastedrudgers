@@ -14,13 +14,10 @@ namespace WasteDrudgers.Entities
 
         Shield,
         Helmet,
-        Face,
         Cloak,
-        Pauldron,
         Armor,
         Undershirt,
         Belt,
-        Greaves,
         Boots,
 
         Gloves,
