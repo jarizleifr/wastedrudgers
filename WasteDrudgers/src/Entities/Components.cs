@@ -273,12 +273,6 @@ namespace WasteDrudgers
         public WeaponStyle style;
 
         [JsonIgnore]
-        public int GrazeDamage => Damage / 2;
-        [JsonIgnore]
-        public int CriticalDamage => Damage + Damage;
-        [JsonIgnore]
-        public int Damage => RNG.IntInclusive(min, max);
-        [JsonIgnore]
         public float Average => (min + max) / 2;
     }
 

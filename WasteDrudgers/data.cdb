@@ -2132,9 +2132,9 @@
 					"message": "{0} hit {1}, but failed to cause harm."
 				},
 				{
-					"id": "hit_graze",
+					"id": "hit_special",
 					"loggingLevel": 1,
-					"message": "{0} grazed {1} for {2} damage."
+					"message": "{0} perfectly hit {1} for {2} damage."
 				},
 				{
 					"id": "hit",

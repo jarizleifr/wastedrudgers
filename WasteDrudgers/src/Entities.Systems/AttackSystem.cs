@@ -1,5 +1,4 @@
 using ManulECS;
-using WasteDrudgers.Level;
 
 namespace WasteDrudgers.Entities
 {
@@ -23,7 +22,7 @@ namespace WasteDrudgers.Entities
                     (var damage, var message) = result.Item1 switch
                     {
                         Attempt.Critical => (attacker.CriticalDamage, "hit_critical"),
-                        Attempt.Special => (attacker.SpecialDamage, "hit"),
+                        Attempt.Special => (attacker.SpecialDamage, "hit_special"),
                         Attempt.Success => (attacker.Damage, "hit"),
                         Attempt.Fumble => (0, "miss_critical"),
                         Attempt.Failure => (0, "miss")
