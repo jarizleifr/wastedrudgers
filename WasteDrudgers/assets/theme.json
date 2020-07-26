@@ -1,0 +1,14 @@
+{
+  "caption": "c_beige", 
+  "text": "c_grey_light",
+  "disabledText": "c_grey",
+  "selectedColor": "c_bronze",
+  "windowFrame": "c_grey",
+  "windowBackground": "c_grey_dark",
+  "vigorDark": "c_blue",
+  "vigor": "c_white",
+  "healthDark": "c_red_light",
+  "health": "c_white",
+  "shadowLight": "c_shadow_light",
+  "shadowDark": "c_shadow"
+}

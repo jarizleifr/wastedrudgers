@@ -1,0 +1,11 @@
+All work by Antti Joutsi 2019-2020.
+
+Libraries used:
+
+SDL2-CS
+SDL2
+zlib
+
+Thanks to libtcod and rltk for inspiration
+
+Shoutouts to r/roguelikedev for support

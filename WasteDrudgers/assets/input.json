@@ -1,0 +1,42 @@
+{ 
+  "game": [
+    { "cmd": "Exit",          "key": "SDLK_ESCAPE" },
+    { "cmd": "MoveSouthWest", "key": "SDLK_KP_1"   },
+    { "cmd": "MoveSouth",     "key": "SDLK_KP_2"   },
+    { "cmd": "MoveSouthEast", "key": "SDLK_KP_3"   },
+    { "cmd": "MoveWest",      "key": "SDLK_KP_4"   },
+    { "cmd": "MoveEast",      "key": "SDLK_KP_6"   },
+    { "cmd": "MoveNorthWest", "key": "SDLK_KP_7"   },
+    { "cmd": "MoveNorth",     "key": "SDLK_KP_8"   },
+    { "cmd": "MoveNorthEast", "key": "SDLK_KP_9"   },
+
+    { "cmd": "GetItem",       "key": "SDLK_G"   },
+    { "cmd": "Look",          "key": "SDLK_Z"   },
+
+    { "cmd": "Inventory",      "key": "SDLK_I" },
+    { "cmd": "CharacterSheet", "key": "SDLK_C" },
+    { "cmd": "Operate",        "key": "SDLK_RETURN" }
+  ],
+  "selection": [
+    { "cmd": "SelectA", "key": "SDLK_A" },
+    { "cmd": "SelectB", "key": "SDLK_B" },
+    { "cmd": "SelectC", "key": "SDLK_C" },
+    { "cmd": "SelectD", "key": "SDLK_D" },
+    { "cmd": "SelectE", "key": "SDLK_E" },
+    { "cmd": "SelectF", "key": "SDLK_F" },
+    { "cmd": "SelectG", "key": "SDLK_G" },
+    { "cmd": "SelectH", "key": "SDLK_H" }
+  ],
+  "menu": [
+    { "cmd": "Exit",       "key": "SDLK_ESCAPE" },
+    { "cmd": "MenuDown",   "key": "SDLK_DOWN"   },
+    { "cmd": "MenuLeft",   "key": "SDLK_LEFT"   },
+    { "cmd": "MenuRight",  "key": "SDLK_RIGHT"  },
+    { "cmd": "MenuUp",     "key": "SDLK_UP"     },
+    { "cmd": "MenuAccept", "key": "SDLK_RETURN" },
+    { "cmd": "MenuSwitch", "key": "SDLK_TAB"    }
+  ],
+  "inventory": [
+    { "cmd": "DropItem",   "key": "SDLK_DELETE" }
+  ]
+}
