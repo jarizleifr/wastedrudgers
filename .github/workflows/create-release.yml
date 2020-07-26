@@ -1,0 +1,71 @@
+name: Create Waste Drudgers release
+
+on:
+  push:
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout Waste Drudgers
+      uses: actions/checkout@v2
+      with: 
+        path: wastedrudgers
+        
+    - name: Checkout Blaggard
+      uses: actions/checkout@v2
+      with: 
+        repository: jarizleifr/Blaggard
+        path: Blaggard
+
+    - name: Checkout SDL2-CS
+      uses: actions/checkout@v2
+      with: 
+        repository: flibitijibibo/SDL2-CS
+        path: Blaggard/SDL2-CS
+
+    - name: Checkout ManulECS
+      uses: actions/checkout@v2
+      with: 
+        repository: jarizleifr/ManulECS
+        path: ManulECS
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.301
+        
+    - name: Run build script
+      run: .\wastedrudgers\scripts\build.ps1
+      shell: powershell
+      
+    - name: Get tag name
+      id: get_tag_name
+      run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+      shell: bash
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: false
+        
+    - name: Upload Release Asset
+      id: upload-release-asset 
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./WasteDrudgers.zip
+        asset_name: WasteDrudgers-${{ steps.get_tag_name.outputs.VERSION }}.zip
+        asset_content_type: application/zip
