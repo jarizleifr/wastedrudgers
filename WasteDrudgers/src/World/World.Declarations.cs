@@ -35,6 +35,7 @@ namespace WasteDrudgers
             ecs.Declare<Skills>();
             ecs.Declare<Combat>();
             ecs.Declare<Health>();
+            ecs.Declare<Experience>();
 
             // Item components
             ecs.Declare<Item>();

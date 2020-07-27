@@ -21,6 +21,7 @@ namespace WasteDrudgers.State
             world.ecs.Assign(player, new Actor { energy = 0, speed = 100 });
             world.ecs.Assign(player, new Player { });
             world.ecs.Assign(player, new Identity { name = name, rawName = "player" });
+            world.ecs.Assign(player, new Experience { level = 1, experience = 0 });
             world.ecs.Assign(player, skills);
 
             var stats = new Stats { strength = 10, endurance = 10, finesse = 10, intellect = 10, resolve = 10, awareness = 10 };

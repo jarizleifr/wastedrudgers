@@ -8,6 +8,7 @@ using WasteDrudgers.Level;
 
 namespace WasteDrudgers.Render
 {
+    // TODO: We should cache hud information somewhere and have dirty flags to prevent unnecessary updates
     public class HUDData
     {
         public readonly Actor actor;
@@ -15,6 +16,7 @@ namespace WasteDrudgers.Render
         public readonly Stats stats;
 
         public readonly Combat combat;
+        public readonly Experience exp;
 
         public HUDData(World world, PlayerData data)
         {
@@ -22,6 +24,7 @@ namespace WasteDrudgers.Render
             health = world.ecs.GetRef<Health>(data.entity);
             stats = world.ecs.GetRef<Stats>(data.entity);
             combat = world.ecs.GetRef<Combat>(data.entity);
+            exp = world.ecs.GetRef<Experience>(data.entity);
         }
     }
 
@@ -95,11 +98,13 @@ namespace WasteDrudgers.Render
             DrawAttack(layer, ctx.Theme, o, rect.y + 7, data.combat);
             DrawDefense(layer, ctx.Theme, o, rect.y + 11, data.combat);
             DrawStats(layer, ctx.Theme, o, rect.y + 14, data.stats);
-            DrawPercentage(layer, ctx.Theme, o, rect.y + 18, 13, "Speed", data.actor.speed);
+
+            DrawExperience(layer, ctx.Theme, o, rect.y + 18, data.exp);
+            DrawPercentage(layer, ctx.Theme, o, rect.y + 21, 13, "Speed", data.actor.speed);
 
             //layer.Print(o, rect.y + 22, "¢¶¥[=\"≈π!♀ôôδ", Color.white);
 
-            DrawCustomValue(layer, ctx.Theme, o, rect.y + 19, 13, "Food", "½ day");
+            DrawCustomValue(layer, ctx.Theme, o, rect.y + 22, 13, "Food", "½ day");
         }
 
         // FIXME: Target doesn't always clear for some reason, related to level change oddities?
@@ -139,6 +144,12 @@ namespace WasteDrudgers.Render
             //layer.Print(x + 9, y, "(]{‼", Color.white);
             DrawPercentage(layer, theme, x, y + 1, 4, "", combat.hitChance);
             DrawCustomValue(layer, theme, x, y + 1, 13, "", $"{combat.minDamage}─{combat.maxDamage}");
+        }
+
+        public static void DrawExperience(IBlittable layer, Theme theme, int x, int y, Experience exp)
+        {
+            DrawNumeric(layer, theme, x, y, 12, "Level", exp.level);
+            DrawNumeric(layer, theme, x, y + 1, 12, "Next", Formulae.ExperienceNeededForLevel(exp.level + 1) - exp.experience);
         }
 
         /*

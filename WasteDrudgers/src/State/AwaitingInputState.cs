@@ -17,6 +17,13 @@ namespace WasteDrudgers.State
             Systems.EffectSystem(ctx, world);
             Views.DrawGameView(ctx, world);
 
+            var exp = world.ecs.GetRef<Experience>(playerData.entity);
+            if (Formulae.ExperienceNeededForLevel(exp.level + 1) - exp.experience <= 0)
+            {
+                world.SetState(ctx, RunState.LevelUp(0));
+                return;
+            }
+
             var nextState = ctx.Command switch
             {
                 Command.MoveSouthWest => Move(world, Direction.SouthWest),

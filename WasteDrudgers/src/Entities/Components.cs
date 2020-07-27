@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using Blaggard.Common;
 using Blaggard.Graphics;
 using ManulECS;
@@ -137,6 +136,12 @@ namespace WasteDrudgers
         public float vigorRegen;
     }
 
+    public struct Experience
+    {
+        public int level;
+        public int experience;
+    }
+
     public struct Stats
     {
         public Stat strength;
@@ -187,21 +192,23 @@ namespace WasteDrudgers
             return i != -1 ? set[i].value : 0;
         }
 
-        public void Increment(SkillType type)
+        public void Add(SkillType type, int value)
         {
             var i = set.FindIndex(s => s.type == type);
             if (i != -1)
             {
                 var skill = set[i];
-                skill.value++;
+                skill.value += value;
                 set[i] = skill;
             }
             else
             {
-                set.Add(new Skill { type = type, value = 1 });
+                set.Add(new Skill { type = type, value = value });
                 set.Sort((a, b) => a.type.CompareTo(b.type));
             }
         }
+
+        public void Increment(SkillType type) => Add(type, 1);
 
         public void Decrement(SkillType type)
         {

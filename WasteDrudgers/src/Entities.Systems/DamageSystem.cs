@@ -20,6 +20,12 @@ namespace WasteDrudgers.Entities
                     // If damage is greater than max vigor and max health combined, just kill the entity
                     if (damage.damage >= hlt.vigor.Max + hlt.health.Max)
                     {
+                        if (world.ecs.Has<PlayerInitiated>(entity))
+                        {
+                            var playerData = world.ecs.FetchResource<PlayerData>();
+                            Creatures.AwardKillExperience(world, playerData.entity, damage.target);
+                        }
+
                         world.WriteToLog("death_instant", pos.coords, LogItem.Actor(damage.target));
                         Creatures.KillCreature(world, damage.target);
                     }
@@ -29,6 +35,12 @@ namespace WasteDrudgers.Entities
                     hlt.health.Damage += damage.damage;
                     if (hlt.health.Current <= 0)
                     {
+                        if (world.ecs.Has<PlayerInitiated>(entity))
+                        {
+                            var playerData = world.ecs.FetchResource<PlayerData>();
+                            Creatures.AwardKillExperience(world, playerData.entity, damage.target);
+                        }
+
                         switch (damage.damageType)
                         {
                             case DamageType.Poison:

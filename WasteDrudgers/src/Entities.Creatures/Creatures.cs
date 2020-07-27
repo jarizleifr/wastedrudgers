@@ -49,7 +49,15 @@ namespace WasteDrudgers.Entities
                 health = Formulae.BaseHealth(stats)
             });
 
-            world.ecs.Assign(entity, ComponentUtils.CreateSkillsFromProfessions(creature, stats.finesse, stats.intellect));
+            var skills = ComponentUtils.CreateSkillsFromProfessions(creature, stats.finesse, stats.intellect);
+            world.ecs.Assign(entity, skills);
+
+            var level = ComponentUtils.GetLevel(creature);
+            world.ecs.Assign(entity, new Experience
+            {
+                level = level,
+                experience = ComponentUtils.GetExperience(level, stats, skills),
+            });
 
             if (creature.NaturalAttack != null)
             {
@@ -77,11 +85,13 @@ namespace WasteDrudgers.Entities
             var stats = world.ecs.GetRef<Stats>(entity);
             var skills = world.ecs.GetRef<Skills>(entity);
 
+            var exp = world.ecs.GetRef<Experience>(entity);
+
             ref var health = ref world.ecs.GetRef<Health>(entity);
             ref var actor = ref world.ecs.GetRef<Actor>(entity);
 
-            health.vigor.Base = Formulae.BaseVigor(stats);
-            health.health.Base = Formulae.BaseHealth(stats);
+            health.vigor.Base = Formulae.BaseVigor(stats) + (exp.level - 1) * Formulae.VigorPerLevel(stats);
+            health.health.Base = Formulae.BaseHealth(stats) + (exp.level - 1) * Formulae.HealthPerLevel(stats);
             actor.speed = Formulae.Speed(stats);
 
             // Default combat stats for any creature
@@ -166,6 +176,21 @@ namespace WasteDrudgers.Entities
             world.spatial.ClearCreatureAt(pos.coords);
             world.ecs.Remove<Position>(entity);
             world.ecs.Assign<Death>(entity, new Death { });
+        }
+
+        public static void AwardKillExperience(World world, Entity awardee, Entity killed)
+        {
+            var exp = world.ecs.GetRef<Experience>(killed);
+            var skills = world.ecs.GetRef<Skills>(killed);
+            var stats = world.ecs.GetRef<Stats>(killed);
+
+            AwardExperience(world, awardee, ComponentUtils.GetExperience(exp.level, stats, skills));
+        }
+
+        public static void AwardExperience(World world, Entity entity, int experience)
+        {
+            ref var exp = ref world.ecs.GetRef<Experience>(entity);
+            exp.experience += experience;
         }
     }
 }

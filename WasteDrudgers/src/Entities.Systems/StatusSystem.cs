@@ -27,6 +27,10 @@ namespace WasteDrudgers.Entities
                             var damageEntity = world.ecs.Create();
                             world.WriteToLog("status_poison_damage", pos.coords, LogItem.Actor(activeEffect.target), LogItem.Num(damage));
                             world.ecs.Assign(damageEntity, new Damage { target = activeEffect.target, damage = damage, damageType = DamageType.Poison });
+                            if (world.ecs.TryGet(entity, out PlayerInitiated p))
+                            {
+                                world.ecs.Assign(damageEntity, p);
+                            }
                         }
                         activeEffect.magnitude--;
 
