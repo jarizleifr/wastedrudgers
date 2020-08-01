@@ -185,13 +185,21 @@ namespace WasteDrudgers.Data
             {
                 var level = l.ToObject<DBLevel>(new JsonSerializer { TypeNameHandling = TypeNameHandling.All });
                 level.Creatures = l["creatures"].Select(c => dbCreatureLists[c["lists"].ToString()]).ToList();
-                level.Loot = l["loot"].Select(lt => dbLootLists[lt["lists"].ToString()]).ToList();
-                level.Portals = l["portals"].Select(p => new DBPortal
-                {
-                    TargetLevelId = p["targetLevel"].ToString(),
-                    Feature = dbFeatures[p["feature"].ToString()]
-                }).ToList();
 
+                level.Loot = new List<DBLootList>();
+                if (l["loot"] != null)
+                {
+                    level.Loot = l["loot"].Select(lt => dbLootLists[lt["lists"].ToString()]).ToList();
+                }
+                level.Portals = new List<DBPortal>();
+                if (l["portals"] != null)
+                {
+                    level.Portals = l["portals"].Select(p => new DBPortal
+                    {
+                        TargetLevelId = p["targetLevel"].ToString(),
+                        Feature = dbFeatures[p["feature"].ToString()]
+                    }).ToList();
+                }
                 return level;
             });
 

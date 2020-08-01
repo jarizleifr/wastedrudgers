@@ -1,29 +1,16 @@
-using System;
-using System.Collections.Generic;
 using Xunit;
 using ManulECS;
-
 using Blaggard.Common;
 using WasteDrudgers.Entities;
-using WasteDrudgers.State;
 
 namespace WasteDrudgers.Tests
 {
     public class InventoryTests
     {
         private World world;
+        private IEngineContext ctx;
 
-        public InventoryTests()
-        {
-            world = new World();
-            Context context = new Context(world);
-
-            world.SetState(context, RunState.NewGame(new Skills { set = new List<Skill>() }));
-
-            world.Tick(context);
-            world.Tick(context);
-            world.Tick(context);
-        }
+        public InventoryTests() => (world, ctx) = TestUtils.CreateGame();
 
         [Fact]
         public void PickingUpItems_IncrementsSameItemCount()
