@@ -135,11 +135,18 @@ namespace WasteDrudgers.Data
             {
                 var creature = cr.ToObject<DBCreature>();
                 creature.Race = dbRaces[cr["race"].ToString()];
+                creature.Color = creature.Race.Color;
                 creature.Professions = cr["professions"].Select(p => (dbProfessions[p["profession"].ToString()], (int)p["level"])).ToList();
 
                 if (cr["naturalAttack"] != null)
                 {
                     creature.NaturalAttack = dbNaturalAttacks[cr["naturalAttack"].ToString()];
+                }
+
+                // If color override specified
+                if (cr["color"] != null)
+                {
+                    creature.Color = dbColors[cr["color"].ToString()];
                 }
 
                 return creature;
@@ -192,7 +199,9 @@ namespace WasteDrudgers.Data
                 o => o["type"].ToObject<ItemType>(),
                 o => o["names"].Select(n => n["name"].ToString()).ToList());
 
+#if DEBUG
             CreateTilesetGraphic();
+#endif
         }
 
         public DBMapData GetMapData(string mapId)

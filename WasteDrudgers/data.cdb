@@ -1012,6 +1012,11 @@
 					"display": null
 				},
 				{
+					"typeStr": "6:colors",
+					"name": "color",
+					"opt": true
+				},
+				{
 					"typeStr": "1",
 					"name": "character",
 					"display": null
@@ -1075,14 +1080,57 @@
 					"name": "fungoid",
 					"character": "t",
 					"sprite": "",
-					"race": "r_fungoid",
+					"race": "r_generic",
 					"professions": [
 						{
 							"profession": "profession_fighter",
 							"level": 1
 						}
 					],
-					"naturalAttack": "nat_fungoid_strike"
+					"naturalAttack": "nat_fungoid_strike",
+					"color": "c_teal_light"
+				},
+				{
+					"id": "cr_mokrug",
+					"name": "mokrug beetle",
+					"character": "i",
+					"sprite": "",
+					"race": "r_generic",
+					"professions": [
+						{
+							"profession": "profession_fighter",
+							"level": 1
+						}
+					],
+					"color": "c_red_light"
+				},
+				{
+					"id": "cr_mokrug_larva",
+					"name": "mokrug larva",
+					"character": "w",
+					"sprite": "",
+					"race": "r_generic",
+					"professions": [
+						{
+							"profession": "profession_fighter",
+							"level": 1
+						}
+					],
+					"color": "c_beige_light"
+				},
+				{
+					"id": "cr_grol",
+					"name": "grol",
+					"character": "F",
+					"sprite": "",
+					"race": "r_generic",
+					"professions": [
+						{
+							"profession": "profession_fighter",
+							"level": 2
+						}
+					],
+					"color": "c_blue_light"
 				}
 			],
 			"separators": [],
@@ -1154,9 +1202,9 @@
 					"color": "c_green_light"
 				},
 				{
-					"id": "r_fungoid",
-					"name": "fungoid",
-					"color": "c_teal_light",
+					"id": "r_generic",
+					"name": "generic",
+					"color": "c_beige",
 					"strengthModifier": 0,
 					"enduranceModifier": 0,
 					"finesseModifier": 0,
@@ -1231,6 +1279,15 @@
 					"creatures": [
 						{
 							"creature": "cr_fungoid"
+						},
+						{
+							"creature": "cr_mokrug"
+						},
+						{
+							"creature": "cr_mokrug_larva"
+						},
+						{
+							"creature": "cr_grol"
 						}
 					]
 				}
@@ -1810,6 +1867,12 @@
 							"lists": "ll_potions"
 						},
 						{
+							"lists": "ll_basicweapons"
+						},
+						{
+							"lists": "ll_basicarmor"
+						},
+						{
 							"lists": "ll_scrolls"
 						}
 					],
@@ -1843,6 +1906,9 @@
 					"creatures": [
 						{
 							"lists": "common"
+						},
+						{
+							"lists": "cl_cave"
 						}
 					],
 					"strategy": {
@@ -1857,19 +1923,10 @@
 							"lists": "ll_basicweapons"
 						},
 						{
-							"lists": "ll_exoticweapons"
-						},
-						{
-							"lists": "ll_common"
-						},
-						{
 							"lists": "ll_potions"
 						},
 						{
 							"lists": "ll_basicarmor"
-						},
-						{
-							"lists": "ll_futuristic"
 						},
 						{
 							"lists": "ll_scrolls"
@@ -1887,8 +1944,28 @@
 					"dangerLevel": 0,
 					"minSpawn": 0,
 					"maxSpawn": 0,
-					"loot": [],
-					"creatures": [],
+					"loot": [
+						{
+							"lists": "ll_basicweapons"
+						},
+						{
+							"lists": "ll_basicarmor"
+						},
+						{
+							"lists": "ll_potions"
+						},
+						{
+							"lists": "ll_scrolls"
+						}
+					],
+					"creatures": [
+						{
+							"lists": "common"
+						},
+						{
+							"lists": "cl_cave"
+						}
+					],
 					"strategy": {
 						"$type": "WasteDrudgers.Level.Generation.DungeonStrategy, WasteDrudgers",
 						"width": 96,
@@ -1912,8 +1989,28 @@
 					"dangerLevel": 0,
 					"minSpawn": 0,
 					"maxSpawn": 0,
-					"loot": [],
-					"creatures": [],
+					"loot": [
+						{
+							"lists": "ll_basicweapons"
+						},
+						{
+							"lists": "ll_basicarmor"
+						},
+						{
+							"lists": "ll_potions"
+						},
+						{
+							"lists": "ll_scrolls"
+						}
+					],
+					"creatures": [
+						{
+							"lists": "common"
+						},
+						{
+							"lists": "cl_cave"
+						}
+					],
 					"strategy": {
 						"$type": "WasteDrudgers.Level.Generation.MazeStrategy, WasteDrudgers",
 						"width": 96,

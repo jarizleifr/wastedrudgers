@@ -149,6 +149,10 @@ namespace WasteDrudgers.Data
     public class DBCreature : DBEntity
     {
         public string Name { get; set; }
+
+        [JsonIgnore]
+        public Color Color { get; set; }
+
         public char Character { get; set; }
         public char Glyph { get; set; }
         public string Sprite { get; set; }

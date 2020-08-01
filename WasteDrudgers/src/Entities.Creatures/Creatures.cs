@@ -23,7 +23,7 @@ namespace WasteDrudgers.Entities
             world.ecs.Assign(entity, new Renderable
             {
                 character = creature.Character,
-                color = creature.Race.Color,
+                color = creature.Color,
             });
             world.ecs.Assign(entity, new AI { });
 
