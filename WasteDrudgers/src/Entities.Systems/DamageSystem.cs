@@ -8,6 +8,8 @@ namespace WasteDrudgers.Entities
         {
             world.ecs.Loop((Entity entity, ref Damage damage) =>
             {
+                if (world.ecs.Has<Death>(damage.target)) return;
+
                 var pos = world.ecs.GetRef<Position>(damage.target);
                 ref var hlt = ref world.ecs.GetRef<Health>(damage.target);
 

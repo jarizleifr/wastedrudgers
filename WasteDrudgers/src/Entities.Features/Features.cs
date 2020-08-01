@@ -52,8 +52,9 @@ namespace WasteDrudgers.Entities
                 case EntryTriggerType.Thorns:
                     var effect = Effects.Create(world, position);
                     var damage = RNG.IntInclusive(1, 6);
-                    world.ecs.Assign(effect, new Damage { damage = damage, target = entity });
                     world.WriteToLog("stepped_on_thorns", position, LogItem.Actor(entity), LogItem.Num(damage));
+                    var damageEntity = world.ecs.Create();
+                    world.ecs.Assign(damageEntity, new Damage { target = entity, damage = damage });
                     break;
             }
         }

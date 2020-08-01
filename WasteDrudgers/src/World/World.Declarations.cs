@@ -6,6 +6,7 @@ namespace WasteDrudgers
         {
             // Markers
             ecs.Declare<PlayerMarker>();
+            ecs.Declare<PlayerInitiated>();
 
             // General components
             ecs.Declare<Identity>();

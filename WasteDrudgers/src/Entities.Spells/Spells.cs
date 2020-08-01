@@ -5,12 +5,12 @@ namespace WasteDrudgers.Entities
 {
     public static class Spells
     {
-        public static void CastSpellOn(World world, Entity target, string spellId)
+        public static void CastSpellOn(World world, Entity? caster, Entity target, string spellId)
         {
             var rawSpell = world.database.GetSpell(spellId);
             if (Spells.IsIncremental(rawSpell.Effect))
             {
-                ApplyIncrementalEffect(world, target, rawSpell);
+                ApplyIncrementalEffect(world, caster, target, rawSpell);
             }
             else
             {
@@ -19,7 +19,7 @@ namespace WasteDrudgers.Entities
         }
 
         // Incremental effects like poison, disease, stun
-        public static void ApplyIncrementalEffect(World world, Entity target, DBSpell rawSpell)
+        public static void ApplyIncrementalEffect(World world, Entity? caster, Entity target, DBSpell rawSpell)
         {
             var pos = world.ecs.GetRef<Position>(target);
             world.WriteToLog(rawSpell.Message.Id, pos.coords);
@@ -40,6 +40,11 @@ namespace WasteDrudgers.Entities
                     duration = -1,
                     magnitude = level
                 });
+
+                if (caster.HasValue && world.ecs.Has<Player>(caster.Value))
+                {
+                    world.ecs.Assign(effectEntity, new PlayerInitiated { });
+                }
 
                 if (world.ecs.Has<Player>(target))
                 {

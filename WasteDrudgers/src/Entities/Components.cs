@@ -117,6 +117,8 @@ namespace WasteDrudgers
         public int damage;
     }
 
+    public struct PlayerInitiated { }
+
     public struct Identity
     {
         public string name;

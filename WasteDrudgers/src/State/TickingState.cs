@@ -25,6 +25,7 @@ namespace WasteDrudgers.State
                 Systems.BumpSystem(ctx, world);
                 Systems.AttackSystem(ctx, world);
                 Systems.StatusSystem(ctx, world);
+
                 Systems.DamageSystem(ctx, world);
 
                 // FIXME: Game locks down sometimes on death? Couldn't reproduce anymore?

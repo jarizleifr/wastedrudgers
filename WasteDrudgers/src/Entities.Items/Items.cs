@@ -218,18 +218,9 @@ namespace WasteDrudgers.Entities
         {
             var identity = world.ecs.GetRef<Identity>(itemEntity);
 
-            // TODO: Refactor spell effect applying to its own function
             if (world.ecs.TryGet(itemEntity, out CastOnUse castOnUse))
             {
-                var rawSpell = world.database.GetSpell(castOnUse.spellId);
-                if (Spells.IsFireAndForget(rawSpell.Effect))
-                {
-                    Spells.ApplySpellEffect(world, user, rawSpell);
-                }
-                else
-                {
-                    Spells.ApplyIncrementalEffect(world, user, rawSpell);
-                }
+                Spells.CastSpellOn(world, null, user, castOnUse.spellId);
             }
 
             var obfuscated = world.ecs.FetchResource<ObfuscatedNames>();
