@@ -8,7 +8,7 @@ namespace WasteDrudgers
         private const int TARGET_FPS = 60;
         private const float SECONDS_PER_FRAME = 1f / TARGET_FPS;
 
-        private Context ctx;
+        private IEngineContext ctx;
         private World world;
 
         private Engine()

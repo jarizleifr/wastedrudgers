@@ -26,22 +26,16 @@ namespace WasteDrudgers
         TextureData TextureData { get; }
     }
 
-    public enum GraphicsStyle
+    public interface IEngineContext : IContext, IDisposable
     {
-        CP437,
-        Glyphs,
-        Tiles,
+        void HandleInput(string[] activeDomains);
+        void Render();
+        void WaitNextFrame(float time);
+        void IncrementDeltaTime();
+        void Cleanup();
     }
 
-    public enum RenderLayer
-    {
-        Root,
-        ViewportASCII,
-        ViewportTile,
-        MenuOverlay,
-    }
-
-    public class Context : Blaggard.Context, IContext
+    public class Context : Blaggard.Context, IEngineContext
     {
         private Display display;
         private Handler<Command> input;

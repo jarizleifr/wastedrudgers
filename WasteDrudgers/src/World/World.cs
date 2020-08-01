@@ -44,7 +44,7 @@ namespace WasteDrudgers
             State = nextState;
         }
 
-        public void Tick(Context ctx)
+        public void Tick(IEngineContext ctx)
         {
             State.Run(ctx, this);
         }
