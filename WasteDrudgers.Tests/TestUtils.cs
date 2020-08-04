@@ -9,7 +9,7 @@ namespace WasteDrudgers.Tests
         public static (World world, IEngineContext ctx) CreateGame()
         {
             var world = new World();
-            var ctx = new TestContext();
+            var ctx = new TestContext(world);
 
             RNG.Seed(0);
             world.SetState(ctx, RunState.NewGame(new Skills { set = new List<Skill>() }));
