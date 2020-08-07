@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Linq;
 using Blaggard.Common;
@@ -28,6 +29,8 @@ namespace WasteDrudgers.State
     internal class LoadGameState : IRunState
     {
         public int selection;
+
+        private int offset = 0;
         private SaveWrapper[] items;
 
         public string[] InputDomains { get; set; } = { "menu" };
@@ -42,17 +45,21 @@ namespace WasteDrudgers.State
 
         public void Run(IContext ctx, World world)
         {
+
+            int l = items.Length;
+            int view = Math.Min(l, 23);
+
             switch (ctx.Command)
             {
                 case Command.MenuAccept:
-                    Load(ctx, world, items[selection].filePath);
+                    Load(ctx, world, items[selection + offset].filePath);
                     break;
 
                 case Command.MenuUp:
-                    selection = Menu.Prev(selection, items.Length);
+                    (selection, offset) = Menu.Prev(selection, offset, view, items.Length);
                     break;
                 case Command.MenuDown:
-                    selection = Menu.Next(selection, items.Length);
+                    (selection, offset) = Menu.Next(selection, offset, view, items.Length);
                     break;
 
                 case Command.Exit:
@@ -80,7 +87,7 @@ namespace WasteDrudgers.State
             menu.PrintFrame(rect, true);
 
             var menuRect = new Rect(rect.x, rect.y, 20, 25);
-            Menu.DrawCompactMenu<SaveWrapper>(ctx, menu, menuRect, selection, items);
+            Menu.DrawCompactMenu<SaveWrapper>(ctx, menu, menuRect, selection, offset, items);
         }
 
         private void Load(IContext ctx, World world, string save)

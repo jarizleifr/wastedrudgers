@@ -70,11 +70,11 @@ namespace WasteDrudgers.State
                     break;
 
                 case Command.MenuUp:
-                    (selected, offset) = InventoryUI.Prev(selected, offset, view, l);
+                    (selected, offset) = Menu.Prev(selected, offset, view, l);
                     break;
 
                 case Command.MenuDown:
-                    (selected, offset) = InventoryUI.Next(selected, offset, view, l);
+                    (selected, offset) = Menu.Next(selected, offset, view, l);
                     break;
 
                 case Command.Exit:

@@ -55,17 +55,35 @@ namespace WasteDrudgers.Render
             layer.ResetColors();
         }
 
-        public static void DrawCompactMenu<T>(IContext ctx, IBlittable layer, Rect rect, int selected, T[] items) where T : IMenuItem
+        public static void DrawScrollBar(IContext ctx, IBlittable layer, int x, int y, int height, int offset, int itemsCount)
         {
-            if (items.Length > rect.height) throw new Exception("Menu item count exceeds allocated space!");
+            var scrollArea = height - 2;
+            var tabPos = (float)offset / (itemsCount - 1 - scrollArea - 1);
+            var scrollBarPos = (int)((scrollArea - 1) * tabPos);
 
+            layer.PutChar(x, y, '▲');
+            layer.PutChar(x, y + height - 1, '▼');
+            layer.LineVert(x, y + 1, scrollArea, '▒', ctx.Theme.windowBackground, ctx.Theme.shadowDark);
+            layer.PutChar(x, y + 1 + scrollBarPos, '■', ctx.Theme.windowFrame, ctx.Theme.shadowDark);
+        }
+
+        public static void DrawCompactMenu<T>(IContext ctx, IBlittable layer, Rect rect, int selected, int offset, T[] items) where T : IMenuItem
+        {
             layer.DefaultFore = ctx.Theme.windowFrame;
             layer.DefaultBack = ctx.Theme.windowBackground;
             layer.PrintFrame(rect, true);
 
-            for (int i = 0; i < items.Length; i++)
+            var view = rect.Contract(1);
+            var scrollBarX = rect.x + rect.width - 1;
+            if (items.Length > view.height)
             {
-                items[i].Render(ctx, layer, rect, i, i == selected);
+                DrawScrollBar(ctx, layer, scrollBarX, view.y, view.height, offset, items.Length);
+            }
+
+            for (int i = 0; i < view.height; i++)
+            {
+                if (i + offset >= items.Length) break;
+                items[i + offset].Render(ctx, layer, rect, i, i == selected);
             }
             layer.ResetColors();
         }
@@ -97,5 +115,18 @@ namespace WasteDrudgers.Render
 
         public static int Prev(int selected, int length) => --selected < 0 ? length - 1 : selected;
         public static int Next(int selected, int length) => ++selected > length - 1 ? 0 : selected;
+
+        public static (int s, int o) Prev(int selected, int offset, int view, int length)
+        {
+            if (selected > 0) selected--;
+            else if (selected == 0 && offset > 0) offset--;
+            return (selected, offset);
+        }
+        public static (int s, int o) Next(int selected, int offset, int view, int length)
+        {
+            if (selected < view - 1) selected++;
+            else if (selected == view - 1 && selected + offset < length - 1) offset++;
+            return (selected, offset);
+        }
     }
 }

@@ -6,21 +6,9 @@ namespace WasteDrudgers.Render
 {
     public static class InventoryUI
     {
-        public const int INVENTORY_LENGTH = 19;
+        public const int INVENTORY_LENGTH = 18;
         private static string[] categories = { "All", "Weapons", "Armor", "Adornments", "Consumables", "Magic", "Tools", "Misc" };
 
-        public static (int s, int o) Prev(int selected, int offset, int view, int length)
-        {
-            if (selected > 0) selected--;
-            else if (selected == 0 && offset > 0) offset--;
-            return (selected, offset);
-        }
-        public static (int s, int o) Next(int selected, int offset, int view, int length)
-        {
-            if (selected < view - 1) selected++;
-            else if (selected == view - 1 && selected + offset < length - 1) offset++;
-            return (selected, offset);
-        }
         public static int NextCategory(int category)
         {
             category++;
@@ -71,6 +59,11 @@ namespace WasteDrudgers.Render
             DrawCategories(ctx, layer, rect.x + 1, rect.y + 1, category);
 
             var inv = new Rect(rect.x + 1, rect.y + 4, rect.width - info.width - 1, INVENTORY_LENGTH);
+
+            if (inventory.Count > inv.height)
+            {
+                Menu.DrawScrollBar(ctx, layer, inv.x + inv.width, inv.y - 1, inv.height + 1, offset, inventory.Count + 1);
+            }
 
             // Default captions
             layer.LineHoriz(inv.x, inv.y - 1, inv.width, '─', ctx.Theme.text);
