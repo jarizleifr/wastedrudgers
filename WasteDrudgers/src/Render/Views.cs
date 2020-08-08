@@ -33,10 +33,10 @@ namespace WasteDrudgers.Render
 
             if (world.ShouldRedraw)
             {
-                var playerData = world.ecs.FetchResource<PlayerData>();
+                (var playerData, var map) = world.ecs.FetchResource<PlayerData, Map>();
 
                 HUD.Draw(ctx, root, world, playerData);
-                Viewport.Draw(ctx, viewport, ctx.Theme, world, playerData.coords);
+                Viewport.Draw(ctx, viewport, ctx.Theme, world, playerData.coords, Viewport.GetViewportRect(map.width, map.height, viewport.Width, viewport.Height), map);
 
                 world.ShouldRedraw = false;
             }
@@ -51,13 +51,14 @@ namespace WasteDrudgers.Render
                 (var playerData, var map) = world.ecs.FetchResource<PlayerData, Map>();
 
                 HUD.Draw(ctx, root, world, playerData);
-                Viewport.Draw(ctx, viewport, ctx.Theme, world, cursor);
+
+                var rect = Viewport.GetViewportRect(map.width, map.height, viewport.Width, viewport.Height);
+                Viewport.Draw(ctx, viewport, ctx.Theme, world, cursor, rect, map);
 
                 HUD.DrawFooter(ctx, root, LevelUtils.GetLookDescription(world, cursor));
 
-                var rect = ctx.UIData.viewport.Contract(1);
                 Viewport.CameraOffset(cursor, map.width, map.height, rect.width, rect.height, out int xOffset, out int yOffset);
-                viewport.PutChar(cursor.x - xOffset, cursor.y - yOffset, 'X', ctx.Theme.white);
+                viewport.PutChar(cursor.x + rect.x - xOffset, cursor.y + rect.y - yOffset, 'X', ctx.Theme.white);
 
                 world.ShouldRedraw = false;
             }

@@ -9,7 +9,7 @@ namespace WasteDrudgers.Render
 {
     public static class Viewport
     {
-        public static void Draw(IContext ctx, IBlittable layer, Theme theme, World world, Vec2 origin)
+        public static void Draw(IContext ctx, IBlittable layer, Theme theme, World world, Vec2 origin, Rect viewport, Map map)
         {
             switch (ctx.Config.Style)
             {
@@ -18,51 +18,31 @@ namespace WasteDrudgers.Render
                     break;
 
                 default:
-                    DrawASCIIMode(ctx, layer, world, origin);
+                    DrawASCIIMode(ctx, layer, world, origin, viewport, map);
                     break;
             }
         }
 
-        // TODO: There are bound errors when screen is larger than map
-        public static void DrawASCIIMode(IContext ctx, IBlittable layer, World world, Vec2 origin)
+        public static void DrawASCIIMode(IContext ctx, IBlittable layer, World world, Vec2 origin, Rect viewport, Map map)
         {
-            var rect = new Rect(0, 0, layer.Width, layer.Height);
             layer.ResetColors();
             layer.Clear();
 
-            var map = world.ecs.FetchResource<Map>();
             var tiles = map.GetTiles();
             var vis = map.GetVisibility();
 
-            CameraOffset(origin, map.width, map.height, rect.width, rect.height, out int xOffset, out int yOffset);
+            CameraOffset(origin, map.width, map.height, viewport.width, viewport.height, out int xOffset, out int yOffset);
 
-            for (int y = 0; y < rect.height; y++)
-            {
-                for (int x = 0; x < rect.width; x++)
-                {
-                    var i = Util.IndexFromXY(x + xOffset, y + yOffset, map.width);
-                    if (ctx.Config.Style == GraphicsStyle.Glyphs)
-                    {
-                        bool wallBelow = i + map.width > map.width * map.height || (tiles[i + map.width].flags & TileFlags.BlocksMovement) > 0;
-                        DrawTile(ctx, layer, tiles[i], vis[i], x, y, i, wallBelow);
-                    }
-                    else
-                    {
-                        DrawTile(ctx, layer, tiles[i], vis[i], x, y, i);
-                    }
-                }
-            }
-
-            //DrawEntities<Portal>(ctx, layer, world, rect, xOffset, yOffset, map.width, vis, false);
-            DrawEntities<Feature>(ctx, layer, world, rect, xOffset, yOffset, map.width, vis, false);
-            DrawItems(ctx, layer, world, rect, xOffset, yOffset, map.width, vis);
-            DrawEntities<Actor>(ctx, layer, world, rect, xOffset, yOffset, map.width, vis);
+            DrawTiles(ctx, layer, viewport, map, xOffset, yOffset);
+            DrawEntities<Feature>(ctx, layer, world, viewport, xOffset, yOffset, map.width, vis, false);
+            DrawItems(ctx, layer, world, viewport, map, xOffset, yOffset);
+            DrawEntities<Actor>(ctx, layer, world, viewport, xOffset, yOffset, map.width, vis);
 
             world.ecs.ThreadedLoop<Position, Effect>((Entity Entity, ref Position pos, ref Effect eff) =>
             {
-                int x = pos.coords.x - xOffset;
-                int y = pos.coords.y - yOffset;
-                if (!rect.IsWithinBounds(x, y)) return;
+                int x = viewport.x + pos.coords.x - xOffset;
+                int y = viewport.y + pos.coords.y - yOffset;
+                if (!viewport.IsWithinBounds(x, y)) return;
 
                 var i = pos.coords.ToIndex(map.width);
                 if (vis[i] != Visibility.Visible) return;
@@ -73,18 +53,18 @@ namespace WasteDrudgers.Render
 
         public static void DrawSpriteMode(IContext ctx, IBlittable layer, World world, Vec2 origin)
         {
-            var rect = new Rect(0, 0, layer.Width / 2, layer.Height);
+            var viewport = new Rect(0, 0, layer.Width / 2, layer.Height);
             layer.Clear();
 
             var map = world.ecs.FetchResource<Map>();
             var tiles = map.GetTiles();
             var vis = map.GetVisibility();
 
-            CameraOffset(origin, map.width, map.height, rect.width, rect.height, out int xOffset, out int yOffset);
+            CameraOffset(origin, map.width, map.height, viewport.width, viewport.height, out int xOffset, out int yOffset);
 
-            for (int y = 0; y < rect.height; y++)
+            for (int y = 0; y < viewport.height; y++)
             {
-                for (int x = 0; x < rect.width; x++)
+                for (int x = 0; x < viewport.width; x++)
                 {
                     var i = Util.IndexFromXY(x + xOffset, y + yOffset, map.width);
                     var tile = tiles[i];
@@ -116,18 +96,59 @@ namespace WasteDrudgers.Render
                 }
             }
 
-            DrawEntities<Actor>(ctx, layer, world, rect, xOffset, yOffset, map.width, vis);
+            DrawEntities<Actor>(ctx, layer, world, viewport, xOffset, yOffset, map.width, vis);
         }
 
-        private static void DrawItems(IContext ctx, IBlittable layer, World world, Rect rect, int xOffset, int yOffset, int mapWidth, Visibility[] vis)
+        public static void CameraOffset(Vec2 coords, int mapWidth, int mapHeight, int viewportWidth, int viewportHeight, out int xOffset, out int yOffset)
         {
+            xOffset = Math.Clamp(coords.x - (viewportWidth / 2), 0, Math.Max(0, mapWidth - viewportWidth));
+            yOffset = Math.Clamp(coords.y - (viewportHeight / 2), 0, Math.Max(0, mapHeight - viewportHeight));
+        }
+
+        public static Rect GetViewportRect(int mapWidth, int mapHeight, int fullViewportWidth, int fullViewportHeight)
+        {
+            var renderOffsetX = Math.Max(0, fullViewportWidth - mapWidth);
+            var renderOffsetY = Math.Max(0, fullViewportHeight - mapHeight);
+
+            return new Rect(
+                renderOffsetX / 2,
+                renderOffsetY / 2,
+                fullViewportWidth - renderOffsetX,
+                fullViewportHeight - renderOffsetY);
+        }
+
+        private static void DrawTiles(IContext ctx, IBlittable layer, Rect viewport, Map map, int xOffset, int yOffset)
+        {
+            var tiles = map.GetTiles();
+            var vis = map.GetVisibility();
+            for (int y = 0; y < viewport.height; y++)
+            {
+                for (int x = 0; x < viewport.width; x++)
+                {
+                    var i = Util.IndexFromXY(x + xOffset, y + yOffset, map.width);
+                    if (ctx.Config.Style == GraphicsStyle.Glyphs)
+                    {
+                        bool wallBelow = i + map.width > map.width * map.height || (tiles[i + map.width].flags & TileFlags.BlocksMovement) > 0;
+                        DrawTile(ctx, layer, tiles[i], vis[i], x, y, i, wallBelow);
+                    }
+                    else
+                    {
+                        DrawTile(ctx, layer, tiles[i], vis[i], x + viewport.x, y + viewport.y, i);
+                    }
+                }
+            }
+        }
+
+        private static void DrawItems(IContext ctx, IBlittable layer, World world, Rect viewport, Map map, int xOffset, int yOffset)
+        {
+            var vis = map.GetVisibility();
             foreach (var pos in world.spatial.GetPositionsWithItems())
             {
-                int x = pos.x - xOffset;
-                int y = pos.y - yOffset;
-                if (!rect.IsWithinBounds(x, y)) continue;
+                int x = viewport.x + pos.x - xOffset;
+                int y = viewport.y + pos.y - yOffset;
+                if (!viewport.IsWithinBounds(x, y)) continue;
 
-                var i = pos.ToIndex(mapWidth);
+                var i = pos.ToIndex(map.width);
                 if (vis[i] == Visibility.Visible)
                 {
                     var renderable = world.spatial.GetItemsRenderable(pos, world);
@@ -198,23 +219,17 @@ namespace WasteDrudgers.Render
             }
         }
 
-        private static void DrawEntities<T>(IContext ctx, IBlittable layer, World world, Rect rect, int xOffset, int yOffset, int mapWidth, Visibility[] vis, bool onlyVisible = true) where T : struct
+        private static void DrawEntities<T>(IContext ctx, IBlittable layer, World world, Rect viewport, int xOffset, int yOffset, int mapWidth, Visibility[] vis, bool onlyVisible = true) where T : struct
         {
             world.ecs.Loop<Position, Renderable, T>((Entity entity, ref Position pos, ref Renderable renderable, ref T t) =>
             {
-                int x = pos.coords.x - xOffset;
-                int y = pos.coords.y - yOffset;
-                if (!rect.IsWithinBounds(x, y)) return;
+                int x = viewport.x + pos.coords.x - xOffset;
+                int y = viewport.y + pos.coords.y - yOffset;
+                if (!viewport.IsWithinBounds(x, y)) return;
 
                 var i = pos.coords.ToIndex(mapWidth);
                 DrawEntity(ctx, layer, x, y, renderable, vis[i], onlyVisible);
             });
-        }
-
-        public static void CameraOffset(Vec2 coords, int mapWidth, int mapHeight, int viewportWidth, int viewportHeight, out int xOffset, out int yOffset)
-        {
-            xOffset = Math.Clamp(coords.x - (viewportWidth / 2), 0, Math.Max(0, mapWidth - viewportWidth));
-            yOffset = Math.Clamp(coords.y - (viewportHeight / 2), 0, Math.Max(0, mapHeight - viewportHeight));
         }
     }
 }
