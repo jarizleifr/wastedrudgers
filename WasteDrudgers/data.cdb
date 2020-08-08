@@ -1604,7 +1604,7 @@
 					"sprite": "",
 					"foreground": "c_shadow_light",
 					"background": "c_shadow",
-					"flags": 0,
+					"flags": 2,
 					"description": "",
 					"index": 16,
 					"editorTile": {
