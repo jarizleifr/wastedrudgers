@@ -80,6 +80,9 @@ namespace WasteDrudgers.Entities
                 case SpellEffect.AwarenessPermanent:
                     stats.awareness.Base += RNG.IntInclusive(rawSpell.MinMagnitude, rawSpell.MaxMagnitude);
                     break;
+                case SpellEffect.Identify:
+                    Items.IdentifyInventory(world);
+                    break;
                 case SpellEffect.HealthHeal:
                     if (health.health.Damage > 0)
                     {
