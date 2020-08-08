@@ -57,8 +57,6 @@ namespace WasteDrudgers.Entities
             _ => throw new Exception("Error, trying to equip an item of invalid type")
         };
 
-        public static bool IsEquipable(this ItemType type) => type.IsWeapon() || type.IsApparel();
-
         public static bool IsWeapon(this ItemType type)
         {
             switch (type)
@@ -76,12 +74,53 @@ namespace WasteDrudgers.Entities
             }
         }
 
-        public static bool IsUseable(this ItemType type)
+        public static bool IsArmor(this ItemType type)
         {
             switch (type)
             {
-                case ItemType.Potion:
+                case ItemType.Helmet:
+                case ItemType.Cloak:
+                case ItemType.Armor:
+                case ItemType.Undershirt:
+                case ItemType.Belt:
+                case ItemType.Boots:
+                case ItemType.Gloves:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        public static bool IsAdornment(this ItemType type)
+        {
+            switch (type)
+            {
+                case ItemType.Amulet:
+                case ItemType.Earring:
+                case ItemType.Ring:
+                case ItemType.Bracers:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        public static bool IsConsumable(this ItemType type)
+        {
+            switch (type)
+            {
                 case ItemType.Food:
+                case ItemType.Potion:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        public static bool IsMagic(this ItemType type)
+        {
+            switch (type)
+            {
                 case ItemType.Scroll:
                 case ItemType.Book:
                     return true;
@@ -89,6 +128,8 @@ namespace WasteDrudgers.Entities
                     return false;
             }
         }
+
+        public static bool IsTool(this ItemType type) => false;
 
         public static bool IsMisc(this ItemType type)
         {
@@ -101,38 +142,9 @@ namespace WasteDrudgers.Entities
             }
         }
 
-        public static bool IsApparel(this ItemType type)
-        {
-            if (type.IsArmor()) return true;
-
-            switch (type)
-            {
-                case ItemType.Amulet:
-                case ItemType.Ring:
-                case ItemType.Earring:
-                    return true;
-                default:
-                    return false;
-            }
-        }
-
-        public static bool IsArmor(this ItemType type)
-        {
-            switch (type)
-            {
-                case ItemType.Helmet:
-                case ItemType.Cloak:
-                case ItemType.Armor:
-                case ItemType.Undershirt:
-                case ItemType.Belt:
-                case ItemType.Boots:
-                case ItemType.Gloves:
-                case ItemType.Bracers:
-                    return true;
-                default:
-                    return false;
-            }
-        }
+        public static bool IsEquipable(this ItemType type) => type.IsWeapon() || type.IsApparel();
+        public static bool IsUseable(this ItemType type) => type.IsConsumable() || type.IsMagic();
+        public static bool IsApparel(this ItemType type) => type.IsArmor() || type.IsAdornment();
 
         public static SkillType GetWeaponSkill(this ItemType type) => type switch
         {
@@ -144,12 +156,5 @@ namespace WasteDrudgers.Entities
             ItemType.Whip => SkillType.Whip,
             _ => throw new Exception("Not a weapon!")
         };
-    }
-
-    public enum IdentificationStatus
-    {
-        Unknown,
-        Examined,
-        Identified,
     }
 }

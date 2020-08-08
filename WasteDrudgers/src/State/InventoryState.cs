@@ -8,7 +8,7 @@ namespace WasteDrudgers.State
     {
         public int selected;
         public int offset;
-        public int category;
+        public InventoryCategory category;
 
         public string[] InputDomains { get; set; } = { "menu", "inventory", "selection" };
 
@@ -31,7 +31,6 @@ namespace WasteDrudgers.State
 
             switch (ctx.Command)
             {
-                // TODO: Implement contextual action for item equip/use/throw/drop
                 case Command.MenuAccept:
                     ItemAction(ctx, world, playerData, selected + offset);
                     break;
@@ -52,6 +51,7 @@ namespace WasteDrudgers.State
                         Items.DropItem(world, playerData.entity, wrapper.entity);
                         UpdateInventory(world, playerData);
                         UpdateSelection(oldLength, inventory.Count);
+                        FilterInventory();
                     }
                     break;
 
@@ -120,10 +120,13 @@ namespace WasteDrudgers.State
         {
             Func<ItemWrapper, bool> predicate = category switch
             {
-                1 => i => i.type.IsWeapon(),
-                2 => i => i.type.IsApparel(),
-                3 => i => i.type.IsUseable(),
-                4 => i => i.type.IsMisc(),
+                InventoryCategory.Weapons => i => i.type.IsWeapon(),
+                InventoryCategory.Armor => i => i.type.IsArmor(),
+                InventoryCategory.Adornments => i => i.type.IsAdornment(),
+                InventoryCategory.Consumables => i => i.type.IsConsumable(),
+                InventoryCategory.Magic => i => i.type.IsMagic(),
+                InventoryCategory.Tools => i => i.type.IsTool(),
+                InventoryCategory.Misc => i => i.type.IsMisc(),
                 _ => null,
             };
             if (predicate != null) inventory.Filter(predicate);

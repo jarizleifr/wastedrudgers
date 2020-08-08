@@ -156,7 +156,7 @@ namespace WasteDrudgers
     {
         public ItemType type;
         public IdentificationStatus status;
-        public Material material;
+        public string material;
         public int weight;
         public int count;
     }

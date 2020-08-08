@@ -25,11 +25,6 @@ namespace WasteDrudgers.Entities
 
         public static Entity CreateItem(World world, DBItem raw, DBMaterial material, Vec2 pos)
         {
-            if (!Enum.TryParse(material.Name, true, out Material mat))
-            {
-                throw new Exception($"Cannot convert material {material.Name} to a Material enum");
-            }
-
             var entity = world.ecs.Create();
             world.ecs.Assign(entity, new Position { coords = pos });
             world.ecs.Assign(entity, new Renderable
@@ -40,7 +35,7 @@ namespace WasteDrudgers.Entities
             });
             world.ecs.Assign(entity, new Item
             {
-                material = mat,
+                material = material.Id,
                 type = raw.Type,
                 count = 1,
                 weight = (int)(raw.Weight * material.WeightMult),
@@ -128,7 +123,8 @@ namespace WasteDrudgers.Entities
                 // Only show material in name if there are more than one material
                 if (rawItem.MaterialGroup != null)
                 {
-                    var material = item.material.ToString().ToLower();
+                    var rawMaterial = world.database.GetMaterial(item.material);
+                    var material = rawMaterial.Name.ToLower();
                     displayName = $"{material} {identity.name}";
                 }
                 return displayName;
