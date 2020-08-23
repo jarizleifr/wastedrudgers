@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using WasteDrudgers.Entities;
 using WasteDrudgers.State;
 
 namespace WasteDrudgers.Tests
@@ -12,7 +10,7 @@ namespace WasteDrudgers.Tests
             var ctx = new TestContext(world);
 
             RNG.Seed(0);
-            world.SetState(ctx, RunState.NewGame(new Skills { set = new List<Skill>() }));
+            world.SetState(ctx, RunState.NewGame);
             world.Tick(ctx);
             world.SetState(ctx, RunState.LevelGeneration("lvl_test_arena", null, true));
             world.Tick(ctx);

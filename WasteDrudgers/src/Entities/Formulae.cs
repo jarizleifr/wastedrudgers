@@ -35,14 +35,22 @@ namespace WasteDrudgers.Entities
         // Skill base
         public static int BaseSkill(SkillType type, Stats stats) => type switch
         {
-            SkillType.MartialArts => 25,
-            SkillType.Dodge => stats.finesse * 2,
+            SkillType.MartialArts => stats.finesse + 15,
+            var _ when type.IsFinesseSkill() => stats.finesse,
             _ => 0
         };
 
         public static int ExperienceNeededForLevel(int level) => (level * (level - 1) / 2) * BASE_EXPERIENCE;
 
-        public static int FinessePointsPerLevel(int finesse) => Math.Max(1, BASE_FINESSE_POINTS + (finesse - BASE_ATTRIBUTE_VALUE) / 2);
-        public static int KnowledgePointsPerLevel(int intellect) => Math.Max(1, BASE_KNOWLEDGE_POINTS + (intellect - BASE_ATTRIBUTE_VALUE) / 2);
+        public static int GetStatCost(StatType type) => type switch
+        {
+            StatType.Strength => 10,
+            StatType.Endurance => 10,
+            StatType.Finesse => 20,
+            StatType.Intellect => 20,
+            StatType.Resolve => 10,
+            StatType.Awareness => 10,
+            _ => 5
+        };
     }
 }

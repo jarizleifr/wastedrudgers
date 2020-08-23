@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Blaggard.Common;
@@ -7,8 +8,6 @@ namespace WasteDrudgers.State
 {
     internal class NewGameState : IRunState
     {
-        public Skills skills;
-
         public void Run(IContext ctx, World world)
         {
             world.ecs.Clear();
@@ -21,8 +20,8 @@ namespace WasteDrudgers.State
             world.ecs.Assign(player, new Actor { energy = 0, speed = 100 });
             world.ecs.Assign(player, new Player { });
             world.ecs.Assign(player, new Identity { name = name, rawName = "player" });
-            world.ecs.Assign(player, new Experience { level = 1, experience = 0 });
-            world.ecs.Assign(player, skills);
+            world.ecs.Assign(player, new Experience { level = 1, experience = 0, characterPoints = 100 });
+            world.ecs.Assign(player, new Skills { set = new List<Skill>() });
 
             var stats = new Stats { strength = 10, endurance = 10, finesse = 10, intellect = 10, resolve = 10, awareness = 10 };
             world.ecs.Assign(player, stats);
@@ -38,7 +37,7 @@ namespace WasteDrudgers.State
 
             Creatures.UpdateCreature(world, player);
 
-            world.SetState(ctx, RunState.LevelGeneration(startingLevel, null, true));
+            world.SetState(ctx, RunState.Chargen);
         }
 
         public static string GenerateName()

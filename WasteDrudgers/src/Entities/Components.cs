@@ -140,6 +140,7 @@ namespace WasteDrudgers
     {
         public int level;
         public int experience;
+        public int characterPoints;
     }
 
     public struct Stats
@@ -150,6 +151,47 @@ namespace WasteDrudgers
         public Stat intellect;
         public Stat resolve;
         public Stat awareness;
+
+        public Stat Get(StatType type) => type switch
+        {
+            StatType.Strength => strength,
+            StatType.Endurance => endurance,
+            StatType.Finesse => finesse,
+            StatType.Intellect => intellect,
+            StatType.Resolve => resolve,
+            StatType.Awareness => awareness,
+        };
+
+        public Stat this[StatType type]
+        {
+            get => Get(type);
+            set => SetBase(type, value);
+        }
+
+        public void SetBase(StatType type, int value)
+        {
+            switch (type)
+            {
+                case StatType.Strength:
+                    strength.Base = value;
+                    break;
+                case StatType.Endurance:
+                    endurance.Base = value;
+                    break;
+                case StatType.Finesse:
+                    finesse.Base = value;
+                    break;
+                case StatType.Intellect:
+                    intellect.Base = value;
+                    break;
+                case StatType.Resolve:
+                    resolve.Base = value;
+                    break;
+                case StatType.Awareness:
+                    awareness.Base = value;
+                    break;
+            }
+        }
     }
 
     public struct Item

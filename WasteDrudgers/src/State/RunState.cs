@@ -12,10 +12,10 @@ namespace WasteDrudgers.State
 
         public static IRunState MainMenu(int selection) => new MainMenuState { selection = selection };
         public static IRunState Config(int selection) => new ConfigState { selection = selection };
-        public static IRunState Chargen(int selection) => new ChargenState { selection = selection };
+        public static IRunState Chargen => new ChargenState { };
         public static IRunState EscapeMenu(int selection) => new EscapeMenuState { selection = selection };
 
-        public static IRunState NewGame(Skills skills) => new NewGameState { skills = skills };
+        public static IRunState NewGame => new NewGameState { };
         public static IRunState SaveGame(string saveName, IRunState nextState) => new SaveGameState { saveName = saveName, nextState = nextState };
         public static IRunState LoadGame(int selection) => new LoadGameState { selection = selection };
 
@@ -23,8 +23,6 @@ namespace WasteDrudgers.State
         public static IRunState Inventory(int selected, int offset) => new InventoryState { selected = selected, offset = offset };
         public static IRunState PickUp(int selected, int offset) => new PickUpState { selected = selected, offset = offset };
         public static IRunState CharacterSheet() => new CharacterSheetState { };
-
-        public static IRunState LevelUp(int selection) => new LevelUpState { selection = selection };
 
         public static IRunState LevelGeneration(string levelName, Map map, bool newGame = false) => new LevelGenerationState { levelName = levelName, map = map, newGame = newGame };
         public static IRunState LevelTransition(string levelName) => new LevelTransitionState { levelName = levelName };

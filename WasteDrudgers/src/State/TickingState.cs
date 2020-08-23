@@ -51,6 +51,14 @@ namespace WasteDrudgers.State
                 }
             }
 
+            ref var exp = ref world.ecs.GetRef<Experience>(playerData.entity);
+            if (Formulae.ExperienceNeededForLevel(exp.level + 1) - exp.experience <= 0)
+            {
+                exp.level++;
+                exp.characterPoints += 15;
+                world.WriteToLog("character_points_earned", playerData.coords, LogItem.Num(15));
+            }
+
             world.log.UpdateMessageBuffer();
             world.SetState(ctx, world.log.HasMessages() ? RunState.MoreMessages : RunState.AwaitingInput);
         }

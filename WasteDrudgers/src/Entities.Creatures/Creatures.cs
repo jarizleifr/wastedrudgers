@@ -147,7 +147,8 @@ namespace WasteDrudgers.Entities
             {
                 if (equipped.entity == entity && equipped.slot == Slot.MainHand)
                 {
-                    var skill = attack.chance + skills.GetRank(item.type.GetWeaponSkill());
+                    var skillType = item.type.GetWeaponSkill();
+                    var skill = Formulae.BaseSkill(skillType, stats) + skills.GetRank(skillType) + attack.chance;
                     combat.wielding = Wielding.SingleWeapon;
                     combat.hitChance = skill;
                     combat.minDamage = attack.min + Formulae.MeleeDamage(stats);

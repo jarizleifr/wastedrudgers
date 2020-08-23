@@ -17,7 +17,7 @@ namespace WasteDrudgers.State
                 case Command.MenuAccept:
                     world.SetState(ctx, selection switch
                     {
-                        0 => RunState.Chargen(0),
+                        0 => RunState.NewGame,
                         1 => RunState.LoadGame(0),
                         2 => RunState.Config(0),
                         _ => null
