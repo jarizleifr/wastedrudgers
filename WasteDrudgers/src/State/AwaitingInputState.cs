@@ -44,9 +44,11 @@ namespace WasteDrudgers.State
         {
             if (world.spatial.TryGetFeature(playerData.coords, out var feature))
             {
-                var portal = world.ecs.GetRef<Portal>(feature);
-                playerData.turns++;
-                return RunState.LevelTransition(portal.targetLevel);
+                if (world.ecs.TryGet<Portal>(feature, out var portal))
+                {
+                    playerData.turns++;
+                    return RunState.LevelTransition(portal.targetLevel);
+                }
             }
             return this;
         }
