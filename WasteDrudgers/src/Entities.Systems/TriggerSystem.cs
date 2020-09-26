@@ -1,5 +1,4 @@
 using ManulECS;
-using WasteDrudgers.Level;
 
 namespace WasteDrudgers.Entities
 {
@@ -17,7 +16,6 @@ namespace WasteDrudgers.Entities
                     }
                 }
             });
-            world.ecs.Clear<EventMoved>();
         }
     }
 }

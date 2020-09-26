@@ -109,7 +109,6 @@ namespace WasteDrudgers.Entities
         {
             switch (type)
             {
-                case ItemType.Food:
                 case ItemType.Potion:
                     return true;
                 default:

@@ -15,10 +15,15 @@ namespace WasteDrudgers.State
         private PlayerData playerData;
         private Inventory inventory;
 
+        private bool droppedItem;
+        private bool changedEquipment;
+
         public void Initialize(IContext ctx, World world)
         {
             playerData = world.ecs.FetchResource<PlayerData>();
             UpdateInventory(world, playerData);
+            droppedItem = false;
+            changedEquipment = false;
         }
 
         public void Run(IContext ctx, World world)
@@ -47,7 +52,9 @@ namespace WasteDrudgers.State
                         if (wrapper.equipped)
                         {
                             Items.UnequipItemToBackpack(world, playerData.entity, wrapper.type.GetEquipmentSlot());
+                            changedEquipment = true;
                         }
+                        droppedItem = true;
                         Items.DropItem(world, playerData.entity, wrapper.entity);
                         UpdateInventory(world, playerData);
                         UpdateSelection(oldLength, inventory.Count);
@@ -78,6 +85,14 @@ namespace WasteDrudgers.State
                     break;
 
                 case Command.Exit:
+                    if (droppedItem)
+                    {
+                        Items.UpdateFoodLeft(world);
+                    }
+                    if (changedEquipment)
+                    {
+                        Creatures.UpdateCreature(world, playerData.entity);
+                    }
                     world.SetState(ctx, RunState.AwaitingInput);
                     break;
             }
@@ -103,6 +118,7 @@ namespace WasteDrudgers.State
                 {
                     Items.EquipItem(world, playerData.entity, wrapper.entity);
                 }
+                changedEquipment = true;
                 UpdateInventory(world, playerData);
             }
             else if (wrapper.type.IsUseable())

@@ -1,4 +1,3 @@
-using System;
 using WasteDrudgers.Entities;
 
 namespace WasteDrudgers.State
@@ -18,29 +17,49 @@ namespace WasteDrudgers.State
                 // Denote that 100 energy worth of time has gone by
                 world.IncrementGameTicks();
 
-                Systems.ItemSystem(ctx, world);
-
                 Systems.RegenSystem(ctx, world);
 
-                Systems.BumpSystem(ctx, world);
+                // Handle actions
+                Systems.ItemSystem(ctx, world);
+                Systems.MovementSystem(ctx, world);
                 Systems.AttackSystem(ctx, world);
-                Systems.StatusSystem(ctx, world);
 
+                // Clear intentions
+                world.ecs.Clear<IntentionGetItem>();
+                world.ecs.Clear<IntentionUseItem>();
+                world.ecs.Clear<IntentionMove>();
+                world.ecs.Clear<IntentionAttack>();
+
+                Systems.PostTurnSystem(ctx, world);
+
+                // Handle results
+                Systems.HungerClockSystem(ctx, world);
+                Systems.StatusSystem(ctx, world);
+                Systems.TriggerSystem(ctx, world);
+                Systems.CreatureUpdateSystem(ctx, world);
+
+                // Handle late results
                 Systems.DamageSystem(ctx, world);
 
-                // FIXME: Game locks down sometimes on death? Couldn't reproduce anymore?
+                // Clear all events
+                world.ecs.Clear<EventMoved>();
+                world.ecs.Clear<EventActed>();
+                world.ecs.Clear<EventStatsUpdated>();
+                world.ecs.Clear<EventEffectsUpdated>();
+                world.ecs.Clear<EventInventoryUpdated>();
+                world.ecs.Clear<Turn>();
 
-                // If player has died, return early
                 if (world.ecs.Has<Death>(playerData.entity))
                 {
                     world.SetState(ctx, RunState.GameOver);
                     return;
                 }
 
-                Systems.MovementSystem(ctx, world);
-                Systems.TriggerSystem(ctx, world);
-
+                // Clear dead entities
                 Systems.DeathSystem(ctx, world);
+                world.ecs.Clear<Death>();
+
+                // Process new entities
                 Systems.InitiativeSystem(ctx, world);
                 Systems.AISystem(ctx, world);
 

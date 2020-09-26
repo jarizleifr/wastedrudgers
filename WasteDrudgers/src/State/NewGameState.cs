@@ -32,11 +32,26 @@ namespace WasteDrudgers.State
             });
 
             var startingLevel = "lvl_starting_cave_01";
-            world.ecs.SetResource(new PlayerData { entity = player, name = name, coords = new Vec2(0, 0), currentLevel = startingLevel, lastTarget = null });
+            world.ecs.SetResource(new PlayerData { entity = player, name = name, coords = Vec2.Zero, currentLevel = startingLevel, lastTarget = null });
             world.ecs.SetResource(new ObfuscatedNames());
 
-            Creatures.UpdateCreature(world, player);
+#if DEBUG
+            var startingItems = new List<string>
+            {
+                "itm_food_insect_roast",
+                "itm_food_insect_roast",
+                "itm_food_insect_roast",
+                "itm_food_insect_roast",
+            };
+            foreach (var i in startingItems)
+            {
+                Items.PickUpItem(world, player, Items.Create(world, i, Vec2.Zero));
+            }
+#endif
 
+            world.ecs.Assign(player, new HungerClock { nutrition = 1000 });
+
+            Creatures.UpdateCreature(world, player);
             world.SetState(ctx, RunState.Chargen);
         }
 

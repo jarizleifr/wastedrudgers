@@ -23,6 +23,11 @@ namespace WasteDrudgers
 
             // Events
             ecs.Declare<EventMoved>();
+            ecs.Declare<EventActed>();
+            ecs.Declare<EventStatsUpdated>();
+            ecs.Declare<EventInventoryUpdated>();
+            ecs.Declare<EventEffectsUpdated>();
+            ecs.Declare<EventStatusUpdated>();
 
             // Actor components
             ecs.Declare<Actor>();
@@ -36,6 +41,8 @@ namespace WasteDrudgers
             ecs.Declare<Combat>();
             ecs.Declare<Health>();
             ecs.Declare<Experience>();
+
+            ecs.Declare<HungerClock>();
 
             // Item components
             ecs.Declare<Item>();

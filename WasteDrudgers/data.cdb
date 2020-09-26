@@ -574,6 +574,17 @@
 					"useSpell": "spl_vigor_heal"
 				},
 				{
+					"id": "itm_food_insect_roast",
+					"type": 21,
+					"name": "insect roast",
+					"obfuscated": false,
+					"character": "%",
+					"dangerLevel": 0,
+					"weight": 50,
+					"value": 0,
+					"baseMaterial": "mat_flesh"
+				},
+				{
 					"id": "itm_goldcoin",
 					"type": 0,
 					"name": "gold coin",
@@ -630,7 +641,8 @@
 				24,
 				25,
 				34,
-				38
+				35,
+				39
 			],
 			"props": {
 				"separatorTitles": [
@@ -642,6 +654,7 @@
 					"Boots",
 					"Scrolls",
 					"Potions",
+					"Food",
 					"Miscellaneous",
 					"Potions"
 				]
@@ -814,6 +827,16 @@
 					"color": "c_white",
 					"damageBonus": 0,
 					"armorBonus": 0
+				},
+				{
+					"id": "mat_flesh",
+					"name": "flesh",
+					"damageBonus": 0,
+					"armorBonus": 0,
+					"quality": 0,
+					"weightMult": 0,
+					"dangerLevelModifier": 0,
+					"color": "c_red_light"
 				}
 			],
 			"separators": [],
@@ -976,6 +999,14 @@
 					"items": [
 						{
 							"item": "itm_scroll_identify"
+						}
+					]
+				},
+				{
+					"id": "ll_food",
+					"items": [
+						{
+							"item": "itm_food_insect_roast"
 						}
 					]
 				}
@@ -1886,6 +1917,9 @@
 						},
 						{
 							"lists": "ll_scrolls"
+						},
+						{
+							"lists": "ll_food"
 						}
 					],
 					"creatures": [
@@ -1942,6 +1976,9 @@
 						},
 						{
 							"lists": "ll_scrolls"
+						},
+						{
+							"lists": "ll_food"
 						}
 					],
 					"portals": [

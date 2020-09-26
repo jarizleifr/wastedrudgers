@@ -69,7 +69,17 @@ namespace WasteDrudgers
     }
 
     public struct EventMoved { }
+    public struct EventActed
+    {
+        public int energyLoss;
+        public int nutritionLoss;
+    }
 
+    public struct EventStatsUpdated { }
+    public struct EventInventoryUpdated { }
+    public struct EventEffectsUpdated { }
+
+    public struct EventStatusUpdated { }
 
     public struct Turn { }
 
@@ -81,10 +91,7 @@ namespace WasteDrudgers
     }
 
     [SerializationProfile("global")]
-    public struct Player
-    {
-        int experience;
-    }
+    public struct Player { }
 
     public struct InBackpack
     {
@@ -134,6 +141,7 @@ namespace WasteDrudgers
         public Stat health;
 
         public float vigorRegen;
+        public bool fatigued;
     }
 
     public struct Experience
@@ -141,6 +149,30 @@ namespace WasteDrudgers
         public int level;
         public int experience;
         public int characterPoints;
+    }
+
+    public enum HungerState
+    {
+        Sated,
+        LowFood,
+        Hungry,
+    }
+
+    public struct HungerClock
+    {
+        public int nutrition;
+        public int food;
+
+        [JsonIgnore]
+        public int Total => nutrition + food;
+
+        [JsonIgnore]
+        public HungerState State => Total switch
+        {
+            var _ when Total == 0 => HungerState.Hungry,
+            var _ when Total < 500 => HungerState.LowFood,
+            _ => HungerState.Sated,
+        };
     }
 
     public struct Stats
@@ -190,6 +222,39 @@ namespace WasteDrudgers
                 case StatType.Awareness:
                     awareness.Base = value;
                     break;
+            }
+        }
+
+        public void SetMod(StatType type, int value)
+        {
+            switch (type)
+            {
+                case StatType.Strength:
+                    strength.Mod = value;
+                    break;
+                case StatType.Endurance:
+                    endurance.Mod = value;
+                    break;
+                case StatType.Finesse:
+                    finesse.Mod = value;
+                    break;
+                case StatType.Intellect:
+                    intellect.Mod = value;
+                    break;
+                case StatType.Resolve:
+                    resolve.Mod = value;
+                    break;
+                case StatType.Awareness:
+                    awareness.Mod = value;
+                    break;
+            }
+        }
+
+        public void SetMods(int value)
+        {
+            for (int i = 0; i < 6; i++)
+            {
+                SetMod((StatType)i, value);
             }
         }
     }

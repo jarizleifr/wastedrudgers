@@ -72,7 +72,7 @@ namespace WasteDrudgers.UI
                     skills.Increment((SkillType)Current.Index);
                     break;
             }
-            Creatures.UpdateCreature(world, playerData.entity);
+            world.ecs.Assign<EventStatsUpdated>(playerData.entity, new EventStatsUpdated { });
         }
     }
 }

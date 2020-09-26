@@ -6,6 +6,19 @@ namespace WasteDrudgers.Entities
     {
         public static void StatusSystem(IContext ctx, World world)
         {
+            world.ecs.Loop((Entity entity, ref Stats stats, ref HungerClock clock, ref EventStatusUpdated statusUpdated) =>
+            {
+                if (clock.State == HungerState.Hungry)
+                {
+                    stats.SetMods(-2);
+                }
+                else
+                {
+                    stats.SetMods(0);
+                }
+                world.ecs.Assign(entity, new EventStatsUpdated { });
+            });
+
             if (world.GameTicks % 10 == 0)
             {
                 world.ecs.Loop((Entity entity, ref ActiveEffect activeEffect) =>

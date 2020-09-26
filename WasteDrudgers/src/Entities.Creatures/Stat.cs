@@ -57,7 +57,7 @@ namespace WasteDrudgers.Entities
         public int Current => val + mod - dmg;
         public int Max => val + mod;
 
-        public static implicit operator int(Stat s) => s.Base;
+        public static implicit operator int(Stat s) => s.Current;
         public static implicit operator Stat(int s) => new Stat(s);
     }
 }

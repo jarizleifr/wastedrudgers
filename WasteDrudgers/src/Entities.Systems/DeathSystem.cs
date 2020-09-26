@@ -13,7 +13,6 @@ namespace WasteDrudgers.Entities
                     world.ecs.Remove(entity);
                 }
             });
-            world.ecs.Clear<Death>();
         }
     }
 }

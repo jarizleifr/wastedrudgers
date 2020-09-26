@@ -8,6 +8,8 @@ namespace WasteDrudgers.Entities
         {
             world.ecs.Loop((Entity entity, ref Health health, ref Stats stats) =>
             {
+                if (health.fatigued) return;
+
                 if (health.vigor.Damage > 0)
                 {
                     health.vigorRegen += Formulae.VigorHealingRate(stats);

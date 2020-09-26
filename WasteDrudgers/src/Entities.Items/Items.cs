@@ -194,7 +194,7 @@ namespace WasteDrudgers.Entities
             ExamineItem(world, equipping);
             world.ecs.Assign<Equipped>(equipping, new Equipped { entity = equipper, slot = targetSlot });
 
-            Creatures.UpdateCreature(world, equipper);
+            world.ecs.Assign<EventStatsUpdated>(equipper, new EventStatsUpdated { });
         }
 
         public static void UnequipItemToBackpack(World world, Entity unequipper, Slot targetSlot)
@@ -207,7 +207,7 @@ namespace WasteDrudgers.Entities
                     AddItemToInventory(world, unequipper, entity);
                 }
             });
-            Creatures.UpdateCreature(world, unequipper);
+            world.ecs.Assign<EventStatsUpdated>(unequipper, new EventStatsUpdated { });
         }
 
         public static void UseItem(World world, Entity user, Entity itemEntity)
@@ -225,7 +225,8 @@ namespace WasteDrudgers.Entities
             var used = RemoveItemFromInventory(world, itemEntity);
             world.ecs.Remove(used);
 
-            Creatures.UpdateCreature(world, user);
+            world.ecs.Assign<EventStatsUpdated>(user, new EventStatsUpdated { });
+            world.ecs.Assign<EventInventoryUpdated>(user, new EventInventoryUpdated { });
         }
 
         public static void PickUpItem(World world, Entity getter, Entity itemEntity)
@@ -235,6 +236,22 @@ namespace WasteDrudgers.Entities
             world.ecs.Remove<Position>(itemEntity);
             world.spatial.ClearItemAt(pos.coords, itemEntity);
             AddItemToInventory(world, getter, itemEntity);
+
+            world.ecs.Assign<EventStatsUpdated>(getter, new EventStatsUpdated { });
+            world.ecs.Assign<EventInventoryUpdated>(getter, new EventInventoryUpdated { });
+        }
+
+        public static void DropItem(World world, Entity dropper, Entity itemEntity)
+        {
+            var pos = world.ecs.GetRef<Position>(dropper);
+
+            itemEntity = RemoveItemFromInventory(world, itemEntity);
+            world.ecs.AssignOrReplace(itemEntity, new Position { coords = pos.coords });
+            world.ecs.Remove<PlayerMarker>(itemEntity);
+            world.spatial.PlaceItem(world, pos.coords, itemEntity);
+
+            world.ecs.Assign<EventStatsUpdated>(dropper, new EventStatsUpdated { });
+            world.ecs.Assign<EventInventoryUpdated>(dropper, new EventInventoryUpdated { });
         }
 
         private static void AddItemToInventory(World world, Entity getter, Entity itemEntity)
@@ -282,16 +299,6 @@ namespace WasteDrudgers.Entities
             }
         }
 
-        public static void DropItem(World world, Entity dropper, Entity itemEntity)
-        {
-            var pos = world.ecs.GetRef<Position>(dropper);
-
-            itemEntity = RemoveItemFromInventory(world, itemEntity);
-            world.ecs.AssignOrReplace(itemEntity, new Position { coords = pos.coords });
-            world.ecs.Remove<PlayerMarker>(itemEntity);
-            world.spatial.PlaceItem(world, pos.coords, itemEntity);
-        }
-
         public static bool IsSameKindOf(World world, Entity item1, Entity item2)
         {
             var id1 = world.ecs.GetRef<Identity>(item1);
@@ -301,6 +308,66 @@ namespace WasteDrudgers.Entities
             var itm2 = world.ecs.GetRef<Item>(item2);
 
             return (id1.rawName == id2.rawName) && (itm1.status == itm2.status) && (itm1.material == itm2.material);
+        }
+
+        public static int GetTotalNutrition(World world, Entity owner)
+        {
+            var nutrition = GetRations(world, owner);
+            if (world.ecs.TryGet<HungerClock>(owner, out var clock))
+            {
+                nutrition += clock.nutrition;
+            }
+            return nutrition;
+        }
+
+        public static int GetRations(World world, Entity owner)
+        {
+            var rations = 0;
+            world.ecs.Loop((Entity entity, ref Item item, ref InBackpack backpack) =>
+            {
+                if (backpack.entity != owner) return;
+
+                if (item.type == ItemType.Food)
+                {
+                    rations += 800 * item.count;
+                }
+            });
+            return rations;
+        }
+
+        public static (int gotNutrition, int rationsRemaining) TryAutoConsume(World world, Entity consumer)
+        {
+            int gotNutrition = 0;
+            int rationsRemaining = 0;
+
+            world.ecs.Loop((Entity entity, ref Item item, ref InBackpack backpack) =>
+            {
+                if (backpack.entity != consumer) return;
+
+                if (item.type == ItemType.Food)
+                {
+                    if (gotNutrition == 0)
+                    {
+                        gotNutrition = 800;
+                        var used = RemoveItemFromInventory(world, entity);
+                        world.ecs.Remove(used);
+                        world.ecs.Assign(consumer, new EventInventoryUpdated { });
+                    }
+                    else
+                    {
+                        rationsRemaining += 800 * item.count;
+                    }
+                }
+            });
+            return (gotNutrition, rationsRemaining);
+        }
+
+        public static void UpdateFoodLeft(World world)
+        {
+            world.ecs.Loop<HungerClock>((Entity entity, ref HungerClock clock) =>
+            {
+                clock.food = Items.GetRations(world, entity);
+            });
         }
     }
 }

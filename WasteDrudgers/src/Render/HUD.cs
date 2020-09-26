@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Globalization;
 
 using Blaggard.Common;
 using Blaggard.Graphics;
@@ -18,6 +19,10 @@ namespace WasteDrudgers.Render
         public readonly Combat combat;
         public readonly Experience exp;
 
+        public readonly HungerClock hunger;
+
+        public readonly float daysOfFoodLeft;
+
         public HUDData(World world, PlayerData data)
         {
             actor = world.ecs.GetRef<Actor>(data.entity);
@@ -25,6 +30,9 @@ namespace WasteDrudgers.Render
             stats = world.ecs.GetRef<Stats>(data.entity);
             combat = world.ecs.GetRef<Combat>(data.entity);
             exp = world.ecs.GetRef<Experience>(data.entity);
+            hunger = world.ecs.GetRef<HungerClock>(data.entity);
+
+            daysOfFoodLeft = ((float)hunger.Total) / 1600f;
         }
     }
 
@@ -104,7 +112,8 @@ namespace WasteDrudgers.Render
 
             //layer.Print(o, rect.y + 22, "¢¶¥[=\"≈π!♀ôôδ", Color.white);
 
-            DrawCustomValue(layer, ctx.Theme, o, rect.y + 22, 13, "Food", "½ day");
+            DrawCustomValue(layer, ctx.Theme, o, rect.y + 22, 13, "Food", $"{data.daysOfFoodLeft.ToString("0.0", CultureInfo.InvariantCulture)} days");
+            layer.Print(o, rect.y + 23, data.hunger.State.ToString(), ctx.Theme.text);
         }
 
         // FIXME: Target doesn't always clear for some reason, related to level change oddities?

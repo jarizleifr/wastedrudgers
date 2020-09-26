@@ -10,6 +10,7 @@ namespace WasteDrudgers.Entities
             {
                 if (world.ecs.Has<Death>(damage.target)) return;
 
+                // FIXME: We've ended up here without a Position component
                 var pos = world.ecs.GetRef<Position>(damage.target);
                 ref var hlt = ref world.ecs.GetRef<Health>(damage.target);
 

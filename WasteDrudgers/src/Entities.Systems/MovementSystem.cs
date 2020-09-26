@@ -20,7 +20,15 @@ namespace WasteDrudgers.Entities
                         pos.coords = tryPos;
                         world.ecs.Assign(entity, new EventMoved { });
                     }
-                    // TODO: Bump checking should be here instead of in its own system
+                    else
+                    {
+                        // Bumped into someone
+                        if (world.spatial.TryGetCreature(tryPos, out var creature))
+                        {
+                            world.ecs.Assign(entity, new IntentionAttack { attacker = entity, target = creature });
+                            return;
+                        }
+                    }
                 }
                 else
                 {
@@ -29,9 +37,7 @@ namespace WasteDrudgers.Entities
                         world.WriteToLog("crashed_to_wall", tryPos);
                     }
                 }
-                actor.energy -= 1000;
-                world.ecs.Remove<Turn>(entity);
-                world.ecs.Remove<IntentionMove>(entity);
+                world.ecs.Assign<EventActed>(entity, new EventActed { energyLoss = 1000, nutritionLoss = 2 });
             });
 
             // Update cached player position

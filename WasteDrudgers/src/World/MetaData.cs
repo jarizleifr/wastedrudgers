@@ -1,10 +1,7 @@
 using System;
 using Blaggard.Common;
 using ManulECS;
-
 using Newtonsoft.Json;
-
-using WasteDrudgers.Entities;
 
 namespace WasteDrudgers
 {

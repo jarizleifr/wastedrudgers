@@ -63,8 +63,7 @@ namespace WasteDrudgers.State
         private IRunState Wait(World world)
         {
             ref var actor = ref world.ecs.GetRef<Actor>(playerData.entity);
-            actor.energy -= 1000;
-            world.ecs.Remove<Turn>(playerData.entity);
+            world.ecs.Assign<EventActed>(playerData.entity, new EventActed { energyLoss = 1000, nutritionLoss = 1 });
             return RunState.Ticking;
         }
 
