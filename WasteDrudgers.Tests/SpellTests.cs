@@ -18,7 +18,7 @@ namespace WasteDrudgers.Tests
             RNG.Seed(0);
             var e1 = Creatures.Create(world, "cr_mutorc", new Vec2(0, 2));
 
-            var playerData = world.ecs.FetchResource<PlayerData>();
+            var playerData = world.PlayerData;
             Spells.CastSpellOn(world, playerData.entity, e1, "spl_poison_weak");
 
             int i = 0;
@@ -37,7 +37,7 @@ namespace WasteDrudgers.Tests
             var e1 = Items.Create(world, "itm_potion_health", new Vec2(0, 2));
             var e2 = Items.Create(world, "itm_potion_vigor", new Vec2(0, 2));
 
-            var playerData = world.ecs.FetchResource<PlayerData>();
+            var playerData = world.PlayerData;
             Items.PickUpItem(world, playerData.entity, e1);
             Items.PickUpItem(world, playerData.entity, e2);
             Spells.CastSpellOn(world, null, playerData.entity, "spl_identify");

@@ -1,7 +1,7 @@
-using Xunit;
 using Blaggard.Common;
 using ManulECS;
 using WasteDrudgers.Entities;
+using Xunit;
 
 namespace WasteDrudgers.Tests
 {
@@ -93,8 +93,7 @@ namespace WasteDrudgers.Tests
             RNG.Seed(0);
             var e1 = Creatures.Create(world, "cr_mutorc", new Vec2(0, 2));
 
-            var playerData = world.ecs.FetchResource<PlayerData>();
-            var player = playerData.entity;
+            var player = world.PlayerData.entity;
             world.ecs.AssignOrReplace(player, new Combat
             {
                 hitChance = 100,

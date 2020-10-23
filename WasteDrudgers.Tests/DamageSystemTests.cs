@@ -1,7 +1,6 @@
-using Xunit;
 using Blaggard.Common;
 using WasteDrudgers.Entities;
-using WasteDrudgers.State;
+using Xunit;
 
 namespace WasteDrudgers.Tests
 {
@@ -15,7 +14,7 @@ namespace WasteDrudgers.Tests
         [Fact]
         public void Player_ReceivesExperience_FromInitiatedKill()
         {
-            var player = world.ecs.FetchResource<PlayerData>().entity;
+            var player = world.PlayerData.entity;
             var exp = world.ecs.GetRef<Experience>(player);
 
             RNG.Seed(0);

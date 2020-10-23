@@ -16,7 +16,7 @@ namespace WasteDrudgers.Tests
         public void AutoConsumesFood_WhenZeroNutrition()
         {
             RNG.Seed(0);
-            var player = world.ecs.FetchResource<PlayerData>().entity;
+            var player = world.PlayerData.entity;
 
             var foodItem = Items.Create(world, "itm_food_insect_roast", new Vec2(0, 2));
             Items.PickUpItem(world, player, foodItem);
@@ -39,7 +39,7 @@ namespace WasteDrudgers.Tests
         public void AutoConsumesNewFood_WhenHungry()
         {
             RNG.Seed(0);
-            var playerData = world.ecs.FetchResource<PlayerData>();
+            var playerData = world.PlayerData;
             var player = playerData.entity;
             world.ecs.AssignOrReplace(player, new HungerClock { });
 
@@ -64,7 +64,7 @@ namespace WasteDrudgers.Tests
         public void BecomesHungryAndFatigued_WhenReachesZeroNutritionWithoutFood()
         {
             RNG.Seed(0);
-            var player = world.ecs.FetchResource<PlayerData>().entity;
+            var player = world.PlayerData.entity;
             world.ecs.AssignOrReplace(player, new HungerClock { nutrition = 1 });
             world.ecs.Assign(player, new EventActed { nutritionLoss = 1 });
 

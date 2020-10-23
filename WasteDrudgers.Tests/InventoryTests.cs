@@ -1,7 +1,7 @@
-using Xunit;
-using ManulECS;
 using Blaggard.Common;
+using ManulECS;
 using WasteDrudgers.Entities;
+using Xunit;
 
 namespace WasteDrudgers.Tests
 {
@@ -15,11 +15,11 @@ namespace WasteDrudgers.Tests
         [Fact]
         public void PickingUpItems_IncrementsSameItemCount()
         {
-            var item1 = Items.CreateItem(world, "itm_dagger", "mat_iron", new Vec2(0, 0));
-            var item2 = Items.CreateItem(world, "itm_dagger", "mat_iron", new Vec2(0, 1));
-            var item3 = Items.CreateItem(world, "itm_dagger", "mat_iron", new Vec2(0, 2));
+            var item1 = Items.CreateItem(world, "dagger", "mat_iron", new Vec2(0, 0));
+            var item2 = Items.CreateItem(world, "dagger", "mat_iron", new Vec2(0, 1));
+            var item3 = Items.CreateItem(world, "dagger", "mat_iron", new Vec2(0, 2));
 
-            var player = world.ecs.FetchResource<PlayerData>().entity;
+            var player = world.PlayerData.entity;
 
             Items.PickUpItem(world, player, item1);
             Items.PickUpItem(world, player, item2);
@@ -37,15 +37,15 @@ namespace WasteDrudgers.Tests
         [Fact]
         public void UnequippingItems_IncrementsSameItemCount()
         {
-            var item1 = Items.CreateItem(world, "itm_dagger", "mat_iron", new Vec2(0, 0));
-            var item2 = Items.CreateItem(world, "itm_dagger", "mat_iron", new Vec2(0, 1));
-            var item3 = Items.CreateItem(world, "itm_dagger", "mat_iron", new Vec2(0, 2));
+            var item1 = Items.CreateItem(world, "dagger", "mat_iron", new Vec2(0, 0));
+            var item2 = Items.CreateItem(world, "dagger", "mat_iron", new Vec2(0, 1));
+            var item3 = Items.CreateItem(world, "dagger", "mat_iron", new Vec2(0, 2));
 
             Items.IdentifyItem(world, item1);
             Items.IdentifyItem(world, item2);
             Items.IdentifyItem(world, item3);
 
-            var player = world.ecs.FetchResource<PlayerData>().entity;
+            var player = world.PlayerData.entity;
 
             Items.PickUpItem(world, player, item1);
             Items.EquipItem(world, player, item1);
@@ -67,15 +67,15 @@ namespace WasteDrudgers.Tests
         [Fact]
         public void EquippingItems_DecrementsSameItemCount()
         {
-            var item1 = Items.CreateItem(world, "itm_dagger", "mat_iron", new Vec2(0, 0));
-            var item2 = Items.CreateItem(world, "itm_dagger", "mat_iron", new Vec2(0, 1));
-            var item3 = Items.CreateItem(world, "itm_dagger", "mat_iron", new Vec2(0, 2));
+            var item1 = Items.CreateItem(world, "dagger", "mat_iron", new Vec2(0, 0));
+            var item2 = Items.CreateItem(world, "dagger", "mat_iron", new Vec2(0, 1));
+            var item3 = Items.CreateItem(world, "dagger", "mat_iron", new Vec2(0, 2));
 
             Items.IdentifyItem(world, item1);
             Items.IdentifyItem(world, item2);
             Items.IdentifyItem(world, item3);
 
-            var player = world.ecs.FetchResource<PlayerData>().entity;
+            var player = world.PlayerData.entity;
 
             Items.PickUpItem(world, player, item1);
             Items.PickUpItem(world, player, item2);
@@ -95,16 +95,16 @@ namespace WasteDrudgers.Tests
         [Fact]
         public void SameItemsFound_AfterSwitchingEquipment()
         {
-            var item1 = Items.CreateItem(world, "itm_dagger", "mat_iron", new Vec2(0, 0));
-            var dg = Items.CreateItem(world, "itm_dagger", "mat_iron", new Vec2(0, 0));
-            var item2 = Items.CreateItem(world, "itm_longsword", "mat_iron", new Vec2(0, 1));
-            var item3 = Items.CreateItem(world, "itm_shortsword", "mat_iron", new Vec2(0, 2));
+            var item1 = Items.CreateItem(world, "dagger", "mat_iron", new Vec2(0, 0));
+            var dg = Items.CreateItem(world, "dagger", "mat_iron", new Vec2(0, 0));
+            var item2 = Items.CreateItem(world, "khopesh", "mat_iron", new Vec2(0, 1));
+            var item3 = Items.CreateItem(world, "rapier", "mat_iron", new Vec2(0, 2));
 
             Items.IdentifyItem(world, item1);
             Items.IdentifyItem(world, item2);
             Items.IdentifyItem(world, item3);
 
-            var player = world.ecs.FetchResource<PlayerData>().entity;
+            var player = world.PlayerData.entity;
 
             Items.PickUpItem(world, player, item1);
             Items.PickUpItem(world, player, item2);
@@ -120,7 +120,7 @@ namespace WasteDrudgers.Tests
             world.ecs.Loop<InBackpack, Item, Identity>((Entity entity, ref InBackpack b, ref Item item, ref Identity id) =>
             {
                 count++;
-                if (id.rawName == "itm_dagger")
+                if (id.rawName == "dagger")
                 {
                     Assert.Equal(2, item.count);
                 }
