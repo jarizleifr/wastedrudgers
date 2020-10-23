@@ -33,8 +33,9 @@ namespace WasteDrudgers.Render
 
             if (world.ShouldRedraw)
             {
-                (var playerData, var map) = world.ecs.FetchResource<PlayerData, Map>();
-                var calendar = world.ecs.FetchResource<Calendar>();
+                var playerData = world.PlayerData;
+                var map = world.Map;
+                var calendar = world.Calendar;
 
                 HUD.DrawBoxes(ctx);
                 HUD.DrawSidebar(ctx, world);
@@ -55,7 +56,8 @@ namespace WasteDrudgers.Render
 
             if (world.ShouldRedraw)
             {
-                (var playerData, var map) = world.ecs.FetchResource<PlayerData, Map>();
+                var map = world.Map;
+                var playerData = world.PlayerData;
 
                 HUD.DrawBoxes(ctx);
                 HUD.DrawSidebar(ctx, world);

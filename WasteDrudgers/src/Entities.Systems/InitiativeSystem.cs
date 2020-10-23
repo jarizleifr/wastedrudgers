@@ -6,7 +6,7 @@ namespace WasteDrudgers.Entities
     {
         public static void InitiativeSystem(IContext ctx, World world)
         {
-            var playerData = world.ecs.FetchResource<PlayerData>();
+            var playerData = world.PlayerData;
 
             // TODO: Is this check actually needed? I don't think we ever end up here with a Turn component anyway?
             if (!world.ecs.Has<Turn>(playerData.entity))

@@ -51,7 +51,7 @@ namespace WasteDrudgers.Render
             layer.LineVert(menu.x, 1, rect.height - 2, '║');
             layer.LineHoriz(menu.x + 1, rect.height - 6, menu.width - 2, '═');
 
-            var playerData = world.ecs.FetchResource<PlayerData>();
+            var playerData = world.PlayerData;
 
             var stats = world.ecs.GetRef<Stats>(playerData.entity);
             var health = world.ecs.GetRef<Health>(playerData.entity);
@@ -155,7 +155,7 @@ namespace WasteDrudgers.Render
         private static void DrawInfo(IContext ctx, World world, int x, int y)
         {
             var c = ctx.GetCanvas(RenderLayer.MenuOverlay);
-            var playerData = world.ecs.FetchResource<PlayerData>();
+            var playerData = world.PlayerData;
             c.Print(x, y, playerData.name, ctx.Theme.caption);
 
             var experience = world.ecs.GetRef<Experience>(playerData.entity);
@@ -177,7 +177,7 @@ namespace WasteDrudgers.Render
         private static void DrawCalendar(IContext ctx, World world, int x, int y)
         {
             var c = ctx.GetCanvas(RenderLayer.MenuOverlay);
-            var calendar = world.ecs.FetchResource<Calendar>();
+            var calendar = world.Calendar;
 
             c.Print(x, y, calendar.GetDayString(), ctx.Theme.text);
             c.Print(x, y + 1, calendar.GetMonthAndYearString(), ctx.Theme.text);
@@ -199,7 +199,7 @@ namespace WasteDrudgers.Render
         {
             var c = ctx.GetCanvas(RenderLayer.MenuOverlay);
 
-            var playerData = world.ecs.FetchResource<PlayerData>();
+            var playerData = world.PlayerData;
 
             var actor = world.ecs.GetRef<Actor>(playerData.entity);
             c.Print(x, y, "Action", ctx.Theme.caption);
@@ -228,7 +228,7 @@ namespace WasteDrudgers.Render
         private static void DrawDefense(IContext ctx, World world, int x, int y)
         {
             var c = ctx.GetCanvas(RenderLayer.MenuOverlay);
-            var playerData = world.ecs.FetchResource<PlayerData>();
+            var playerData = world.PlayerData;
 
             var combat = world.ecs.GetRef<Combat>(playerData.entity);
             c.Print(x, y, "Parry", ctx.Theme.caption);
@@ -245,7 +245,7 @@ namespace WasteDrudgers.Render
         private static void DrawMelee(IContext ctx, World world, int x, int y)
         {
             var c = ctx.GetCanvas(RenderLayer.MenuOverlay);
-            var playerData = world.ecs.FetchResource<PlayerData>();
+            var playerData = world.PlayerData;
             var combat = world.ecs.GetRef<Combat>(playerData.entity);
             c.Print(x, y, "Damage", ctx.Theme.caption);
             c.Print(x + 13, y, $"{combat.minDamage}-{combat.maxDamage}", ctx.Theme.text, TextAlignment.Right);

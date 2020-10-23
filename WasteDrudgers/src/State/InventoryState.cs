@@ -20,7 +20,7 @@ namespace WasteDrudgers.State
 
         public void Initialize(IContext ctx, World world)
         {
-            playerData = world.ecs.FetchResource<PlayerData>();
+            playerData = world.PlayerData;
             UpdateInventory(world, playerData);
             droppedItem = false;
             changedEquipment = false;

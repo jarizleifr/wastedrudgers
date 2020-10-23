@@ -98,12 +98,12 @@ namespace WasteDrudgers.State
 
             var global = ZipUtils.LoadJsonFromZip(saveFile, "global.json");
             world.ecs.Deserialize(global);
-            var globalData = world.ecs.FetchResource<PlayerData>();
+            var globalData = world.PlayerData;
 
             var level = ZipUtils.LoadJsonFromZip(saveFile, globalData.currentLevel + ".json");
             world.ecs.Deserialize(level);
 
-            world.SetState(ctx, RunState.LevelGeneration(globalData.currentLevel, world.ecs.FetchResource<Map>()));
+            world.SetState(ctx, RunState.LevelGeneration(globalData.currentLevel, world.Map));
         }
     }
 }

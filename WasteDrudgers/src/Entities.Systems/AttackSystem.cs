@@ -6,7 +6,7 @@ namespace WasteDrudgers.Entities
     {
         public static void AttackSystem(IContext ctx, World world)
         {
-            var playerData = world.ecs.FetchResource<PlayerData>();
+            var playerData = world.PlayerData;
             world.ecs.Loop<Actor, IntentionAttack, Combat>((Entity entity, ref Actor actor, ref IntentionAttack intent, ref Combat attacker) =>
             {
                 if (intent.attacker == playerData.entity)

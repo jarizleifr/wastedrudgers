@@ -1,5 +1,6 @@
 using Blaggard.Common;
 using WasteDrudgers.Data;
+using WasteDrudgers.Entities;
 using WasteDrudgers.Level;
 using WasteDrudgers.State;
 
@@ -19,6 +20,34 @@ namespace WasteDrudgers
         public bool ShouldRedraw { get; set; }
 
         public IRunState State { get; private set; }
+
+        private ECSResource<PlayerData> playerData;
+        public PlayerData PlayerData
+        {
+            get => playerData.Get(ecs);
+            set => playerData.Set(ecs, value);
+        }
+
+        private ECSResource<Map> map;
+        public Map Map
+        {
+            get => map.Get(ecs);
+            set => map.Set(ecs, value);
+        }
+
+        private ECSResource<Calendar> calendar;
+        public Calendar Calendar
+        {
+            get => calendar.Get(ecs);
+            set => calendar.Set(ecs, value);
+        }
+
+        private ECSResource<ObfuscatedNames> obfuscatedNames;
+        public ObfuscatedNames ObfuscatedNames
+        {
+            get => obfuscatedNames.Get(ecs);
+            set => obfuscatedNames.Set(ecs, value);
+        }
 
         public World()
         {
@@ -44,16 +73,12 @@ namespace WasteDrudgers
             State = nextState;
         }
 
-        public void Tick(IEngineContext ctx)
-        {
-            State.Run(ctx, this);
-        }
+        public void Tick(IEngineContext ctx) => State.Run(ctx, this);
 
         public void IncrementGameTicks()
         {
             GameTicks++;
-            var clock = ecs.FetchResource<Calendar>();
-            clock.PassTime(0, 0, 1.5f);
+            Calendar.PassTime(0, 0, 1.5f);
         }
 
         public void WriteToLog(string key, Vec2 position, params LogItem[] items)

@@ -10,7 +10,7 @@ namespace WasteDrudgers.State
         public void Initialize(IContext ctx, World world)
         {
             // Delete save game on game over
-            var playerData = world.ecs.FetchResource<PlayerData>();
+            var playerData = world.PlayerData;
             SerializationUtils.DeleteSave(playerData.name);
 
             world.ecs.Clear();

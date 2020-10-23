@@ -19,8 +19,7 @@ namespace WasteDrudgers.State
             var level = world.database.GetLevel(levelName);
             level.Strategy.Generate(world, levelName, ref map);
 
-            world.ecs.SetResource(map);
-
+            world.Map = map;
             world.spatial.Populate(world);
             world.fov.Clear();
 
@@ -34,13 +33,14 @@ namespace WasteDrudgers.State
                 {
                     spawner.InitialSpawning(world);
                 }
-                world.ecs.SetResource(spawner);
+                // TODO: Implement EntitySpawner as Resource
+                //world.ecs.SetResource(spawner);
             }
             CreateDecorations(world, map);
 
             if (newGame)
             {
-                var playerData = world.ecs.FetchResource<PlayerData>();
+                var playerData = world.PlayerData;
                 var pos = LevelUtils.GetRandomPassableEmptyPosition(world);
                 Features.CreateFeature(world, pos, "fea_start_portal");
                 world.ecs.AssignOrReplace(playerData.entity, new Position { coords = pos });
@@ -83,7 +83,7 @@ namespace WasteDrudgers.State
 
         private void TryLevelTransition(World world)
         {
-            var playerData = world.ecs.FetchResource<PlayerData>();
+            var playerData = world.PlayerData;
             if (playerData.currentLevel != levelName)
             {
                 world.ecs.Loop((Entity entity, ref Position pos, ref Portal portal) =>

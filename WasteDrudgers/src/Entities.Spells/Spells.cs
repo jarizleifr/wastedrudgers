@@ -56,7 +56,7 @@ namespace WasteDrudgers.Entities
         // Fire-and-forget spell effects
         public static void ApplySpellEffect(World world, Entity target, DBSpell rawSpell)
         {
-            var playerData = world.ecs.FetchResource<PlayerData>();
+            var playerData = world.PlayerData;
             ref var stats = ref world.ecs.GetRef<Stats>(target);
             ref var health = ref world.ecs.GetRef<Health>(target);
             var message = rawSpell.Message.Id ?? "";

@@ -56,7 +56,7 @@ namespace WasteDrudgers.Render
             var viewport = new Rect(0, 0, layer.Width / 2, layer.Height);
             layer.Clear();
 
-            var map = world.ecs.FetchResource<Map>();
+            var map = world.Map;
             var tiles = map.GetTiles();
             var vis = map.GetVisibility();
 

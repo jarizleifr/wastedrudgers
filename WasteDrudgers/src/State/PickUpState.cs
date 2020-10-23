@@ -17,7 +17,7 @@ namespace WasteDrudgers.State
 
         public void Initialize(IContext ctx, World world)
         {
-            playerData = world.ecs.FetchResource<PlayerData>();
+            playerData = world.PlayerData;
             inventory = Inventory.FromItemsOnGround(world, playerData.coords);
         }
 

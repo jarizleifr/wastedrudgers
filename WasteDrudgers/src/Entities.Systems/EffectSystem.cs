@@ -7,7 +7,7 @@ namespace WasteDrudgers.Entities
     {
         public static void EffectSystem(IContext ctx, World world)
         {
-            var map = world.ecs.FetchResource<Map>();
+            var map = world.Map;
             world.ecs.Loop<Effect, Position>((Entity entity, ref Effect eff, ref Position pos) =>
             {
                 switch (map[pos.coords].Visibility)

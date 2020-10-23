@@ -10,7 +10,7 @@ namespace WasteDrudgers.State
 
         public string[] InputDomains { get; set; } = { "game" };
 
-        public void Initialize(IContext ctx, World world) => playerData = world.ecs.FetchResource<PlayerData>();
+        public void Initialize(IContext ctx, World world) => playerData = world.PlayerData;
 
         public void Run(IContext ctx, World world)
         {

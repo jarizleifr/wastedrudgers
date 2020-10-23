@@ -23,7 +23,7 @@ namespace WasteDrudgers.Entities
                     {
                         if (world.ecs.Has<PlayerInitiated>(entity))
                         {
-                            var playerData = world.ecs.FetchResource<PlayerData>();
+                            var playerData = world.PlayerData;
                             Creatures.AwardKillExperience(world, playerData.entity, damage.target);
                         }
 
@@ -38,7 +38,7 @@ namespace WasteDrudgers.Entities
                     {
                         if (world.ecs.Has<PlayerInitiated>(entity))
                         {
-                            var playerData = world.ecs.FetchResource<PlayerData>();
+                            var playerData = world.PlayerData;
                             Creatures.AwardKillExperience(world, playerData.entity, damage.target);
                         }
 

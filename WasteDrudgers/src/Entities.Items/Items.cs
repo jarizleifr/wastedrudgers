@@ -76,7 +76,7 @@ namespace WasteDrudgers.Entities
 
             if (raw.Obfuscated)
             {
-                var obfuscated = world.ecs.FetchResource<ObfuscatedNames>();
+                var obfuscated = world.ObfuscatedNames;
                 if (!obfuscated.IsKnown(raw.Id))
                 {
                     world.ecs.Assign(entity, new Obfuscated { });
@@ -101,7 +101,7 @@ namespace WasteDrudgers.Entities
 
             if (world.ecs.Has<Obfuscated>(itemEntity))
             {
-                var obfuscated = world.ecs.FetchResource<ObfuscatedNames>();
+                var obfuscated = world.ObfuscatedNames;
                 if (!obfuscated.IsKnown(identity.rawName))
                 {
                     return obfuscated.GetObfuscatedName(world, item.type, identity.rawName);
@@ -132,7 +132,7 @@ namespace WasteDrudgers.Entities
 
             if (world.ecs.Has<Obfuscated>(itemEntity))
             {
-                var obfuscated = world.ecs.FetchResource<ObfuscatedNames>();
+                var obfuscated = world.ObfuscatedNames;
                 if (!obfuscated.IsKnown(identity.rawName))
                 {
                     return obfuscated.GetObfuscatedName(world, item.type, identity.rawName);
@@ -157,7 +157,7 @@ namespace WasteDrudgers.Entities
 
             if (world.ecs.Has<Obfuscated>(itemEntity))
             {
-                var obfuscated = world.ecs.FetchResource<ObfuscatedNames>();
+                var obfuscated = world.ObfuscatedNames;
                 var identity = world.ecs.GetRef<Identity>(itemEntity);
                 obfuscated.SetKnown(identity.rawName);
                 world.ecs.Remove<Obfuscated>(itemEntity);
@@ -166,7 +166,7 @@ namespace WasteDrudgers.Entities
 
         public static void IdentifyInventory(World world)
         {
-            var playerData = world.ecs.FetchResource<PlayerData>();
+            var playerData = world.PlayerData;
             world.ecs.Loop<Item, InBackpack>((Entity entity, ref Item item, ref InBackpack inBackpack) =>
             {
                 if (inBackpack.entity == playerData.entity)
@@ -219,7 +219,7 @@ namespace WasteDrudgers.Entities
                 Spells.CastSpellOn(world, null, user, castOnUse.spellId);
             }
 
-            var obfuscated = world.ecs.FetchResource<ObfuscatedNames>();
+            var obfuscated = world.ObfuscatedNames;
             obfuscated.SetKnown(identity.rawName);
 
             var used = RemoveItemFromInventory(world, itemEntity);
@@ -270,7 +270,7 @@ namespace WasteDrudgers.Entities
 
             if (!foundInBackpack)
             {
-                var playerData = world.ecs.FetchResource<PlayerData>();
+                var playerData = world.PlayerData;
                 world.ecs.Assign<InBackpack>(itemEntity, new InBackpack { entity = getter });
                 if (getter == playerData.entity)
                 {

@@ -108,7 +108,9 @@ namespace WasteDrudgers
 
         public bool Add(World world, LogMessage message)
         {
-            (var map, var playerData) = world.ecs.FetchResource<Map, PlayerData>();
+            var map = world.Map;
+            var playerData = world.PlayerData;
+
             if (ShouldLogMessage(message, map, playerData.entity))
             {
                 messageQueue.Enqueue(ProcessLogMessage(world, message));

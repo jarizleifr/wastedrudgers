@@ -118,7 +118,7 @@ namespace WasteDrudgers.Render
             c.Rect(sidebar.width + 1, c.Height - 1, viewport.width - 1, 1, ' ');
 
             var text = position == null
-                ? LevelUtils.GetDescription(world, world.ecs.FetchResource<PlayerData>().coords)
+                ? LevelUtils.GetDescription(world, world.PlayerData.coords)
                 : LevelUtils.GetLookDescription(world, position.Value);
 
             if (text != null)
@@ -155,7 +155,7 @@ namespace WasteDrudgers.Render
             var c = ctx.GetCanvas(RenderLayer.Root);
             var viewport = ctx.UIData.viewport;
 
-            var player = world.ecs.FetchResource<PlayerData>().entity;
+            var player = world.PlayerData.entity;
 
             int offset = 2;
             var statusInfo = GetStatuses(world, player);
@@ -175,7 +175,7 @@ namespace WasteDrudgers.Render
             var c = ctx.GetCanvas(RenderLayer.Root);
             var viewport = ctx.UIData.viewport;
 
-            var player = world.ecs.FetchResource<PlayerData>().entity;
+            var player = world.PlayerData.entity;
 
             var stats = world.ecs.GetRef<Stats>(player);
             var y = viewport.y + viewport.height - 1;
@@ -226,7 +226,7 @@ namespace WasteDrudgers.Render
         public static void DrawSidebar(IContext ctx, World world)
         {
             var c = ctx.GetCanvas(RenderLayer.Root);
-            var playerData = world.ecs.FetchResource<PlayerData>();
+            var playerData = world.PlayerData;
             var player = playerData.entity;
 
             var targetData = TargetData.Create(world, playerData);

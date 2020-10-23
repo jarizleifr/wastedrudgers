@@ -8,7 +8,7 @@ namespace WasteDrudgers
     {
         public static void Save(World world)
         {
-            var playerData = world.ecs.FetchResource<PlayerData>();
+            var playerData = world.PlayerData;
             var global = world.ecs.Serialize("global");
             var level = world.ecs.Serialize();
 

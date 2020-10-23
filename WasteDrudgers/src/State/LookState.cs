@@ -25,7 +25,7 @@ namespace WasteDrudgers.State
 
             var move = FromCommand(world, cmd);
 
-            var map = world.ecs.FetchResource<Map>();
+            var map = world.Map;
             if (move != Vec2.Zero && Util.IsWithinBounds(coords.x + move.x, coords.y + move.y, map.width, map.height))
             {
                 coords += move;

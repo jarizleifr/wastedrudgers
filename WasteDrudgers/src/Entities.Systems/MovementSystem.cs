@@ -8,7 +8,7 @@ namespace WasteDrudgers.Entities
         // TODO: Make sure player moves always first if its their turn
         public static void MovementSystem(IContext ctx, World world)
         {
-            var map = world.ecs.FetchResource<Map>();
+            var map = world.Map;
             world.ecs.Loop<Position, Actor, IntentionMove>((Entity entity, ref Position pos, ref Actor actor, ref IntentionMove move) =>
             {
                 var tryPos = pos.coords + move.transform;
@@ -41,7 +41,7 @@ namespace WasteDrudgers.Entities
             });
 
             // Update cached player position
-            var playerData = world.ecs.FetchResource<PlayerData>();
+            var playerData = world.PlayerData;
             if (world.ecs.TryGet<Position>(playerData.entity, out var pos))
             {
                 playerData.coords = pos.coords;

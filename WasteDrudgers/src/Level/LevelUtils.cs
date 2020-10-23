@@ -12,7 +12,7 @@ namespace WasteDrudgers.Level
 
         public static Vec2 GetRandomPassablePosition(World world)
         {
-            var map = world.ecs.FetchResource<Map>();
+            var map = world.Map;
             var i = RNG.Int(0, map.width * map.height);
             while (map[i].Flags(TileFlags.BlocksMovement))
             {
@@ -53,7 +53,7 @@ namespace WasteDrudgers.Level
 
         public static bool HasLineOfSight(World world, Vec2 origin, Vec2 target, int maxDistance = -1)
         {
-            var map = world.ecs.FetchResource<Map>();
+            var map = world.Map;
             if (maxDistance != -1 && !origin.IsWithinCircle(target, maxDistance))
             {
                 return false;
@@ -66,7 +66,7 @@ namespace WasteDrudgers.Level
         // TODO: Look needs visibility checks
         public static string GetLookDescription(World world, Vec2 coords)
         {
-            var map = world.ecs.FetchResource<Map>();
+            var map = world.Map;
             var cell = map[coords];
 
             string description = null;
@@ -107,7 +107,7 @@ namespace WasteDrudgers.Level
 
         public static string GetDescription(World world, Vec2 coords)
         {
-            var map = world.ecs.FetchResource<Map>();
+            var map = world.Map;
             var cell = map[coords];
 
             string description = null;

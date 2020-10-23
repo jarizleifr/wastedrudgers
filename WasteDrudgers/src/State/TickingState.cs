@@ -8,7 +8,7 @@ namespace WasteDrudgers.State
 
         public void Run(IContext ctx, World world)
         {
-            playerData ??= world.ecs.FetchResource<PlayerData>();
+            playerData ??= world.PlayerData;
             playerData.lastTarget = null;
             world.log.Description = null;
 

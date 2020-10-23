@@ -9,7 +9,7 @@ namespace WasteDrudgers.Entities
     {
         public static void AISystem(IContext ctx, World world)
         {
-            var playerData = world.ecs.FetchResource<PlayerData>();
+            var playerData = world.PlayerData;
             world.ecs.Loop((Entity entity, ref Turn turn, ref Position position, ref AI ai) =>
             {
                 var move = Vec2.Zero;
