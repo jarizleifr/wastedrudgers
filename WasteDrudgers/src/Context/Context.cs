@@ -23,6 +23,7 @@ namespace WasteDrudgers
 
         void ApplyConfig(World world, Config config);
         IBlittable QueueCanvas(RenderLayer layer);
+        IBlittable GetCanvas(RenderLayer layer);
         TextureData TextureData { get; }
     }
 
@@ -50,8 +51,8 @@ namespace WasteDrudgers
 
         public float DeltaTime { get; private set; }
 
-        public int Width => display.Width;
-        public int Height => display.Height;
+        public int Width => display.width;
+        public int Height => display.height;
 
         private DateTime lastTime = DateTime.Now;
 
@@ -92,6 +93,8 @@ namespace WasteDrudgers
         public void HandleInput(string[] activeDomains) => input.Handle(activeDomains);
         public Command Command => input.Get();
 
+        public IBlittable GetCanvas(RenderLayer layer) => renderer.Get((int)layer);
+
         public IBlittable QueueCanvas(RenderLayer layer)
         {
             renderer.SetToRender((int)layer);
@@ -125,20 +128,23 @@ namespace WasteDrudgers
             var logMinHeight = 2;
             var sidebarMinWidth = 13;
 
-            double tilesX = (display.Width - sidebarMinWidth) * display.CellWidth;
-            double tilesY = (display.Height - logMinHeight - 1) * display.CellHeight;
+            double tilesX = (display.width - sidebarMinWidth) * display.cellWidth;
+            double tilesY = (display.height - logMinHeight - 1) * display.cellHeight;
 
             var viewportWidth = (int)(Math.Floor(tilesX));
             var viewportHeight = (int)(Math.Floor(tilesY));
 
-            var logHeight = display.Height - viewportHeight / display.CellHeight - 1;
-            var sidebarWidth = display.Width - viewportWidth / display.CellWidth;
+            var logHeight = display.height - viewportHeight / display.cellHeight - 1;
+            var sidebarWidth = display.width - viewportWidth / display.cellWidth;
             var footerHeight = 1;
 
-            log = new Rect(0, 0, display.Width, logHeight);
-            sidebar = new Rect(0, logHeight + 1, sidebarWidth, display.Height - logHeight - 1);
-            viewport = new Rect(sidebarWidth, logHeight, display.Width - sidebarWidth, display.Height - logHeight - footerHeight);
+            log = new Rect(0, 0, display.width, logHeight);
+            sidebar = new Rect(0, logHeight + 1, sidebarWidth, display.height - logHeight - 1);
+            viewport = new Rect(sidebarWidth, logHeight, display.width - sidebarWidth, display.height - logHeight - footerHeight);
         }
+
+        public void Deconstruct(out Rect log, out Rect sidebar, out Rect viewport) =>
+            (log, sidebar, viewport) = (this.log, this.sidebar, this.viewport);
     }
 
     public interface IConfig
@@ -201,6 +207,10 @@ namespace WasteDrudgers
         public readonly Color white;
         public readonly Color black;
 
+        public readonly Color critical;
+        public readonly Color danger;
+        public readonly Color fortified;
+
         public Theme(World world)
         {
             var colors = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText("assets/theme.json"))
@@ -224,6 +234,10 @@ namespace WasteDrudgers
 
             white = world.database.GetColor("c_white");
             black = world.database.GetColor("c_black");
+
+            critical = world.database.GetColor("c_fuchsia_light");
+            danger = world.database.GetColor("c_bronze");
+            fortified = world.database.GetColor("c_teal_light");
         }
     }
 }

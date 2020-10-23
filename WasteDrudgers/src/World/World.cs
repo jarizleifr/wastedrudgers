@@ -49,7 +49,12 @@ namespace WasteDrudgers
             State.Run(ctx, this);
         }
 
-        public void IncrementGameTicks() => GameTicks++;
+        public void IncrementGameTicks()
+        {
+            GameTicks++;
+            var clock = ecs.FetchResource<Calendar>();
+            clock.PassTime(0, 0, 1.5f);
+        }
 
         public void WriteToLog(string key, Vec2 position, params LogItem[] items)
         {

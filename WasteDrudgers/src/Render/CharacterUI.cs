@@ -57,25 +57,27 @@ namespace WasteDrudgers.Render
             var health = world.ecs.GetRef<Health>(playerData.entity);
             var skills = world.ecs.GetRef<Skills>(playerData.entity);
 
-            DrawInfo(rect.x + 2, rect.y + 1, layer, ctx.Theme, playerData);
+            DrawInfo(ctx, world, rect.x + 2, rect.y + 1);
             DrawPortrait(rect.x + 20, rect.y + 1, layer, ctx.Theme);
             layer.LineHoriz(rect.x + 1, rect.y + 4, rect.width - menu.width - 1, '═');
             layer.LineHoriz(rect.x + 1, rect.y + 5, rect.width - menu.width - 1, '─');
+
+            DrawCalendar(ctx, world, rect.x + 25, rect.y + 1);
 
             layer.Print(rect.x + 2, rect.y + 5, "Character", ctx.Theme.text);
             DrawCharacter(rect.x + 2, rect.y + 7, 13, layer, ctx.Theme, health);
 
             layer.Print(rect.x + 19, rect.y + 5, "General", ctx.Theme.text);
-            DrawGeneral(rect.x + 19, rect.y + 7, layer, ctx.Theme);
+            DrawGeneral(ctx, world, rect.x + 19, rect.y + 7);
 
             layer.Print(rect.x + 36, rect.y + 5, "Melee", ctx.Theme.text);
-            DrawMelee(rect.x + 36, rect.y + 7, layer, ctx.Theme);
+            DrawMelee(ctx, world, rect.x + 36, rect.y + 7);
             layer.LineHoriz(rect.x + 1, rect.y + 15, rect.width - menu.width - 1, '─');
 
             DrawStats(rect.x + 2, rect.y + 17, 13, layer, ctx.Theme, stats);
 
             layer.Print(rect.x + 19, rect.y + 15, "Defense", ctx.Theme.text);
-            DrawDefense(rect.x + 19, rect.y + 17, layer, ctx.Theme);
+            DrawDefense(ctx, world, rect.x + 19, rect.y + 17);
 
             layer.Print(rect.x + 36, rect.y + 15, "Ranged", ctx.Theme.text);
             DrawRanged(rect.x + 36, rect.y + 17, layer, ctx.Theme);
@@ -150,17 +152,36 @@ namespace WasteDrudgers.Render
             }
         }
 
-        private static void DrawInfo(int x, int y, IBlittable layer, Theme theme, PlayerData playerData)
+        private static void DrawInfo(IContext ctx, World world, int x, int y)
         {
-            layer.Print(x, y, playerData.name, theme.caption);
-            layer.Print(x, y + 1, "Level", theme.caption);
-            layer.Print(x, y + 2, "Next", theme.caption);
+            var c = ctx.GetCanvas(RenderLayer.MenuOverlay);
+            var playerData = world.ecs.FetchResource<PlayerData>();
+            c.Print(x, y, playerData.name, ctx.Theme.caption);
+
+            var experience = world.ecs.GetRef<Experience>(playerData.entity);
+
+            c.Print(x, y + 1, "Level", ctx.Theme.caption);
+            c.Print(x + 13, y + 1, experience.level.ToString(), ctx.Theme.text, TextAlignment.Right);
+
+            c.Print(x, y + 2, "Next", ctx.Theme.caption);
+            var next = Formulae.ExperienceNeededForLevel(experience.level + 1) - experience.experience;
+            c.Print(x + 13, y + 2, next.ToString(), ctx.Theme.text, TextAlignment.Right);
         }
 
         private static void DrawPortrait(int x, int y, IBlittable layer, Theme theme)
         {
             layer.Rect(x, y, 3, 3, ' ', Color.black, Color.black);
             layer.PutChar(x + 1, y + 1, '@', theme.white);
+        }
+
+        private static void DrawCalendar(IContext ctx, World world, int x, int y)
+        {
+            var c = ctx.GetCanvas(RenderLayer.MenuOverlay);
+            var calendar = world.ecs.FetchResource<Calendar>();
+
+            c.Print(x, y, calendar.GetDayString(), ctx.Theme.text);
+            c.Print(x, y + 1, calendar.GetMonthAndYearString(), ctx.Theme.text);
+            c.Print(x, y + 2, calendar.GetTimeString(), ctx.Theme.text);
         }
 
         private static void DrawCharacter(int x, int y, int o, IBlittable layer, Theme theme, Health health)
@@ -171,18 +192,28 @@ namespace WasteDrudgers.Render
 
             layer.CaptionValue(theme, x, y + 4, o - 3, "Health", $"{health.health.Current}/{health.health.Max}", TextAlignment.Center);
             layer.CaptionValue(theme, x, y + 5, o - 3, "Vigor", $"{health.vigor.Current}/{health.vigor.Max}", TextAlignment.Center);
-            layer.CaptionValue(theme, x, y + 6, o - 3, "Magic", $"0/0", TextAlignment.Center);
+            layer.CaptionValue(theme, x, y + 6, o - 3, "Magic", "0/0", TextAlignment.Center);
         }
 
-        private static void DrawGeneral(int x, int y, IBlittable layer, Theme theme)
+        private static void DrawGeneral(IContext ctx, World world, int x, int y)
         {
-            layer.Print(x, y, "Action", theme.caption);
-            layer.Print(x, y + 1, "Movement", theme.caption);
-            layer.Print(x, y + 2, "Vision", theme.caption);
+            var c = ctx.GetCanvas(RenderLayer.MenuOverlay);
 
-            layer.Print(x, y + 4, "Heal Rate", theme.caption);
-            layer.Print(x, y + 5, "Lift", theme.caption);
-            layer.Print(x, y + 6, "Reaction", theme.caption);
+            var playerData = world.ecs.FetchResource<PlayerData>();
+
+            var actor = world.ecs.GetRef<Actor>(playerData.entity);
+            c.Print(x, y, "Action", ctx.Theme.caption);
+            c.Print(x + 14, y, $"{actor.speed}%", ctx.Theme.text, TextAlignment.Right);
+
+            c.Print(x, y + 1, "Movement", ctx.Theme.caption);
+
+            c.Print(x, y + 2, "Vision", ctx.Theme.caption);
+
+            c.Print(x, y + 4, "Heal Rate", ctx.Theme.caption);
+
+            c.Print(x, y + 5, "Lift", ctx.Theme.caption);
+
+            c.Print(x, y + 6, "Reaction", ctx.Theme.caption);
         }
 
         private static void DrawStats(int x, int y, int o, IBlittable layer, Theme theme, Stats stats)
@@ -194,25 +225,37 @@ namespace WasteDrudgers.Render
             }
         }
 
-        private static void DrawDefense(int x, int y, IBlittable layer, Theme theme)
+        private static void DrawDefense(IContext ctx, World world, int x, int y)
         {
-            layer.Print(x, y, "Parry", theme.caption);
-            layer.Print(x, y + 1, "Armor", theme.caption);
+            var c = ctx.GetCanvas(RenderLayer.MenuOverlay);
+            var playerData = world.ecs.FetchResource<PlayerData>();
 
-            layer.Print(x, y + 3, "Evasion", theme.caption);
-            layer.Print(x, y + 4, "Fortitude", theme.caption);
-            layer.Print(x, y + 5, "Willpower", theme.caption);
+            var combat = world.ecs.GetRef<Combat>(playerData.entity);
+            c.Print(x, y, "Parry", ctx.Theme.caption);
+            c.Print(x + 14, y, $"{combat.dodge}%", ctx.Theme.text, TextAlignment.Right);
+
+            c.Print(x, y + 1, "Armor", ctx.Theme.caption);
+            c.Print(x + 13, y + 1, $"{combat.armor}", ctx.Theme.text, TextAlignment.Right);
+
+            c.Print(x, y + 3, "Evasion", ctx.Theme.caption);
+            c.Print(x, y + 4, "Physical", ctx.Theme.caption);
+            c.Print(x, y + 5, "Mental", ctx.Theme.caption);
         }
 
-        private static void DrawMelee(int x, int y, IBlittable layer, Theme theme)
+        private static void DrawMelee(IContext ctx, World world, int x, int y)
         {
-            layer.Print(x, y, "Damage", theme.caption);
-            layer.Print(x, y + 1, "To-Hit", theme.caption);
-            layer.Print(x, y + 2, "Speed", theme.caption);
+            var c = ctx.GetCanvas(RenderLayer.MenuOverlay);
+            var playerData = world.ecs.FetchResource<PlayerData>();
+            var combat = world.ecs.GetRef<Combat>(playerData.entity);
+            c.Print(x, y, "Damage", ctx.Theme.caption);
+            c.Print(x + 13, y, $"{combat.minDamage}-{combat.maxDamage}", ctx.Theme.text, TextAlignment.Right);
+            c.Print(x, y + 1, "To-Hit", ctx.Theme.caption);
+            c.Print(x + 14, y + 1, $"{combat.hitChance}%", ctx.Theme.text, TextAlignment.Right);
+            c.Print(x, y + 2, "Speed", ctx.Theme.caption);
 
-            layer.Print(x, y + 4, "Damage", theme.caption);
-            layer.Print(x, y + 5, "To-Hit", theme.caption);
-            layer.Print(x, y + 6, "Speed", theme.caption);
+            c.Print(x, y + 4, "Damage", ctx.Theme.caption);
+            c.Print(x, y + 5, "To-Hit", ctx.Theme.caption);
+            c.Print(x, y + 6, "Speed", ctx.Theme.caption);
         }
 
         private static void DrawRanged(int x, int y, IBlittable layer, Theme theme)

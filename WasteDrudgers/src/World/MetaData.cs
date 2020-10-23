@@ -33,6 +33,12 @@ namespace WasteDrudgers
         }
     }
 
+    public struct StatusInfo
+    {
+        public string text;
+        public Color color;
+    }
+
     [SerializationProfile("global")]
     public class PlayerData
     {

@@ -27,6 +27,7 @@ namespace WasteDrudgers.Tests
 
         public void HandleInput(string[] activeDomains) { }
         public Command Command => Command.None;
+        public IBlittable GetCanvas(RenderLayer layer) => new TestCanvas();
         public IBlittable QueueCanvas(RenderLayer layer) => new TestCanvas();
 
         public void Render() { }

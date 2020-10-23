@@ -34,6 +34,7 @@ namespace WasteDrudgers.State
             var startingLevel = "lvl_starting_cave_01";
             world.ecs.SetResource(new PlayerData { entity = player, name = name, coords = Vec2.Zero, currentLevel = startingLevel, lastTarget = null });
             world.ecs.SetResource(new ObfuscatedNames());
+            world.ecs.SetResource(new Calendar(135, 1, 1, 12, 0, 0));
 
 #if DEBUG
             var startingItems = new List<string>
