@@ -1,7 +1,496 @@
 {
 	"sheets": [
 		{
-			"name": "items",
+			"name": "WPN",
+			"columns": [
+				{
+					"typeStr": "0",
+					"name": "id"
+				},
+				{
+					"typeStr": "5:Misc,ShortBlade,LongBlade,AxeMace,Polearm,Fencing,Whip,Shield,Helmet,Cloak,Armor,Undershirt,Belt,Boots,Gloves,Bracers,Earring,Amulet,Ring,Scroll,Book,Food,Potion",
+					"name": "type"
+				},
+				{
+					"typeStr": "1",
+					"name": "name",
+					"display": null
+				},
+				{
+					"typeStr": "1",
+					"name": "character"
+				},
+				{
+					"typeStr": "1",
+					"name": "tags",
+					"opt": true,
+					"display": null
+				},
+				{
+					"typeStr": "3",
+					"name": "dangerLevel"
+				},
+				{
+					"typeStr": "3",
+					"name": "weight"
+				},
+				{
+					"typeStr": "3",
+					"name": "value"
+				},
+				{
+					"typeStr": "6:MAT",
+					"name": "baseMaterial",
+					"display": null
+				},
+				{
+					"typeStr": "6:MGR",
+					"name": "materialGroup",
+					"opt": true,
+					"display": null
+				},
+				{
+					"typeStr": "3",
+					"name": "baseSkill"
+				},
+				{
+					"typeStr": "1",
+					"name": "damage",
+					"opt": true
+				},
+				{
+					"typeStr": "5:Normal,Light,Versatile,TwoHanded",
+					"name": "weaponStyle",
+					"opt": true
+				},
+				{
+					"typeStr": "4",
+					"name": "parry",
+					"opt": true
+				}
+			],
+			"lines": [
+				{
+					"id": "dagger",
+					"type": 1,
+					"name": "dagger",
+					"character": "(",
+					"dangerLevel": 0,
+					"weight": 10,
+					"value": 10,
+					"baseMaterial": "mat_iron",
+					"baseSkill": 5,
+					"damage": "1d4",
+					"weaponStyle": 1,
+					"parry": 0.25,
+					"materialGroup": "mat_group_metal",
+					"tags": "common"
+				},
+				{
+					"id": "bone_dagger",
+					"type": 1,
+					"name": "bone dagger",
+					"character": "(",
+					"dangerLevel": 0,
+					"weight": 10,
+					"value": 10,
+					"baseMaterial": "mat_bone",
+					"baseSkill": 5,
+					"tags": "common",
+					"damage": "1d4+1",
+					"weaponStyle": 1,
+					"parry": 0.25
+				},
+				{
+					"id": "khopesh",
+					"type": 2,
+					"name": "khopesh",
+					"character": "(",
+					"dangerLevel": 0,
+					"weight": 10,
+					"value": 10,
+					"baseMaterial": "mat_iron",
+					"baseSkill": 5,
+					"tags": "common",
+					"materialGroup": "mat_group_metal",
+					"damage": "1d8",
+					"weaponStyle": 0,
+					"parry": 0.33
+				},
+				{
+					"id": "morningstar",
+					"type": 3,
+					"name": "morningstar",
+					"character": "(",
+					"dangerLevel": 0,
+					"weight": 10,
+					"value": 10,
+					"baseMaterial": "mat_iron",
+					"baseSkill": 5,
+					"tags": "common",
+					"materialGroup": "mat_group_metal",
+					"damage": "1d8",
+					"weaponStyle": 0,
+					"parry": 0.25
+				},
+				{
+					"id": "quarterstaff",
+					"type": 4,
+					"name": "quarterstaff",
+					"character": "(",
+					"dangerLevel": 0,
+					"weight": 0,
+					"value": 0,
+					"baseMaterial": "mat_wood",
+					"baseSkill": 0,
+					"tags": "common",
+					"damage": "1d8",
+					"weaponStyle": 2,
+					"parry": 0.5
+				},
+				{
+					"id": "rapier",
+					"type": 5,
+					"name": "rapier",
+					"character": "(",
+					"dangerLevel": 0,
+					"weight": 0,
+					"value": 0,
+					"baseMaterial": "mat_iron",
+					"baseSkill": 0,
+					"tags": "common",
+					"materialGroup": "mat_group_metal",
+					"damage": "1d7+1",
+					"weaponStyle": 0,
+					"parry": 0.5
+				},
+				{
+					"id": "whip",
+					"type": 6,
+					"name": "whip",
+					"character": "(",
+					"dangerLevel": 0,
+					"weight": 0,
+					"value": 0,
+					"baseMaterial": "mat_leather",
+					"baseSkill": 0,
+					"tags": "common",
+					"damage": "1d4+1",
+					"weaponStyle": 0,
+					"parry": 0.25
+				},
+				{
+					"id": "buckler",
+					"type": 7,
+					"name": "buckler",
+					"character": "♦",
+					"dangerLevel": 0,
+					"weight": 10,
+					"value": 10,
+					"baseMaterial": "mat_iron",
+					"baseSkill": 10,
+					"materialGroup": "mat_group_metal",
+					"tags": "common"
+				},
+				{
+					"id": "round_shield",
+					"type": 7,
+					"name": "round shield",
+					"character": "♦",
+					"dangerLevel": 0,
+					"weight": 10,
+					"value": 10,
+					"baseMaterial": "mat_iron",
+					"baseSkill": 20,
+					"tags": "common",
+					"materialGroup": "mat_group_metal"
+				}
+			],
+			"separators": [
+				0,
+				2,
+				3,
+				4,
+				5,
+				6,
+				7
+			],
+			"props": {
+				"separatorTitles": [
+					"Short Blades",
+					"Long Blades",
+					"Axe/Mace",
+					"Polearms",
+					"Fencing",
+					"Whips",
+					"Shields"
+				]
+			}
+		},
+		{
+			"name": "APR",
+			"columns": [
+				{
+					"typeStr": "0",
+					"name": "id",
+					"display": null
+				},
+				{
+					"typeStr": "5:Misc,ShortBlade,LongBlade,AxeMace,Polearm,Fencing,Whip,Shield,Helmet,Cloak,Armor,Undershirt,Belt,Boots,Gloves,Bracers,Earring,Amulet,Ring,Scroll,Book,Food,Potion",
+					"name": "type"
+				},
+				{
+					"typeStr": "1",
+					"name": "name",
+					"display": null
+				},
+				{
+					"typeStr": "1",
+					"name": "character",
+					"display": null
+				},
+				{
+					"typeStr": "1",
+					"name": "tags",
+					"opt": true,
+					"display": null
+				},
+				{
+					"typeStr": "3",
+					"name": "dangerLevel"
+				},
+				{
+					"typeStr": "3",
+					"name": "weight"
+				},
+				{
+					"typeStr": "3",
+					"name": "value"
+				},
+				{
+					"typeStr": "6:MAT",
+					"name": "baseMaterial",
+					"display": null
+				},
+				{
+					"typeStr": "6:MGR",
+					"name": "materialGroup",
+					"opt": true,
+					"display": null
+				},
+				{
+					"typeStr": "3",
+					"name": "dodge",
+					"opt": true
+				},
+				{
+					"typeStr": "3",
+					"name": "armor",
+					"opt": true
+				}
+			],
+			"lines": [
+				{
+					"id": "cap",
+					"type": 8,
+					"name": "cap",
+					"character": "¢",
+					"dangerLevel": 0,
+					"weight": 0,
+					"value": 0,
+					"baseMaterial": "mat_leather",
+					"materialGroup": "mat_group_fabric",
+					"armor": 1,
+					"tags": "common"
+				},
+				{
+					"id": "cloak",
+					"type": 9,
+					"name": "cloak",
+					"character": "¶",
+					"dangerLevel": 0,
+					"weight": 0,
+					"value": 0,
+					"baseMaterial": "mat_cloth",
+					"tags": "common",
+					"materialGroup": "mat_group_fabric"
+				},
+				{
+					"id": "scale_armor",
+					"type": 10,
+					"name": "scale armor",
+					"character": "¥",
+					"dangerLevel": 0,
+					"weight": 0,
+					"value": 0,
+					"baseMaterial": "mat_iron",
+					"armor": 2,
+					"materialGroup": "mat_group_metal",
+					"tags": "common"
+				},
+				{
+					"id": "breastplate",
+					"type": 10,
+					"name": "breastplate",
+					"character": "¥",
+					"dangerLevel": 0,
+					"weight": 0,
+					"value": 0,
+					"baseMaterial": "mat_iron",
+					"tags": "common",
+					"materialGroup": "mat_group_metal",
+					"armor": 3
+				},
+				{
+					"id": "padded_shirt",
+					"type": 11,
+					"name": "padded shirt",
+					"character": "φ",
+					"dangerLevel": 0,
+					"weight": 0,
+					"value": 0,
+					"baseMaterial": "mat_cloth",
+					"armor": 1,
+					"tags": "common"
+				},
+				{
+					"id": "hauberk",
+					"type": 11,
+					"name": "hauberk",
+					"character": "φ",
+					"dangerLevel": 0,
+					"weight": 0,
+					"value": 0,
+					"baseMaterial": "mat_iron",
+					"tags": "common",
+					"materialGroup": "mat_group_metal",
+					"armor": 2
+				},
+				{
+					"id": "belt",
+					"type": 12,
+					"name": "belt",
+					"character": "=",
+					"dangerLevel": 0,
+					"weight": 0,
+					"value": 0,
+					"baseMaterial": "mat_leather",
+					"tags": "common"
+				},
+				{
+					"id": "bracers",
+					"type": 15,
+					"name": "bracers",
+					"character": "≈",
+					"dangerLevel": 0,
+					"weight": 0,
+					"value": 0,
+					"baseMaterial": "mat_leather",
+					"tags": "common"
+				},
+				{
+					"id": "gauntlets",
+					"type": 14,
+					"name": "gauntlets",
+					"character": "\"",
+					"dangerLevel": 0,
+					"weight": 0,
+					"value": 0,
+					"baseMaterial": "mat_iron",
+					"materialGroup": "mat_group_metal",
+					"armor": 1,
+					"tags": "common"
+				},
+				{
+					"id": "boots",
+					"type": 13,
+					"name": "boots",
+					"character": "π",
+					"dangerLevel": 0,
+					"weight": 0,
+					"value": 0,
+					"baseMaterial": "mat_leather",
+					"armor": 1,
+					"tags": "common"
+				},
+				{
+					"id": "chausses",
+					"type": 13,
+					"name": "chausses",
+					"character": "π",
+					"dangerLevel": 0,
+					"weight": 0,
+					"value": 0,
+					"baseMaterial": "mat_iron",
+					"tags": "common",
+					"materialGroup": "mat_group_metal",
+					"armor": 2
+				},
+				{
+					"id": "earring",
+					"type": 16,
+					"name": "earring",
+					"character": "δ",
+					"dangerLevel": 0,
+					"weight": 0,
+					"value": 0,
+					"baseMaterial": "mat_gold",
+					"tags": "common"
+				},
+				{
+					"id": "ring",
+					"type": 18,
+					"name": "ring",
+					"character": "ô",
+					"dangerLevel": 0,
+					"weight": 0,
+					"value": 0,
+					"baseMaterial": "mat_gold",
+					"tags": "common"
+				},
+				{
+					"id": "amulet",
+					"type": 17,
+					"name": "amulet",
+					"character": "♀",
+					"dangerLevel": 0,
+					"weight": 0,
+					"value": 0,
+					"baseMaterial": "mat_gold",
+					"tags": "common"
+				}
+			],
+			"separators": [
+				0,
+				1,
+				2,
+				4,
+				6,
+				7,
+				8,
+				9,
+				11,
+				12,
+				13
+			],
+			"props": {
+				"separatorTitles": [
+					"Helmets",
+					"Cloaks",
+					"Body Armor",
+					"Undershirts",
+					"Belts",
+					"Bracers",
+					"Gloves",
+					"Boots",
+					"Earrings",
+					"Rings",
+					"Amulets"
+				]
+			}
+		},
+		{
+			"name": "ITM",
 			"columns": [
 				{
 					"typeStr": "0",
@@ -17,22 +506,13 @@
 				},
 				{
 					"typeStr": "1",
-					"name": "unidentifiedName",
-					"opt": true
-				},
-				{
-					"typeStr": "2",
-					"name": "obfuscated",
-					"display": null
-				},
-				{
-					"typeStr": "1",
 					"name": "character"
 				},
 				{
-					"typeStr": "3",
-					"name": "glyph",
-					"opt": true
+					"typeStr": "1",
+					"name": "tags",
+					"opt": true,
+					"display": null
 				},
 				{
 					"typeStr": "3",
@@ -47,48 +527,17 @@
 					"name": "value"
 				},
 				{
-					"typeStr": "6:materials",
+					"typeStr": "6:MAT",
 					"name": "baseMaterial"
 				},
 				{
-					"typeStr": "6:materialGroups",
+					"typeStr": "6:MGR",
 					"name": "materialGroup",
 					"opt": true,
 					"display": null
 				},
 				{
-					"typeStr": "3",
-					"name": "baseSkill",
-					"opt": true
-				},
-				{
-					"typeStr": "1",
-					"name": "damage",
-					"opt": true,
-					"display": null
-				},
-				{
-					"typeStr": "5:Normal,Light,Versatile,TwoHanded",
-					"name": "weaponStyle",
-					"opt": true
-				},
-				{
-					"typeStr": "4",
-					"name": "parry",
-					"opt": true
-				},
-				{
-					"typeStr": "3",
-					"name": "dodge",
-					"opt": true
-				},
-				{
-					"typeStr": "3",
-					"name": "armor",
-					"opt": true
-				},
-				{
-					"typeStr": "6:spells",
+					"typeStr": "6:SPL",
 					"name": "useSpell",
 					"opt": true,
 					"display": null
@@ -96,374 +545,16 @@
 			],
 			"lines": [
 				{
-					"id": "itm_dagger",
-					"character": "(",
-					"weight": 10,
-					"value": 10,
-					"name": "dagger",
-					"type": 1,
-					"dangerLevel": 0,
-					"glyph": 16,
-					"obfuscated": false,
-					"baseSkill": 15,
-					"parry": 0.25,
-					"baseMaterial": "mat_iron",
-					"damage": "1d4",
-					"materialGroup": "mat_group_metal",
-					"weaponStyle": 1
-				},
-				{
-					"id": "itm_longsword",
-					"character": "(",
-					"name": "longsword",
-					"weight": 40,
-					"value": 40,
-					"type": 2,
-					"dangerLevel": 1,
-					"glyph": 16,
-					"obfuscated": false,
-					"baseSkill": 5,
-					"parry": 0.33,
-					"baseMaterial": "mat_iron",
-					"damage": "1d8",
-					"materialGroup": "mat_group_metal",
-					"weaponStyle": 0
-				},
-				{
-					"id": "itm_shortsword",
-					"type": 1,
-					"name": "shortsword",
-					"character": "(",
-					"weight": 30,
-					"value": 30,
-					"dangerLevel": 0,
-					"glyph": 16,
-					"obfuscated": false,
-					"baseSkill": 10,
-					"parry": 0.25,
-					"baseMaterial": "mat_iron",
-					"damage": "1d6",
-					"materialGroup": "mat_group_metal",
-					"weaponStyle": 0
-				},
-				{
-					"id": "itm_club",
-					"type": 3,
-					"name": "club",
-					"character": "(",
-					"weight": 30,
-					"value": 10,
-					"dangerLevel": 0,
-					"obfuscated": false,
-					"baseSkill": 15,
-					"parry": 0.25,
-					"baseMaterial": "mat_wood",
-					"damage": "1d6",
-					"materialGroup": "mat_group_blunt_weapons",
-					"weaponStyle": 0
-				},
-				{
-					"id": "itm_wpn_handaxe",
-					"type": 3,
-					"name": "hand axe",
-					"obfuscated": false,
-					"character": "(",
-					"dangerLevel": 0,
-					"weight": 30,
-					"value": 30,
-					"baseSkill": 10,
-					"parry": 0.25,
-					"baseMaterial": "mat_iron",
-					"damage": "1d8",
-					"materialGroup": "mat_group_metal",
-					"weaponStyle": 0
-				},
-				{
-					"id": "itm_quarterstaff",
-					"type": 4,
-					"name": "quarterstaff",
-					"character": "(",
-					"weight": 40,
-					"value": 20,
-					"dangerLevel": 0,
-					"obfuscated": false,
-					"baseSkill": 15,
-					"parry": 0.5,
-					"baseMaterial": "mat_wood",
-					"damage": "1d6",
-					"weaponStyle": 2
-				},
-				{
-					"id": "itm_wpn_spear",
-					"type": 4,
-					"name": "spear",
-					"obfuscated": false,
-					"character": "(",
-					"dangerLevel": 0,
-					"weight": 50,
-					"value": 50,
-					"baseSkill": 10,
-					"parry": 0.5,
-					"baseMaterial": "mat_iron",
-					"damage": "1d8",
-					"materialGroup": "mat_group_metal",
-					"weaponStyle": 2
-				},
-				{
-					"id": "itm_wpn_crude_spear",
-					"type": 4,
-					"name": "crude spear",
-					"obfuscated": false,
-					"character": "(",
-					"dangerLevel": 0,
-					"weight": 50,
-					"value": 50,
-					"baseMaterial": "mat_wood",
-					"materialGroup": "mat_group_primitive",
-					"baseSkill": -5,
-					"parry": 0.33,
-					"damage": "1d7",
-					"weaponStyle": 2
-				},
-				{
-					"id": "itm_wpn_maul",
-					"type": 3,
-					"name": "maul",
-					"obfuscated": false,
-					"character": "(",
-					"dangerLevel": 0,
-					"weight": 120,
-					"value": 120,
-					"baseMaterial": "mat_iron",
-					"materialGroup": "mat_group_blunt_weapons",
-					"baseSkill": -5,
-					"parry": 0.25,
-					"damage": "2d4",
-					"weaponStyle": 3
-				},
-				{
-					"id": "itm_greatsword",
-					"type": 2,
-					"name": "greatsword",
-					"character": "(",
-					"weight": 120,
-					"value": 100,
-					"dangerLevel": 2,
-					"obfuscated": false,
-					"baseSkill": -5,
-					"parry": 0.33,
-					"baseMaterial": "mat_iron",
-					"damage": "2d6",
-					"materialGroup": "mat_group_metal",
-					"weaponStyle": 3
-				},
-				{
-					"id": "itm_sickle",
-					"type": 1,
-					"name": "sickle",
-					"character": "(",
-					"dangerLevel": -2,
-					"weight": 15,
-					"value": 10,
-					"obfuscated": false,
-					"baseSkill": 0,
-					"parry": 0.25,
-					"baseMaterial": "mat_iron",
-					"damage": "1d4",
-					"materialGroup": "mat_group_metal",
-					"weaponStyle": 0
-				},
-				{
-					"id": "itm_bonedagger",
-					"type": 1,
-					"name": "bone dagger",
-					"character": "(",
-					"dangerLevel": 0,
-					"weight": 10,
-					"value": 8,
-					"obfuscated": false,
-					"baseSkill": 15,
-					"parry": 0.25,
-					"baseMaterial": "mat_bone",
-					"damage": "1d4",
-					"weaponStyle": 1
-				},
-				{
-					"id": "itm_rapier",
-					"type": 2,
-					"name": "rapier",
-					"character": "(",
-					"dangerLevel": 1,
-					"weight": 30,
-					"value": 30,
-					"glyph": 16,
-					"obfuscated": false,
-					"baseSkill": 0,
-					"parry": 0.5,
-					"baseMaterial": "mat_iron",
-					"damage": "1d6+1",
-					"materialGroup": "mat_group_metal",
-					"weaponStyle": 0
-				},
-				{
-					"id": "itm_shield_buckler",
-					"type": 7,
-					"name": "buckler",
-					"obfuscated": false,
-					"character": "♦",
-					"dangerLevel": 0,
-					"weight": 40,
-					"value": 40,
-					"baseMaterial": "mat_iron",
-					"materialGroup": "mat_group_metal",
-					"baseSkill": 5
-				},
-				{
-					"id": "itm_shield_round",
-					"type": 7,
-					"name": "round shield",
-					"obfuscated": false,
-					"character": "♦",
-					"dangerLevel": 0,
-					"weight": 80,
-					"value": 80,
-					"baseMaterial": "mat_iron",
-					"materialGroup": "mat_group_metal",
-					"baseSkill": 15
-				},
-				{
-					"id": "itm_helmet",
-					"type": 8,
-					"name": "helmet",
-					"character": "¢",
-					"dangerLevel": 0,
-					"weight": 10,
-					"value": 10,
-					"obfuscated": false,
-					"armor": 1,
-					"baseMaterial": "mat_iron",
-					"materialGroup": "mat_group_metal"
-				},
-				{
-					"id": "itm_helm_cap",
-					"type": 8,
-					"name": "cap",
-					"obfuscated": false,
-					"character": "¢",
-					"dangerLevel": 0,
-					"weight": 0,
-					"value": 0,
-					"baseMaterial": "mat_leather",
-					"materialGroup": "mat_group_fabric",
-					"armor": 1
-				},
-				{
-					"id": "itm_robes",
-					"type": 10,
-					"name": "robes",
-					"character": "¥",
-					"dangerLevel": 0,
-					"weight": 50,
-					"value": 50,
-					"glyph": 21,
-					"obfuscated": false,
-					"armor": 1,
-					"baseMaterial": "mat_cloth"
-				},
-				{
-					"id": "itm_arm_breastplate",
-					"type": 10,
-					"name": "breastplate",
-					"character": "¥",
-					"dangerLevel": 0,
-					"weight": 100,
-					"value": 100,
-					"glyph": 21,
-					"obfuscated": false,
-					"armor": 3,
-					"dodge": -5,
-					"baseMaterial": "mat_iron",
-					"materialGroup": "mat_group_metal"
-				},
-				{
-					"id": "itm_armor_scalearmor",
-					"type": 10,
-					"name": "scale armor",
-					"obfuscated": false,
-					"character": "¥",
-					"dangerLevel": 0,
-					"weight": 80,
-					"value": 80,
-					"baseMaterial": "mat_leather",
-					"glyph": 21,
-					"materialGroup": "mat_group_armor_primitive",
-					"armor": 1
-				},
-				{
-					"id": "itm_paddedshirt",
-					"type": 11,
-					"name": "padded shirt",
-					"character": "φ",
-					"dangerLevel": 0,
-					"weight": 40,
-					"value": 40,
-					"glyph": 22,
-					"obfuscated": false,
-					"armor": 1,
-					"baseMaterial": "mat_cloth"
-				},
-				{
-					"id": "itm_hauberk",
-					"type": 11,
-					"name": "hauberk",
-					"character": "φ",
-					"dangerLevel": 0,
-					"weight": 80,
-					"value": 80,
-					"glyph": 22,
-					"obfuscated": false,
-					"armor": 2,
-					"dodge": -5,
-					"baseMaterial": "mat_iron",
-					"materialGroup": "mat_group_metal"
-				},
-				{
-					"id": "itm_boots",
-					"type": 13,
-					"name": "boots",
-					"character": "π",
-					"dangerLevel": 0,
-					"weight": 20,
-					"value": 20,
-					"obfuscated": false,
-					"armor": 1,
-					"baseMaterial": "mat_leather"
-				},
-				{
-					"id": "itm_boots_chausses",
-					"type": 13,
-					"name": "chausses",
-					"obfuscated": false,
-					"character": "π",
-					"dangerLevel": 0,
-					"weight": 20,
-					"value": 20,
-					"baseMaterial": "mat_iron",
-					"materialGroup": "mat_group_metal",
-					"armor": 2,
-					"dodge": -5
-				},
-				{
 					"id": "itm_scroll_identify",
 					"type": 19,
 					"name": "scroll of identify",
-					"obfuscated": true,
 					"character": "?",
 					"dangerLevel": 0,
 					"weight": 5,
 					"value": 100,
 					"baseMaterial": "mat_paper",
-					"useSpell": "spl_identify"
+					"useSpell": "spl_identify",
+					"tags": "common"
 				},
 				{
 					"id": "itm_potion_strength",
@@ -473,9 +564,9 @@
 					"dangerLevel": 0,
 					"weight": 2,
 					"value": 10,
-					"obfuscated": true,
 					"baseMaterial": "mat_glass",
-					"useSpell": "spl_strength_permanent"
+					"useSpell": "spl_strength_permanent",
+					"tags": "common"
 				},
 				{
 					"id": "itm_potion_endurance",
@@ -485,9 +576,9 @@
 					"dangerLevel": 0,
 					"weight": 2,
 					"value": 10,
-					"obfuscated": true,
 					"baseMaterial": "mat_glass",
-					"useSpell": "spl_endurance_permanent"
+					"useSpell": "spl_endurance_permanent",
+					"tags": "common"
 				},
 				{
 					"id": "itm_potion_finesse",
@@ -497,9 +588,9 @@
 					"dangerLevel": 0,
 					"weight": 2,
 					"value": 10,
-					"obfuscated": true,
 					"baseMaterial": "mat_glass",
-					"useSpell": "spl_finesse_permanent"
+					"useSpell": "spl_finesse_permanent",
+					"tags": "common"
 				},
 				{
 					"id": "itm_potion_intellect",
@@ -509,9 +600,9 @@
 					"dangerLevel": 0,
 					"weight": 2,
 					"value": 10,
-					"obfuscated": true,
 					"baseMaterial": "mat_glass",
-					"useSpell": "spl_intellect_permanent"
+					"useSpell": "spl_intellect_permanent",
+					"tags": "common"
 				},
 				{
 					"id": "itm_potion_resolve",
@@ -521,9 +612,9 @@
 					"dangerLevel": 0,
 					"weight": 2,
 					"value": 10,
-					"obfuscated": true,
 					"baseMaterial": "mat_glass",
-					"useSpell": "spl_resolve_permanent"
+					"useSpell": "spl_resolve_permanent",
+					"tags": "common"
 				},
 				{
 					"id": "itm_potion_awareness",
@@ -533,56 +624,56 @@
 					"dangerLevel": 0,
 					"weight": 2,
 					"value": 10,
-					"obfuscated": true,
 					"baseMaterial": "mat_glass",
-					"useSpell": "spl_awareness_permanent"
+					"useSpell": "spl_awareness_permanent",
+					"tags": "common"
 				},
 				{
 					"id": "itm_potion_poison",
 					"type": 22,
 					"name": "poison flask",
-					"obfuscated": true,
 					"character": "¿",
 					"dangerLevel": 0,
 					"weight": 2,
 					"value": 10,
 					"baseMaterial": "mat_glass",
-					"useSpell": "spl_poison_weak"
+					"useSpell": "spl_poison_weak",
+					"tags": "common"
 				},
 				{
 					"id": "itm_potion_health",
 					"type": 22,
 					"name": "health potion",
-					"obfuscated": true,
 					"character": "¿",
 					"dangerLevel": 0,
 					"weight": 2,
 					"value": 10,
 					"baseMaterial": "mat_glass",
-					"useSpell": "spl_health_heal"
+					"useSpell": "spl_health_heal",
+					"tags": "common"
 				},
 				{
 					"id": "itm_potion_vigor",
 					"type": 22,
 					"name": "vigor potion",
-					"obfuscated": true,
 					"character": "¿",
 					"dangerLevel": 0,
 					"weight": 2,
 					"value": 10,
 					"baseMaterial": "mat_glass",
-					"useSpell": "spl_vigor_heal"
+					"useSpell": "spl_vigor_heal",
+					"tags": "common"
 				},
 				{
 					"id": "itm_food_insect_roast",
 					"type": 21,
 					"name": "insect roast",
-					"obfuscated": false,
 					"character": "%",
 					"dangerLevel": 0,
 					"weight": 50,
 					"value": 0,
-					"baseMaterial": "mat_flesh"
+					"baseMaterial": "mat_flesh",
+					"tags": "common"
 				},
 				{
 					"id": "itm_goldcoin",
@@ -592,9 +683,8 @@
 					"dangerLevel": 0,
 					"weight": 1,
 					"value": 50,
-					"glyph": 36,
-					"obfuscated": false,
-					"baseMaterial": "mat_gold"
+					"baseMaterial": "mat_gold",
+					"tags": "common"
 				},
 				{
 					"id": "itm_silvercoin",
@@ -604,9 +694,8 @@
 					"dangerLevel": 0,
 					"weight": 1,
 					"value": 5,
-					"glyph": 36,
-					"obfuscated": false,
-					"baseMaterial": "mat_silver"
+					"baseMaterial": "mat_silver",
+					"tags": "common"
 				},
 				{
 					"id": "itm_arrow",
@@ -616,8 +705,8 @@
 					"dangerLevel": 0,
 					"weight": 1,
 					"value": 1,
-					"obfuscated": false,
-					"baseMaterial": "mat_wood"
+					"baseMaterial": "mat_wood",
+					"tags": "common"
 				},
 				{
 					"id": "itm_lasgun",
@@ -627,31 +716,19 @@
 					"dangerLevel": 0,
 					"weight": 0,
 					"value": 0,
-					"obfuscated": false,
-					"baseMaterial": "mat_iron"
+					"baseMaterial": "mat_iron",
+					"tags": "common"
 				}
 			],
 			"separators": [
 				0,
-				13,
-				15,
-				17,
-				20,
-				22,
-				24,
-				25,
-				34,
-				35,
-				39
+				1,
+				10,
+				11,
+				15
 			],
 			"props": {
 				"separatorTitles": [
-					"Melee Weapons",
-					"Shields",
-					"Helmets",
-					"Body Armor",
-					"Undershirt",
-					"Boots",
 					"Scrolls",
 					"Potions",
 					"Food",
@@ -661,7 +738,7 @@
 			}
 		},
 		{
-			"name": "materials",
+			"name": "MAT",
 			"columns": [
 				{
 					"typeStr": "0",
@@ -693,7 +770,7 @@
 					"name": "dangerLevelModifier"
 				},
 				{
-					"typeStr": "6:colors",
+					"typeStr": "6:COL",
 					"name": "color"
 				}
 			],
@@ -845,192 +922,7 @@
 			}
 		},
 		{
-			"name": "lootLists",
-			"columns": [
-				{
-					"typeStr": "0",
-					"name": "id",
-					"display": null
-				},
-				{
-					"typeStr": "8",
-					"name": "items",
-					"display": null
-				}
-			],
-			"lines": [
-				{
-					"id": "ll_basicweapons",
-					"items": [
-						{
-							"item": "itm_club"
-						},
-						{
-							"item": "itm_dagger"
-						},
-						{
-							"item": "itm_greatsword"
-						},
-						{
-							"item": "itm_longsword"
-						},
-						{
-							"item": "itm_quarterstaff"
-						},
-						{
-							"item": "itm_shortsword"
-						},
-						{
-							"item": "itm_sickle"
-						},
-						{
-							"item": "itm_rapier"
-						},
-						{
-							"item": "itm_bonedagger"
-						},
-						{
-							"item": "itm_wpn_crude_spear"
-						},
-						{
-							"item": "itm_wpn_maul"
-						},
-						{
-							"item": "itm_wpn_handaxe"
-						},
-						{
-							"item": "itm_wpn_spear"
-						}
-					]
-				},
-				{
-					"id": "ll_exoticweapons",
-					"items": [
-						{
-							"item": "itm_longsword"
-						}
-					]
-				},
-				{
-					"id": "ll_common",
-					"items": [
-						{
-							"item": "itm_goldcoin"
-						},
-						{
-							"item": "itm_silvercoin"
-						}
-					]
-				},
-				{
-					"id": "ll_basicarmor",
-					"items": [
-						{
-							"item": "itm_shield_buckler"
-						},
-						{
-							"item": "itm_shield_round"
-						},
-						{
-							"item": "itm_robes"
-						},
-						{
-							"item": "itm_arm_breastplate"
-						},
-						{
-							"item": "itm_paddedshirt"
-						},
-						{
-							"item": "itm_hauberk"
-						},
-						{
-							"item": "itm_boots"
-						},
-						{
-							"item": "itm_boots_chausses"
-						},
-						{
-							"item": "itm_helmet"
-						}
-					]
-				},
-				{
-					"id": "ll_potions",
-					"items": [
-						{
-							"item": "itm_potion_strength"
-						},
-						{
-							"item": "itm_potion_endurance"
-						},
-						{
-							"item": "itm_potion_finesse"
-						},
-						{
-							"item": "itm_potion_intellect"
-						},
-						{
-							"item": "itm_potion_resolve"
-						},
-						{
-							"item": "itm_potion_awareness"
-						},
-						{
-							"item": "itm_potion_health"
-						},
-						{
-							"item": "itm_potion_vigor"
-						},
-						{
-							"item": "itm_potion_poison"
-						}
-					]
-				},
-				{
-					"id": "ll_futuristic",
-					"items": [
-						{
-							"item": "itm_lasgun"
-						}
-					]
-				},
-				{
-					"id": "ll_scrolls",
-					"items": [
-						{
-							"item": "itm_scroll_identify"
-						}
-					]
-				},
-				{
-					"id": "ll_food",
-					"items": [
-						{
-							"item": "itm_food_insect_roast"
-						}
-					]
-				}
-			],
-			"separators": [],
-			"props": {}
-		},
-		{
-			"name": "lootLists@items",
-			"props": {
-				"hide": true
-			},
-			"separators": [],
-			"lines": [],
-			"columns": [
-				{
-					"typeStr": "6:items",
-					"name": "item",
-					"display": null
-				}
-			]
-		},
-		{
-			"name": "creatures",
+			"name": "CRE",
 			"columns": [
 				{
 					"typeStr": "0",
@@ -1043,7 +935,7 @@
 					"display": null
 				},
 				{
-					"typeStr": "6:colors",
+					"typeStr": "6:COL",
 					"name": "color",
 					"opt": true
 				},
@@ -1063,7 +955,7 @@
 					"display": null
 				},
 				{
-					"typeStr": "6:races",
+					"typeStr": "6:RAC",
 					"name": "race",
 					"display": null
 				},
@@ -1073,10 +965,15 @@
 					"display": null
 				},
 				{
-					"typeStr": "6:naturalAttacks",
+					"typeStr": "6:NAT",
 					"name": "naturalAttack",
 					"opt": true,
 					"display": null
+				},
+				{
+					"typeStr": "1",
+					"name": "tags",
+					"opt": true
 				}
 			],
 			"lines": [
@@ -1091,7 +988,8 @@
 							"profession": "profession_fighter",
 							"level": 1
 						}
-					]
+					],
+					"tags": "common"
 				},
 				{
 					"id": "cr_mutogre",
@@ -1104,7 +1002,8 @@
 							"profession": "profession_fighter",
 							"level": 1
 						}
-					]
+					],
+					"tags": "common"
 				},
 				{
 					"id": "cr_fungoid",
@@ -1119,7 +1018,8 @@
 						}
 					],
 					"naturalAttack": "nat_fungoid_strike",
-					"color": "c_teal_light"
+					"color": "c_teal_light",
+					"tags": "cave"
 				},
 				{
 					"id": "cr_mokrug",
@@ -1133,7 +1033,8 @@
 							"level": 1
 						}
 					],
-					"color": "c_red_light"
+					"color": "c_red_light",
+					"tags": "cave"
 				},
 				{
 					"id": "cr_mokrug_larva",
@@ -1147,7 +1048,8 @@
 							"level": 1
 						}
 					],
-					"color": "c_beige_light"
+					"color": "c_beige_light",
+					"tags": "cave"
 				},
 				{
 					"id": "cr_grol",
@@ -1161,14 +1063,30 @@
 							"level": 2
 						}
 					],
-					"color": "c_blue_light"
+					"color": "c_blue_light",
+					"tags": "cave"
+				},
+				{
+					"id": "skorrek",
+					"name": "skorrek",
+					"character": "r",
+					"sprite": "",
+					"race": "r_generic",
+					"professions": [
+						{
+							"profession": "profession_fighter",
+							"level": 1
+						}
+					],
+					"tags": "common",
+					"color": "c_brown_light"
 				}
 			],
 			"separators": [],
 			"props": {}
 		},
 		{
-			"name": "races",
+			"name": "RAC",
 			"columns": [
 				{
 					"typeStr": "0",
@@ -1180,7 +1098,7 @@
 					"name": "name"
 				},
 				{
-					"typeStr": "6:colors",
+					"typeStr": "6:COL",
 					"name": "color",
 					"display": null
 				},
@@ -1248,7 +1166,7 @@
 			"props": {}
 		},
 		{
-			"name": "professions",
+			"name": "PRF",
 			"columns": [
 				{
 					"typeStr": "0",
@@ -1280,54 +1198,7 @@
 			"props": {}
 		},
 		{
-			"name": "creatureLists",
-			"columns": [
-				{
-					"typeStr": "0",
-					"name": "id",
-					"display": null
-				},
-				{
-					"typeStr": "8",
-					"name": "creatures",
-					"display": null
-				}
-			],
-			"lines": [
-				{
-					"id": "common",
-					"creatures": [
-						{
-							"creature": "cr_mutorc"
-						},
-						{
-							"creature": "cr_mutogre"
-						}
-					]
-				},
-				{
-					"id": "cl_cave",
-					"creatures": [
-						{
-							"creature": "cr_fungoid"
-						},
-						{
-							"creature": "cr_mokrug"
-						},
-						{
-							"creature": "cr_mokrug_larva"
-						},
-						{
-							"creature": "cr_grol"
-						}
-					]
-				}
-			],
-			"separators": [],
-			"props": {}
-		},
-		{
-			"name": "tiles",
+			"name": "TIL",
 			"columns": [
 				{
 					"typeStr": "0",
@@ -1349,12 +1220,12 @@
 					"display": null
 				},
 				{
-					"typeStr": "6:colors",
+					"typeStr": "6:COL",
 					"name": "foreground",
 					"display": null
 				},
 				{
-					"typeStr": "6:colors",
+					"typeStr": "6:COL",
 					"name": "background"
 				},
 				{
@@ -1652,7 +1523,7 @@
 			}
 		},
 		{
-			"name": "colors",
+			"name": "COL",
 			"columns": [
 				{
 					"typeStr": "0",
@@ -1819,7 +1690,7 @@
 			"props": {}
 		},
 		{
-			"name": "levels",
+			"name": "LVL",
 			"columns": [
 				{
 					"typeStr": "0",
@@ -1835,20 +1706,17 @@
 					"name": "dangerLevel"
 				},
 				{
+					"typeStr": "1",
+					"name": "tags",
+					"opt": true
+				},
+				{
 					"typeStr": "3",
 					"name": "minSpawn"
 				},
 				{
 					"typeStr": "3",
 					"name": "maxSpawn"
-				},
-				{
-					"typeStr": "8",
-					"name": "loot"
-				},
-				{
-					"typeStr": "8",
-					"name": "creatures"
 				},
 				{
 					"typeStr": "8",
@@ -1880,17 +1748,13 @@
 							"targetLevel": "lvl_dungeon_01",
 							"feature": "fea_downstairs"
 						}
-					],
-					"loot": [],
-					"creatures": []
+					]
 				},
 				{
 					"id": "lvl_test_arena",
 					"dangerLevel": 0,
 					"minSpawn": 0,
 					"maxSpawn": 0,
-					"loot": [],
-					"creatures": [],
 					"strategy": {
 						"$type": "WasteDrudgers.Level.Generation.LoadStrategy, WasteDrudgers",
 						"filename": "map_test"
@@ -1905,31 +1769,6 @@
 						"wall": "t_cave_wall",
 						"floor": "t_cave_floor"
 					},
-					"loot": [
-						{
-							"lists": "ll_potions"
-						},
-						{
-							"lists": "ll_basicweapons"
-						},
-						{
-							"lists": "ll_basicarmor"
-						},
-						{
-							"lists": "ll_scrolls"
-						},
-						{
-							"lists": "ll_food"
-						}
-					],
-					"creatures": [
-						{
-							"lists": "common"
-						},
-						{
-							"lists": "cl_cave"
-						}
-					],
 					"minSpawn": 20,
 					"maxSpawn": 50,
 					"dangerLevel": 0,
@@ -1942,21 +1781,14 @@
 							"targetLevel": "lvl_starting_cave_02",
 							"feature": "fea_downstairs"
 						}
-					]
+					],
+					"tags": "common,cave"
 				},
 				{
 					"id": "lvl_starting_cave_02",
 					"dangerLevel": 2,
 					"minSpawn": 20,
 					"maxSpawn": 50,
-					"creatures": [
-						{
-							"lists": "common"
-						},
-						{
-							"lists": "cl_cave"
-						}
-					],
 					"strategy": {
 						"$type": "WasteDrudgers.Level.Generation.WorldStrategy, WasteDrudgers",
 						"width": 96,
@@ -1964,57 +1796,19 @@
 						"wall": "t_cave_wall",
 						"floor": "t_cave_floor"
 					},
-					"loot": [
-						{
-							"lists": "ll_basicweapons"
-						},
-						{
-							"lists": "ll_potions"
-						},
-						{
-							"lists": "ll_basicarmor"
-						},
-						{
-							"lists": "ll_scrolls"
-						},
-						{
-							"lists": "ll_food"
-						}
-					],
 					"portals": [
 						{
 							"targetLevel": "lvl_starting_cave_01",
 							"feature": "fea_upstairs"
 						}
-					]
+					],
+					"tags": "common,cave"
 				},
 				{
 					"id": "lvl_dungeon_01",
 					"dangerLevel": 0,
 					"minSpawn": 0,
 					"maxSpawn": 0,
-					"loot": [
-						{
-							"lists": "ll_basicweapons"
-						},
-						{
-							"lists": "ll_basicarmor"
-						},
-						{
-							"lists": "ll_potions"
-						},
-						{
-							"lists": "ll_scrolls"
-						}
-					],
-					"creatures": [
-						{
-							"lists": "common"
-						},
-						{
-							"lists": "cl_cave"
-						}
-					],
 					"strategy": {
 						"$type": "WasteDrudgers.Level.Generation.DungeonStrategy, WasteDrudgers",
 						"width": 96,
@@ -2031,35 +1825,14 @@
 							"targetLevel": "lvl_world_map",
 							"feature": "fea_upstairs"
 						}
-					]
+					],
+					"tags": "common"
 				},
 				{
 					"id": "lvl_labyrinth_01",
 					"dangerLevel": 0,
 					"minSpawn": 0,
 					"maxSpawn": 0,
-					"loot": [
-						{
-							"lists": "ll_basicweapons"
-						},
-						{
-							"lists": "ll_basicarmor"
-						},
-						{
-							"lists": "ll_potions"
-						},
-						{
-							"lists": "ll_scrolls"
-						}
-					],
-					"creatures": [
-						{
-							"lists": "common"
-						},
-						{
-							"lists": "cl_cave"
-						}
-					],
 					"strategy": {
 						"$type": "WasteDrudgers.Level.Generation.MazeStrategy, WasteDrudgers",
 						"width": 96,
@@ -2072,43 +1845,15 @@
 							"targetLevel": "lvl_world_map",
 							"feature": "fea_upstairs"
 						}
-					]
+					],
+					"tags": "common"
 				}
 			],
 			"separators": [],
 			"props": {}
 		},
 		{
-			"name": "levels@loot",
-			"props": {
-				"hide": true
-			},
-			"separators": [],
-			"lines": [],
-			"columns": [
-				{
-					"typeStr": "6:lootLists",
-					"name": "lists",
-					"display": null
-				}
-			]
-		},
-		{
-			"name": "levels@creatures",
-			"props": {
-				"hide": true
-			},
-			"separators": [],
-			"lines": [],
-			"columns": [
-				{
-					"typeStr": "6:creatureLists",
-					"name": "lists"
-				}
-			]
-		},
-		{
-			"name": "features",
+			"name": "FEA",
 			"columns": [
 				{
 					"typeStr": "0",
@@ -2126,7 +1871,7 @@
 					"display": null
 				},
 				{
-					"typeStr": "6:colors",
+					"typeStr": "6:COL",
 					"name": "color"
 				},
 				{
@@ -2233,7 +1978,7 @@
 			"props": {}
 		},
 		{
-			"name": "messages",
+			"name": "MSG",
 			"columns": [
 				{
 					"typeStr": "0",
@@ -2392,7 +2137,7 @@
 			"props": {}
 		},
 		{
-			"name": "levels@portals",
+			"name": "LVL@portals",
 			"props": {
 				"hide": true
 			},
@@ -2400,33 +2145,19 @@
 			"lines": [],
 			"columns": [
 				{
-					"typeStr": "6:levels",
+					"typeStr": "6:LVL",
 					"name": "targetLevel",
 					"display": null
 				},
 				{
-					"typeStr": "6:features",
+					"typeStr": "6:FEA",
 					"name": "feature",
 					"display": null
 				}
 			]
 		},
 		{
-			"name": "creatureLists@creatures",
-			"props": {
-				"hide": true
-			},
-			"separators": [],
-			"lines": [],
-			"columns": [
-				{
-					"typeStr": "6:creatures",
-					"name": "creature"
-				}
-			]
-		},
-		{
-			"name": "maps",
+			"name": "MAP",
 			"columns": [
 				{
 					"name": "id",
@@ -2525,7 +2256,7 @@
 			}
 		},
 		{
-			"name": "maps@tileProps",
+			"name": "MAP@tileProps",
 			"props": {
 				"hide": true
 			},
@@ -2534,7 +2265,7 @@
 			"columns": []
 		},
 		{
-			"name": "maps@layers",
+			"name": "MAP@layers",
 			"props": {
 				"hide": true
 			},
@@ -2552,7 +2283,7 @@
 			]
 		},
 		{
-			"name": "obfuscatedNames",
+			"name": "OBF",
 			"columns": [
 				{
 					"typeStr": "5:Misc,ShortBlade,LongBlade,AxeMace,Polearm,Fencing,Whip,Shield,Helmet,Cloak,Armor,Undershirt,Belt,Boots,Gloves,Bracers,Earring,Amulet,Ring,Scroll,Book,Food,Potion",
@@ -2676,7 +2407,7 @@
 			"props": {}
 		},
 		{
-			"name": "obfuscatedNames@names",
+			"name": "OBF@names",
 			"props": {
 				"hide": true
 			},
@@ -2691,7 +2422,7 @@
 			]
 		},
 		{
-			"name": "creatures@professions",
+			"name": "CRE@professions",
 			"props": {
 				"hide": true
 			},
@@ -2699,7 +2430,7 @@
 			"lines": [],
 			"columns": [
 				{
-					"typeStr": "6:professions",
+					"typeStr": "6:PRF",
 					"name": "profession",
 					"display": null
 				},
@@ -2710,7 +2441,7 @@
 			]
 		},
 		{
-			"name": "professions@skills",
+			"name": "PRF@skills",
 			"props": {
 				"hide": true
 			},
@@ -2724,7 +2455,7 @@
 			]
 		},
 		{
-			"name": "materialGroups",
+			"name": "MGR",
 			"columns": [
 				{
 					"typeStr": "0",
@@ -2851,7 +2582,7 @@
 			}
 		},
 		{
-			"name": "materialGroups@materials",
+			"name": "MGR@materials",
 			"props": {
 				"hide": true
 			},
@@ -2859,7 +2590,7 @@
 			"lines": [],
 			"columns": [
 				{
-					"typeStr": "6:materials",
+					"typeStr": "6:MAT",
 					"name": "material",
 					"display": null
 				},
@@ -2870,7 +2601,7 @@
 			]
 		},
 		{
-			"name": "spells",
+			"name": "SPL",
 			"columns": [
 				{
 					"typeStr": "0",
@@ -2896,7 +2627,7 @@
 					"name": "effect"
 				},
 				{
-					"typeStr": "6:messages",
+					"typeStr": "6:MSG",
 					"name": "message",
 					"display": null
 				}
@@ -2977,7 +2708,7 @@
 			"props": {}
 		},
 		{
-			"name": "naturalAttacks",
+			"name": "NAT",
 			"columns": [
 				{
 					"typeStr": "0",
@@ -2993,7 +2724,7 @@
 					"display": null
 				},
 				{
-					"typeStr": "6:spells",
+					"typeStr": "6:SPL",
 					"name": "castOnStrike",
 					"display": null
 				}

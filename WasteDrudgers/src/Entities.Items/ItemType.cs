@@ -53,6 +53,8 @@ namespace WasteDrudgers.Entities
             ItemType.Gloves => Slot.Gloves,
             ItemType.Bracers => Slot.Bracers,
             ItemType.Earring => Slot.Earring,
+            // TODO: Support for two rings
+            ItemType.Ring => Slot.LeftRing,
             ItemType.Amulet => Slot.Amulet,
             _ => throw new Exception("Error, trying to equip an item of invalid type")
         };
@@ -99,6 +101,18 @@ namespace WasteDrudgers.Entities
                 case ItemType.Earring:
                 case ItemType.Ring:
                 case ItemType.Bracers:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        public static bool IsObfuscated(this ItemType type)
+        {
+            switch (type)
+            {
+                case ItemType.Potion:
+                case ItemType.Scroll:
                     return true;
                 default:
                     return false;

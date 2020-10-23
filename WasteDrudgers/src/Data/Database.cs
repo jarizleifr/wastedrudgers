@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Blaggard.Common;
+using Blaggard.Graphics;
 using DiceNotation;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Blaggard.Common;
-using Blaggard.Graphics;
 using WasteDrudgers.Entities;
 using WasteDrudgers.Level;
 
@@ -37,25 +37,25 @@ namespace WasteDrudgers.Data
         {
             var root = GetRootNode(JToken.Parse(File.ReadAllText("./data.cdb")));
 
-            dbColors = GetNodeFromRoot("colors", root).ToDictionary(GetId, c => c["color"].ToObject<Color>());
+            dbColors = GetNodeFromRoot("COL", root).ToDictionary(GetId, c => c["color"].ToObject<Color>());
 
-            dbMaterials = GetNodeFromRoot("materials", root).ToDictionary(GetId, m =>
+            dbMaterials = GetNodeFromRoot("MAT", root).ToDictionary(GetId, m =>
             {
                 var material = m.ToObject<DBMaterial>();
                 material.Color = dbColors[m["color"].ToString()];
                 return material;
             });
 
-            dbMaterialGroups = GetNodeFromRoot("materialGroups", root).ToDictionary(GetId, m =>
+            dbMaterialGroups = GetNodeFromRoot("MGR", root).ToDictionary(GetId, m =>
             {
                 var materialGroup = new DBMaterialGroup();
                 materialGroup.Materials = m["materials"].Select(m => (dbMaterials[m["material"].ToString()], (int)m["probability"])).ToList();
                 return materialGroup;
             });
 
-            dbLogMessages = GetNodeFromRoot("messages", root).ToDictionary(GetId, l => l.ToObject<DBLogMessage>());
+            dbLogMessages = GetNodeFromRoot("MSG", root).ToDictionary(GetId, l => l.ToObject<DBLogMessage>());
 
-            dbSpells = GetNodeFromRoot("spells", root).ToDictionary(GetId, s =>
+            dbSpells = GetNodeFromRoot("SPL", root).ToDictionary(GetId, s =>
             {
                 var spell = s.ToObject<DBSpell>();
 
@@ -73,17 +73,33 @@ namespace WasteDrudgers.Data
                 return spell;
             });
 
-            dbItems = GetNodeFromRoot("items", root).ToDictionary(GetId, i =>
-            {
-                var dbItem = i.ToObject<DBItem>();
-                dbItem.BaseMaterial = dbMaterials[i["baseMaterial"].ToString()];
+            dbLootLists = new Dictionary<string, DBLootList>();
+            var allItems = GetNodeFromRoot("ITM", root).ToDictionary(GetId, i => i)
+                .Concat(GetNodeFromRoot("WPN", root).ToDictionary(GetId, i => i))
+                .Concat(GetNodeFromRoot("APR", root).ToDictionary(GetId, i => i));
 
-                if (i["damage"] != null)
+            dbItems = allItems.ToDictionary(kv => kv.Key, kv =>
+            {
+                var i = kv.Value;
+                var dbItem = i.ToObject<DBItem>();
+
+                if (dbItem.Type.IsApparel())
                 {
-                    var dice = Dice.Parse(i["damage"].ToString());
-                    dbItem.MinDamage = dice.MinRoll().Value;
-                    dbItem.MaxDamage = dice.MaxRoll().Value;
+                    dbItem = i.ToObject<DBApparel>();
                 }
+                else if (dbItem.Type.IsWeapon())
+                {
+                    dbItem = i.ToObject<DBWeapon>();
+                    if (i["damage"] != null)
+                    {
+                        var wpn = (DBWeapon)dbItem;
+                        var dice = Dice.Parse(i["damage"].ToString());
+                        wpn.MinDamage = dice.MinRoll().Value;
+                        wpn.MaxDamage = dice.MaxRoll().Value;
+                    }
+                }
+
+                dbItem.BaseMaterial = dbMaterials[i["baseMaterial"].ToString()];
 
                 if (i["useSpell"] != null)
                 {
@@ -95,33 +111,36 @@ namespace WasteDrudgers.Data
                     dbItem.MaterialGroup = dbMaterialGroups[i["materialGroup"].ToString()];
                 }
 
-                if (dbItem.Glyph > 0)
+                if (i["tags"] != null)
                 {
-                    dbItem.Glyph += (char)256;
+                    foreach (var tag in i["tags"].ToString().Split(','))
+                    {
+                        if (dbLootLists.TryGetValue(tag, out var lootList))
+                        {
+                            lootList.Items.Add(dbItem);
+                        }
+                        else
+                        {
+                            dbLootLists.Add(tag, new DBLootList { Items = new List<DBItem> { dbItem } });
+                        }
+                    }
                 }
                 return dbItem;
             });
 
-            dbLootLists = GetNodeFromRoot("lootLists", root).ToDictionary(GetId, l =>
-            {
-                var dbLootList = l.ToObject<DBLootList>();
-                dbLootList.Items = l["items"].Select(li => dbItems[li["item"].ToString()]).ToArray();
-                return dbLootList;
-            });
-
-            var dbProfessions = GetNodeFromRoot("professions", root).ToDictionary(GetId, p =>
+            var dbProfessions = GetNodeFromRoot("PRF", root).ToDictionary(GetId, p =>
             {
                 return p["skills"].Select(s => s["skill"].ToObject<SkillType>()).ToList();
             });
 
-            dbRaces = GetNodeFromRoot("races", root).ToDictionary(GetId, r =>
+            dbRaces = GetNodeFromRoot("RAC", root).ToDictionary(GetId, r =>
             {
                 var race = r.ToObject<DBRace>();
                 race.Color = dbColors[r["color"].ToString()];
                 return race;
             });
 
-            dbNaturalAttacks = GetNodeFromRoot("naturalAttacks", root).ToDictionary(GetId, n =>
+            dbNaturalAttacks = GetNodeFromRoot("NAT", root).ToDictionary(GetId, n =>
             {
                 var naturalAttack = n.ToObject<DBNaturalAttack>();
                 if (n["castOnStrike"] != null)
@@ -131,7 +150,8 @@ namespace WasteDrudgers.Data
                 return naturalAttack;
             });
 
-            dbCreatures = GetNodeFromRoot("creatures", root).ToDictionary(GetId, cr =>
+            dbCreatureLists = new Dictionary<string, DBCreatureList>();
+            dbCreatures = GetNodeFromRoot("CRE", root).ToDictionary(GetId, cr =>
             {
                 var creature = cr.ToObject<DBCreature>();
                 creature.Race = dbRaces[cr["race"].ToString()];
@@ -149,18 +169,25 @@ namespace WasteDrudgers.Data
                     creature.Color = dbColors[cr["color"].ToString()];
                 }
 
+                if (cr["tags"] != null)
+                {
+                    foreach (var tag in cr["tags"].ToString().Split(','))
+                    {
+                        if (dbCreatureLists.TryGetValue(tag, out var creatureList))
+                        {
+                            creatureList.Creatures.Add(creature);
+                        }
+                        else
+                        {
+                            dbCreatureLists.Add(tag, new DBCreatureList { Id = tag, Creatures = new List<DBCreature> { creature } });
+                        }
+                    }
+                }
                 return creature;
             });
 
-            dbCreatureLists = GetNodeFromRoot("creatureLists", root).ToDictionary(GetId, cl =>
-            {
-                var creatureList = cl.ToObject<DBCreatureList>();
-                creatureList.Creatures = cl["creatures"].Select(li => dbCreatures[li["creature"].ToString()]).ToArray();
-                return creatureList;
-            });
-
             tileIndexMapping = new string[128];
-            dbTiles = GetNodeFromRoot("tiles", root).ToDictionary(GetId, t =>
+            dbTiles = GetNodeFromRoot("TIL", root).ToDictionary(GetId, t =>
             {
                 var tile = t.ToObject<Tile>();
                 if (tile.glyph > 0)
@@ -174,23 +201,34 @@ namespace WasteDrudgers.Data
                 return tile;
             });
 
-            dbFeatures = GetNodeFromRoot("features", root).ToDictionary(GetId, l =>
+            dbFeatures = GetNodeFromRoot("FEA", root).ToDictionary(GetId, l =>
             {
                 var feature = l.ToObject<DBFeature>();
                 feature.Color = dbColors[l["color"].ToString()];
                 return feature;
             });
 
-            dbLevels = GetNodeFromRoot("levels", root).ToDictionary(GetId, l =>
+            dbLevels = GetNodeFromRoot("LVL", root).ToDictionary(GetId, l =>
             {
                 var level = l.ToObject<DBLevel>(new JsonSerializer { TypeNameHandling = TypeNameHandling.All });
-                level.Creatures = l["creatures"].Select(c => dbCreatureLists[c["lists"].ToString()]).ToList();
 
-                level.Loot = new List<DBLootList>();
-                if (l["loot"] != null)
+                if (l["tags"] != null)
                 {
-                    level.Loot = l["loot"].Select(lt => dbLootLists[lt["lists"].ToString()]).ToList();
+                    level.Creatures = new List<DBCreatureList>();
+                    level.Loot = new List<DBLootList>();
+                    foreach (var tag in l["tags"].ToString().Split(','))
+                    {
+                        if (dbCreatureLists.TryGetValue(tag, out var creatureList))
+                        {
+                            level.Creatures.Add(creatureList);
+                        }
+                        if (dbLootLists.TryGetValue(tag, out var lootList))
+                        {
+                            level.Loot.Add(lootList);
+                        }
+                    }
                 }
+
                 level.Portals = new List<DBPortal>();
                 if (l["portals"] != null)
                 {
@@ -203,7 +241,7 @@ namespace WasteDrudgers.Data
                 return level;
             });
 
-            dbObfuscatedNames = GetNodeFromRoot("obfuscatedNames", root).ToDictionary(
+            dbObfuscatedNames = GetNodeFromRoot("OBF", root).ToDictionary(
                 o => o["type"].ToObject<ItemType>(),
                 o => o["names"].Select(n => n["name"].ToString()).ToList());
 
@@ -215,7 +253,7 @@ namespace WasteDrudgers.Data
         public DBMapData GetMapData(string mapId)
         {
             var root = GetRootNode(JToken.Parse(File.ReadAllText("./data.cdb")));
-            var mapToken = GetNodeFromRoot("maps", root).Where(t => t["id"].ToString() == mapId).Single();
+            var mapToken = GetNodeFromRoot("MAP", root).Where(t => t["id"].ToString() == mapId).Single();
 
             var data = mapToken.ToObject<DBMapData>();
             var bytes = mapToken["layers"][0]["data"]["data"].ToObject<byte[]>();

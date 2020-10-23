@@ -1,8 +1,6 @@
 using System.Collections.Generic;
-using System.ComponentModel;
-using Newtonsoft.Json;
-
 using Blaggard.Common;
+using Newtonsoft.Json;
 using WasteDrudgers.Entities;
 using WasteDrudgers.Level.Generation;
 
@@ -30,27 +28,13 @@ namespace WasteDrudgers.Data
     public class DBItem : DBEntity
     {
         public string Name { get; set; }
-        public string UnidentifiedName { get; set; }
-        public bool Obfuscated { get; set; }
 
         public ItemType Type { get; set; }
         public char Character { get; set; }
-        public char Glyph { get; set; }
 
         public int DangerLevel { get; set; }
         public int Weight { get; set; }
         public int Value { get; set; }
-
-        // Weapon fields
-        public int BaseSkill { get; set; }
-        public float Parry { get; set; }
-        public int MinDamage { get; set; }
-        public int MaxDamage { get; set; }
-
-        // Armor fields
-        public int Dodge { get; set; }
-        public int Armor { get; set; }
-        public int SpellDefense { get; set; }
 
         [JsonIgnore]
         public DBSpell UseSpell { get; set; }
@@ -62,6 +46,21 @@ namespace WasteDrudgers.Data
         public DBMaterialGroup MaterialGroup { get; set; }
     }
 
+    public class DBWeapon : DBItem
+    {
+        public int BaseSkill { get; set; }
+        public float Parry { get; set; }
+        public int MinDamage { get; set; }
+        public int MaxDamage { get; set; }
+    }
+
+    public class DBApparel : DBItem
+    {
+        public int Dodge { get; set; }
+        public int Armor { get; set; }
+        public int SpellDefense { get; set; }
+    }
+
     public class DBMaterialGroup
     {
         [JsonIgnore]
@@ -71,7 +70,7 @@ namespace WasteDrudgers.Data
     public class DBLootList : DBEntity
     {
         [JsonIgnore]
-        public DBItem[] Items { get; set; }
+        public List<DBItem> Items { get; set; }
     }
 
     public class DBLevel : DBEntity
@@ -180,7 +179,7 @@ namespace WasteDrudgers.Data
     public class DBCreatureList : DBEntity
     {
         [JsonIgnore]
-        public DBCreature[] Creatures { get; set; }
+        public List<DBCreature> Creatures { get; set; }
     }
 
     public class DBMapData

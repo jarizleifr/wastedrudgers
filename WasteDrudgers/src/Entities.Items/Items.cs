@@ -30,7 +30,6 @@ namespace WasteDrudgers.Entities
             world.ecs.Assign(entity, new Renderable
             {
                 character = raw.Character,
-                glyph = raw.Glyph,
                 color = material.Color,
             });
             world.ecs.Assign(entity, new Item
@@ -49,32 +48,34 @@ namespace WasteDrudgers.Entities
 
             if (raw.Type.IsWeapon())
             {
+                var wpn = (DBWeapon)raw;
                 if (raw.Type == ItemType.Shield)
                 {
-                    world.ecs.Assign(entity, new Shield { baseBlock = raw.BaseSkill });
+                    world.ecs.Assign(entity, new Shield { baseBlock = wpn.BaseSkill });
                 }
                 else
                 {
                     world.ecs.Assign(entity, new Weapon
                     {
-                        chance = raw.BaseSkill,
-                        min = raw.MinDamage + (material.DamageBonus - raw.BaseMaterial.DamageBonus),
-                        max = raw.MaxDamage + (material.DamageBonus - raw.BaseMaterial.DamageBonus),
-                        parry = raw.Parry,
+                        chance = wpn.BaseSkill,
+                        min = wpn.MinDamage + (material.DamageBonus - raw.BaseMaterial.DamageBonus),
+                        max = wpn.MaxDamage + (material.DamageBonus - raw.BaseMaterial.DamageBonus),
+                        parry = wpn.Parry,
                     });
                 }
             }
 
-            if (raw.Type.IsArmor())
+            if (raw.Type.IsApparel())
             {
+                var apr = (DBApparel)raw;
                 world.ecs.Assign(entity, new Defense
                 {
-                    dodge = raw.Dodge,
-                    armor = raw.Armor + (material.ArmorBonus - raw.BaseMaterial.ArmorBonus),
+                    dodge = apr.Dodge,
+                    armor = apr.Armor + (material.ArmorBonus - raw.BaseMaterial.ArmorBonus),
                 });
             }
 
-            if (raw.Obfuscated)
+            if (raw.Type.IsObfuscated())
             {
                 var obfuscated = world.ObfuscatedNames;
                 if (!obfuscated.IsKnown(raw.Id))
