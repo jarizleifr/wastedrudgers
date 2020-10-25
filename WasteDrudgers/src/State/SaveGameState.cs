@@ -1,5 +1,3 @@
-using ManulECS;
-
 namespace WasteDrudgers.State
 {
     internal class SaveGameState : IRunState
@@ -10,7 +8,7 @@ namespace WasteDrudgers.State
         public void Run(IContext ctx, World world)
         {
             SerializationUtils.Save(world);
-            world.ecs.Clear();
+            world.Clear();
             world.SetState(ctx, nextState);
         }
     }

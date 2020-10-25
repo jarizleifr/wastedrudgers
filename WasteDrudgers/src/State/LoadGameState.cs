@@ -4,7 +4,6 @@ using System.Linq;
 using Blaggard.Common;
 using Blaggard.FileIO;
 using Blaggard.Graphics;
-using WasteDrudgers.Level;
 using WasteDrudgers.Render;
 
 namespace WasteDrudgers.State
@@ -92,7 +91,8 @@ namespace WasteDrudgers.State
 
         private void Load(IContext ctx, World world, string save)
         {
-            world.ecs.Clear();
+            world.Clear();
+
             var path = SerializationUtils.GetSaveFolderPath();
             var saveFile = Path.Combine(path, save);
 

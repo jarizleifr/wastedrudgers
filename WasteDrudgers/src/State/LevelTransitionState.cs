@@ -12,7 +12,7 @@ namespace WasteDrudgers.State
 
             // Autosave before transitions
             SerializationUtils.Save(world);
-            world.ecs.Clear();
+            world.Clear();
 
             var savePath = SerializationUtils.GetSavePath(playerData.name);
 

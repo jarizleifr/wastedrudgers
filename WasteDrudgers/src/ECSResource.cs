@@ -14,5 +14,11 @@ namespace WasteDrudgers
 
         public void Set(ManulECS.World ecs, T value) =>
             ecs.SetResource<T>(cachedField = value);
+
+        public void Clear(ManulECS.World ecs)
+        {
+            cachedField = default(T);
+            ecs.ClearResource<T>();
+        }
     }
 }

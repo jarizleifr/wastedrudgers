@@ -89,5 +89,14 @@ namespace WasteDrudgers
                 ShouldRedraw = true;
             }
         }
+
+        public void Clear()
+        {
+            playerData.Clear(ecs);
+            map.Clear(ecs);
+            calendar.Clear(ecs);
+            obfuscatedNames.Clear(ecs);
+            ecs.Clear();
+        }
     }
 }
