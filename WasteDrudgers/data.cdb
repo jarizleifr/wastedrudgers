@@ -930,9 +930,20 @@
 					"display": null
 				},
 				{
+					"typeStr": "6:CRE",
+					"name": "base",
+					"opt": true,
+					"display": null
+				},
+				{
 					"typeStr": "1",
 					"name": "name",
 					"display": null
+				},
+				{
+					"typeStr": "1",
+					"name": "character",
+					"opt": true
 				},
 				{
 					"typeStr": "6:COL",
@@ -940,35 +951,45 @@
 					"opt": true
 				},
 				{
-					"typeStr": "1",
-					"name": "character",
-					"display": null
-				},
-				{
 					"typeStr": "3",
-					"name": "glyph",
+					"name": "strength",
 					"opt": true
 				},
 				{
-					"typeStr": "1",
-					"name": "sprite",
-					"display": null
+					"typeStr": "3",
+					"name": "endurance",
+					"opt": true
 				},
 				{
-					"typeStr": "6:RAC",
-					"name": "race",
-					"display": null
+					"typeStr": "3",
+					"name": "finesse",
+					"opt": true
 				},
 				{
-					"typeStr": "8",
-					"name": "professions",
-					"display": null
+					"typeStr": "3",
+					"name": "intellect",
+					"opt": true
+				},
+				{
+					"typeStr": "3",
+					"name": "resolve",
+					"opt": true
+				},
+				{
+					"typeStr": "3",
+					"name": "awareness",
+					"opt": true
 				},
 				{
 					"typeStr": "6:NAT",
 					"name": "naturalAttack",
 					"opt": true,
 					"display": null
+				},
+				{
+					"typeStr": "8",
+					"name": "professions",
+					"opt": true
 				},
 				{
 					"typeStr": "1",
@@ -981,185 +1002,116 @@
 					"id": "cr_mutorc",
 					"name": "mutorc",
 					"character": "o",
-					"sprite": "",
-					"race": "r_mutorc",
+					"tags": "common",
+					"endurance": 10,
+					"strength": 11,
+					"finesse": 10,
+					"intellect": 9,
+					"resolve": 10,
+					"awareness": 10,
+					"color": "c_green_light",
 					"professions": [
 						{
-							"profession": "profession_fighter",
-							"level": 1
+							"profession": "fighter_brawler",
+							"points": 100
 						}
-					],
-					"tags": "common"
+					]
 				},
 				{
 					"id": "cr_mutogre",
 					"name": "mutogre",
 					"character": "O",
-					"sprite": "",
-					"race": "r_mutorc",
+					"tags": "common",
+					"endurance": 11,
+					"strength": 11,
+					"awareness": 10,
+					"resolve": 10,
+					"intellect": 9,
+					"finesse": 9,
+					"color": "c_green_light",
 					"professions": [
 						{
-							"profession": "profession_fighter",
-							"level": 1
+							"profession": "fighter_brawler",
+							"points": 150
 						}
-					],
-					"tags": "common"
+					]
 				},
 				{
 					"id": "cr_fungoid",
 					"name": "fungoid",
 					"character": "t",
-					"sprite": "",
-					"race": "r_generic",
-					"professions": [
-						{
-							"profession": "profession_fighter",
-							"level": 1
-						}
-					],
 					"naturalAttack": "nat_fungoid_strike",
 					"color": "c_teal_light",
-					"tags": "cave"
+					"tags": "cave",
+					"strength": 8,
+					"endurance": 10,
+					"awareness": 4,
+					"resolve": 10,
+					"intellect": 2,
+					"finesse": 8
 				},
 				{
 					"id": "cr_mokrug",
 					"name": "mokrug beetle",
 					"character": "i",
-					"sprite": "",
-					"race": "r_generic",
-					"professions": [
-						{
-							"profession": "profession_fighter",
-							"level": 1
-						}
-					],
 					"color": "c_red_light",
-					"tags": "cave"
+					"tags": "cave",
+					"strength": 10,
+					"endurance": 10,
+					"awareness": 10,
+					"resolve": 10,
+					"intellect": 3,
+					"finesse": 10
 				},
 				{
 					"id": "cr_mokrug_larva",
 					"name": "mokrug larva",
 					"character": "w",
-					"sprite": "",
-					"race": "r_generic",
-					"professions": [
-						{
-							"profession": "profession_fighter",
-							"level": 1
-						}
-					],
 					"color": "c_beige_light",
-					"tags": "cave"
+					"tags": "cave",
+					"strength": 6,
+					"endurance": 8,
+					"awareness": 4,
+					"resolve": 10,
+					"intellect": 2,
+					"finesse": 8
 				},
 				{
 					"id": "cr_grol",
 					"name": "grol",
 					"character": "F",
-					"sprite": "",
-					"race": "r_generic",
-					"professions": [
-						{
-							"profession": "profession_fighter",
-							"level": 2
-						}
-					],
 					"color": "c_blue_light",
-					"tags": "cave"
+					"tags": "cave",
+					"strength": 12,
+					"endurance": 12,
+					"awareness": 10,
+					"resolve": 10,
+					"intellect": 3,
+					"finesse": 10
 				},
 				{
 					"id": "skorrek",
 					"name": "skorrek",
 					"character": "r",
-					"sprite": "",
-					"race": "r_generic",
+					"tags": "common",
+					"color": "c_brown_light",
+					"strength": 5,
+					"endurance": 10,
+					"awareness": 10,
+					"resolve": 10,
+					"intellect": 4,
+					"finesse": 12
+				},
+				{
+					"id": "large_skorrek",
+					"name": "large skorrek",
+					"base": "skorrek",
 					"professions": [
 						{
-							"profession": "profession_fighter",
-							"level": 1
+							"profession": "beast",
+							"points": 50
 						}
-					],
-					"tags": "common",
-					"color": "c_brown_light"
-				}
-			],
-			"separators": [],
-			"props": {}
-		},
-		{
-			"name": "RAC",
-			"columns": [
-				{
-					"typeStr": "0",
-					"name": "id",
-					"display": null
-				},
-				{
-					"typeStr": "1",
-					"name": "name"
-				},
-				{
-					"typeStr": "6:COL",
-					"name": "color",
-					"display": null
-				},
-				{
-					"typeStr": "3",
-					"name": "strengthModifier"
-				},
-				{
-					"typeStr": "3",
-					"name": "enduranceModifier"
-				},
-				{
-					"typeStr": "3",
-					"name": "finesseModifier"
-				},
-				{
-					"typeStr": "3",
-					"name": "intellectModifier"
-				},
-				{
-					"typeStr": "3",
-					"name": "resolveModifier"
-				},
-				{
-					"typeStr": "3",
-					"name": "awarenessModifier"
-				}
-			],
-			"lines": [
-				{
-					"id": "r_mutorc",
-					"strengthModifier": 2,
-					"enduranceModifier": 0,
-					"finesseModifier": 0,
-					"intellectModifier": -1,
-					"resolveModifier": -1,
-					"awarenessModifier": 0,
-					"name": "mutorc",
-					"color": "c_green_light"
-				},
-				{
-					"id": "r_mutogre",
-					"strengthModifier": 3,
-					"enduranceModifier": 2,
-					"finesseModifier": -1,
-					"intellectModifier": -2,
-					"resolveModifier": -2,
-					"awarenessModifier": 0,
-					"name": "mutogre",
-					"color": "c_green_light"
-				},
-				{
-					"id": "r_generic",
-					"name": "generic",
-					"color": "c_beige",
-					"strengthModifier": 0,
-					"enduranceModifier": 0,
-					"finesseModifier": 0,
-					"intellectModifier": 0,
-					"resolveModifier": 0,
-					"awarenessModifier": 0
+					]
 				}
 			],
 			"separators": [],
@@ -1175,21 +1127,56 @@
 				},
 				{
 					"typeStr": "8",
-					"name": "skills"
+					"name": "focus"
 				}
 			],
 			"lines": [
 				{
-					"id": "profession_fighter",
-					"skills": [
+					"id": "beast",
+					"focus": [
 						{
-							"skill": 0
+							"type": 10
 						},
 						{
-							"skill": 7
+							"type": 11
 						},
 						{
-							"skill": 9
+							"type": 13
+						},
+						{
+							"type": 14
+						},
+						{
+							"type": 17
+						},
+						{
+							"type": 16
+						}
+					]
+				},
+				{
+					"id": "fighter_brawler",
+					"focus": [
+						{
+							"type": 0
+						},
+						{
+							"type": 7
+						},
+						{
+							"type": 10
+						},
+						{
+							"type": 11
+						},
+						{
+							"type": 13
+						},
+						{
+							"type": 14
+						},
+						{
+							"type": 17
 						}
 					]
 				}
@@ -2422,39 +2409,6 @@
 			]
 		},
 		{
-			"name": "CRE@professions",
-			"props": {
-				"hide": true
-			},
-			"separators": [],
-			"lines": [],
-			"columns": [
-				{
-					"typeStr": "6:PRF",
-					"name": "profession",
-					"display": null
-				},
-				{
-					"typeStr": "3",
-					"name": "level"
-				}
-			]
-		},
-		{
-			"name": "PRF@skills",
-			"props": {
-				"hide": true
-			},
-			"separators": [],
-			"lines": [],
-			"columns": [
-				{
-					"typeStr": "5:MartialArts,ShortBlade,LongBlade,AxeMace,Polearm,Fencing,Whip,Dodge,Shield,Observation",
-					"name": "skill"
-				}
-			]
-		},
-		{
 			"name": "MGR",
 			"columns": [
 				{
@@ -2739,6 +2693,39 @@
 			],
 			"separators": [],
 			"props": {}
+		},
+		{
+			"name": "PRF@focus",
+			"props": {
+				"hide": true
+			},
+			"separators": [],
+			"lines": [],
+			"columns": [
+				{
+					"typeStr": "5:MartialArts,ShortBlade,LongBlade,AxeMace,Polearm,Fencing,Whip,Dodge,Shield,Observation,Vigor,Health,Magic,Strength,Endurance,Resolve,Awareness,Finesse,Intellect",
+					"name": "type"
+				}
+			]
+		},
+		{
+			"name": "CRE@professions",
+			"props": {
+				"hide": true
+			},
+			"separators": [],
+			"lines": [],
+			"columns": [
+				{
+					"typeStr": "6:PRF",
+					"name": "profession",
+					"display": null
+				},
+				{
+					"typeStr": "3",
+					"name": "points"
+				}
+			]
 		}
 	],
 	"customTypes": [

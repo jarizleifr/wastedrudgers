@@ -35,10 +35,22 @@ namespace WasteDrudgers.Entities
         // Skill base
         public static int BaseSkill(SkillType type, Stats stats) => type switch
         {
-            SkillType.MartialArts => stats.finesse + 15,
-            var _ when type.IsFinesseSkill() => stats.finesse,
+            SkillType.MartialArts => Easy(stats.strength),
+            SkillType.ShortBlade => Easy(stats.finesse),
+            SkillType.LongBlade => Average(stats.strength),
+            SkillType.AxeMace => Easy(stats.strength),
+            SkillType.Polearm => Average(stats.strength),
+            SkillType.Fencing => Hard(stats.finesse),
+            SkillType.Whip => Hard(stats.finesse),
+
+            SkillType.Shield => Average(stats.endurance),
+            SkillType.Observation => Average(stats.awareness),
             _ => 0
         };
+
+        private static int Easy(int governingStat) => governingStat * 3;
+        private static int Average(int governingStat) => governingStat * 2;
+        private static int Hard(int governingStat) => governingStat * 1;
 
         public static int ExperienceNeededForLevel(int level) => (level * (level - 1) / 2) * BASE_EXPERIENCE;
 

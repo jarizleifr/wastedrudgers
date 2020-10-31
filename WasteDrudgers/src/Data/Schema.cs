@@ -114,21 +114,6 @@ namespace WasteDrudgers.Data
         public string Message { get; set; }
     }
 
-    public class DBRace : DBEntity
-    {
-        public string Name { get; set; }
-
-        [JsonIgnore]
-        public Color Color { get; set; }
-
-        public int StrengthModifier { get; set; }
-        public int EnduranceModifier { get; set; }
-        public int FinesseModifier { get; set; }
-        public int IntellectModifier { get; set; }
-        public int ResolveModifier { get; set; }
-        public int AwarenessModifier { get; set; }
-    }
-
     public class DBSpell : DBEntity
     {
         public string Name { get; set; }
@@ -148,19 +133,20 @@ namespace WasteDrudgers.Data
     public class DBCreature : DBEntity
     {
         public string Name { get; set; }
+        public char Character { get; set; }
 
         [JsonIgnore]
         public Color Color { get; set; }
 
-        public char Character { get; set; }
-        public char Glyph { get; set; }
-        public string Sprite { get; set; }
+        public int Strength { get; set; }
+        public int Endurance { get; set; }
+        public int Finesse { get; set; }
+        public int Intellect { get; set; }
+        public int Resolve { get; set; }
+        public int Awareness { get; set; }
 
         [JsonIgnore]
-        public DBRace Race { get; set; }
-
-        [JsonIgnore]
-        public List<(List<SkillType>, int)> Professions { get; set; }
+        public List<(List<ProfessionFocus>, int)> Professions { get; set; }
 
         [JsonIgnore]
         public DBNaturalAttack NaturalAttack { get; set; }

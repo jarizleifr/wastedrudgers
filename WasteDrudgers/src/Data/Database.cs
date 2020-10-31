@@ -26,7 +26,6 @@ namespace WasteDrudgers.Data
         private Dictionary<string, DBLogMessage> dbLogMessages;
         private Dictionary<string, DBSpell> dbSpells;
         private Dictionary<string, DBNaturalAttack> dbNaturalAttacks;
-        private Dictionary<string, DBRace> dbRaces;
         private Dictionary<string, DBCreature> dbCreatures;
         private Dictionary<string, DBCreatureList> dbCreatureLists;
         private Dictionary<ItemType, List<string>> dbObfuscatedNames;
@@ -128,18 +127,6 @@ namespace WasteDrudgers.Data
                 return dbItem;
             });
 
-            var dbProfessions = GetNodeFromRoot("PRF", root).ToDictionary(GetId, p =>
-            {
-                return p["skills"].Select(s => s["skill"].ToObject<SkillType>()).ToList();
-            });
-
-            dbRaces = GetNodeFromRoot("RAC", root).ToDictionary(GetId, r =>
-            {
-                var race = r.ToObject<DBRace>();
-                race.Color = dbColors[r["color"].ToString()];
-                return race;
-            });
-
             dbNaturalAttacks = GetNodeFromRoot("NAT", root).ToDictionary(GetId, n =>
             {
                 var naturalAttack = n.ToObject<DBNaturalAttack>();
@@ -150,23 +137,50 @@ namespace WasteDrudgers.Data
                 return naturalAttack;
             });
 
-            dbCreatureLists = new Dictionary<string, DBCreatureList>();
-            dbCreatures = GetNodeFromRoot("CRE", root).ToDictionary(GetId, cr =>
+            var dbProfessions = GetNodeFromRoot("PRF", root).ToDictionary(GetId, p =>
             {
-                var creature = cr.ToObject<DBCreature>();
-                creature.Race = dbRaces[cr["race"].ToString()];
-                creature.Color = creature.Race.Color;
-                creature.Professions = cr["professions"].Select(p => (dbProfessions[p["profession"].ToString()], (int)p["level"])).ToList();
+                return p["focus"].Select(s => s["type"].ToObject<ProfessionFocus>()).ToList();
+            });
 
-                if (cr["naturalAttack"] != null)
+            dbCreatureLists = new Dictionary<string, DBCreatureList>();
+            var creatureRoot = GetNodeFromRoot("CRE", root);
+            dbCreatures = creatureRoot.ToDictionary(GetId, cr =>
+            {
+                var creature = MakeCreature(cr, dbProfessions);
+                if (cr["base"] != null)
                 {
-                    creature.NaturalAttack = dbNaturalAttacks[cr["naturalAttack"].ToString()];
-                }
+                    var baseCr = creatureRoot
+                        .Where(b => b["id"].ToString() == cr["base"].ToString())
+                        .Single();
+                    var baseCreature = MakeCreature(baseCr, dbProfessions);
 
-                // If color override specified
-                if (cr["color"] != null)
-                {
-                    creature.Color = dbColors[cr["color"].ToString()];
+                    if (creature.Character == default(char)) creature.Character = baseCreature.Character;
+                    if (creature.Color == default(Color)) creature.Color = baseCreature.Color;
+                    if (creature.Strength == 0) creature.Strength = baseCreature.Strength;
+                    if (creature.Endurance == 0) creature.Endurance = baseCreature.Endurance;
+                    if (creature.Finesse == 0) creature.Finesse = baseCreature.Finesse;
+                    if (creature.Intellect == 0) creature.Intellect = baseCreature.Intellect;
+                    if (creature.Resolve == 0) creature.Resolve = baseCreature.Resolve;
+                    if (creature.Awareness == 0) creature.Awareness = baseCreature.Awareness;
+
+                    if (creature.Professions.Count == 0) creature.Professions = baseCreature.Professions;
+
+                    creature.NaturalAttack ??= baseCreature.NaturalAttack;
+
+                    if (cr["tags"] == null)
+                    {
+                        foreach (var tag in baseCr["tags"].ToString().Split(','))
+                        {
+                            if (dbCreatureLists.TryGetValue(tag, out var creatureList))
+                            {
+                                creatureList.Creatures.Add(creature);
+                            }
+                            else
+                            {
+                                dbCreatureLists.Add(tag, new DBCreatureList { Id = tag, Creatures = new List<DBCreature> { creature } });
+                            }
+                        }
+                    }
                 }
 
                 if (cr["tags"] != null)
@@ -183,6 +197,7 @@ namespace WasteDrudgers.Data
                         }
                     }
                 }
+
                 return creature;
             });
 
@@ -325,5 +340,33 @@ namespace WasteDrudgers.Data
         private static JToken GetRootNode(JToken token) => token["sheets"];
 
         private static JToken GetNodeFromRoot(string nodeId, JToken root) => root.Where(t => t["name"].ToString() == nodeId).Single()["lines"];
+
+        private DBCreature MakeCreature(JToken cr, Dictionary<string, List<ProfessionFocus>> dbProfessions)
+        {
+            var creature = cr.ToObject<DBCreature>();
+
+            if (cr["professions"] != null)
+            {
+                creature.Professions = cr["professions"]
+                    .Select(p => (dbProfessions[p["profession"].ToString()], (int)p["points"]))
+                    .ToList();
+            }
+            else
+            {
+                creature.Professions = new List<(List<ProfessionFocus>, int)>();
+            }
+
+            if (cr["naturalAttack"] != null)
+            {
+                creature.NaturalAttack = dbNaturalAttacks[cr["naturalAttack"].ToString()];
+            }
+
+            if (cr["color"] != null)
+            {
+                creature.Color = dbColors[cr["color"].ToString()];
+            }
+
+            return creature;
+        }
     }
 }

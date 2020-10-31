@@ -1,87 +1,144 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using ManulECS;
 using WasteDrudgers.Data;
 
 namespace WasteDrudgers.Entities
 {
     public static class ComponentUtils
     {
-        public static Skills CreateSkillsFromProfessions(DBCreature creature, int finesse, int intellect)
+        public static void ApplyProfession(World world, Entity entity, DBCreature raw)
         {
-            var skills = new Skills { set = new List<Skill>() };
+            var pointsLeft = 0;
+            ref var stats = ref world.ecs.GetRef<Stats>(entity);
+            ref var pools = ref world.ecs.GetRef<Health>(entity);
+            ref var skills = ref world.ecs.GetRef<Skills>(entity);
 
-            foreach (var p in creature.Professions)
+            foreach (var profession in raw.Professions)
             {
-                var finesseSkills = p.Item1.Where(s => s.IsFinesseSkill()).ToList();
-                var knowledgeSkills = p.Item1.Where(s => s.IsKnowledgeSkill()).ToList();
-
-                for (int i = 0; i < p.Item2; i++)
+                var points = profession.Item2 + pointsLeft;
+                while (points >= 2)
                 {
-                    var finessePoints = finesse;
-                    while (finessePoints > 0)
+                    var available = profession.Item1.Where(p => p.GetCost() <= points).ToList();
+
+                    var costs20 = available.Where(p => p.GetCost() == 20).ToList();
+                    var costs10 = available.Where(p => p.GetCost() == 10).ToList();
+                    var costs5 = available.Where(p => p.GetCost() == 5).ToList();
+                    var costs2 = available.Where(p => p.GetCost() == 2).ToList();
+
+                    ProfessionFocus focus;
+
+                    if (points >= 20)
                     {
-                        skills.Increment(finesseSkills[RNG.Int(finesseSkills.Count)]);
-                        finessePoints--;
+                        var weight = RNG.Int(100);
+                        if (costs2.Count > 0 && weight < 50)
+                        {
+                            focus = costs2[RNG.Int(costs2.Count)];
+                        }
+                        else if (costs5.Count > 0)
+                        {
+                            focus = costs5[RNG.Int(costs5.Count)];
+                        }
+                        else if (costs10.Count > 0)
+                        {
+                            focus = costs10[RNG.Int(costs10.Count)];
+                        }
+                        else if (costs20.Count > 0)
+                        {
+                            focus = costs20[RNG.Int(costs20.Count)];
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    else if (points >= 10)
+                    {
+                        var weight = RNG.Int(100);
+                        if (costs2.Count > 0 && weight < 50)
+                        {
+                            focus = costs2[RNG.Int(costs2.Count)];
+                        }
+                        else if (costs5.Count > 0)
+                        {
+                            focus = costs5[RNG.Int(costs5.Count)];
+                        }
+                        else if (costs10.Count > 0)
+                        {
+                            focus = costs10[RNG.Int(costs10.Count)];
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    else if (points >= 5)
+                    {
+                        var weight = RNG.Int(100);
+                        if (costs2.Count > 0 && weight < 50)
+                        {
+                            focus = costs2[RNG.Int(costs2.Count)];
+                        }
+                        else if (costs5.Count > 0)
+                        {
+                            focus = costs5[RNG.Int(costs5.Count)];
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    else if (points >= 2 && costs2.Count > 0)
+                    {
+                        focus = costs2[RNG.Int(costs2.Count)];
+                    }
+                    else
+                    {
+                        break;
                     }
 
-                    var intellectPoints = intellect;
-                    while (intellectPoints > 0)
-                    {
-                        skills.Increment(finesseSkills[RNG.Int(knowledgeSkills.Count)]);
-                        finessePoints--;
-                        intellectPoints--;
-                    }
+                    ApplyFocus(focus, ref stats, ref pools, ref skills);
+                    points -= focus.GetCost();
                 }
+                pointsLeft += points;
             }
-            return skills;
         }
 
-        public static int GetLevel(DBCreature creature) => creature.Professions
-            .Select((p) => p.Item2)
-            .Aggregate((a, c) => a + c);
-
-        public static int GetExperience(int level, Stats stats, Skills skills) => skills.set.
-            Select((s) => GetSkillWeight(s))
-            .Aggregate((a, c) => a + c);
-
-        private static int GetSkillWeight(Skill skill)
+        private static void ApplyFocus(ProfessionFocus focus, ref Stats stats, ref Health pools, ref Skills skills)
         {
-            float v = skill.value;
-            switch (skill.type)
+            if (focus.IsStat())
             {
-                case SkillType.LongBlade:
-                case SkillType.AxeMace:
-                case SkillType.Polearm:
-                case SkillType.Shield:
-                default:
-                    v = v switch
-                    {
-                        var _ when v < 25 => v * 0.6f,  // Untrained
-                        var _ when v < 50 => v * 0.8f,  // Novice
-                        var _ when v < 75 => v * 1.0f,  // Regular
-                        var _ when v < 100 => v * 1.2f, // Expert
-                        _ => v * 1.4f                   // Master
-                    };
-                    break;
-
-                case SkillType.ShortBlade:
-                case SkillType.Fencing:
-                case SkillType.Whip:
-                case SkillType.MartialArts:
-                case SkillType.Dodge:
-                case SkillType.Observation:
-                    v = v switch
-                    {
-                        var _ when v < 25 => v * 0.5f,   // Untrained
-                        var _ when v < 50 => v * 0.75f,  // Novice
-                        var _ when v < 75 => v * 1.0f,   // Regular
-                        var _ when v < 100 => v * 1.25f, // Expert
-                        _ => v * 1.5f                    // Master
-                    };
-                    break;
+                var type = focus.GetStat();
+                stats.SetBase(type, stats.Get(type).Base + 1);
             }
-            return (int)v;
+            else if (focus.IsPool())
+            {
+                var type = focus.GetPool();
+                switch (type)
+                {
+                    case PoolType.Vigor:
+                        pools.vigor.Base += 1;
+                        break;
+                    case PoolType.Health:
+                        pools.health.Base += 1;
+                        break;
+                }
+            }
+            else
+            {
+                var type = focus.GetSkill();
+                skills.Increment(type);
+            }
+        }
+
+        public static int GetLevel(World world, Entity entity)
+        {
+            var points = Creatures.GetSpentCharacterPoints(world, entity);
+            points -= 800;
+            points /= 15;
+
+            return points <= 0 ? 1 : points;
         }
     }
 }

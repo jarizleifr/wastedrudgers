@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Blaggard.Common;
 using ManulECS;
 
@@ -29,12 +30,12 @@ namespace WasteDrudgers.Entities
 
             var stats = new Stats
             {
-                strength = 10 + creature.Race.StrengthModifier,
-                endurance = 10 + creature.Race.EnduranceModifier,
-                finesse = 10 + creature.Race.FinesseModifier,
-                intellect = 10 + creature.Race.IntellectModifier,
-                resolve = 10 + creature.Race.ResolveModifier,
-                awareness = 10 + creature.Race.AwarenessModifier
+                strength = creature.Strength,
+                endurance = creature.Endurance,
+                finesse = creature.Finesse,
+                intellect = creature.Intellect,
+                resolve = creature.Resolve,
+                awareness = creature.Awareness
             };
 
             world.ecs.Assign(entity, stats);
@@ -48,15 +49,14 @@ namespace WasteDrudgers.Entities
                 vigor = Formulae.BaseVigor(stats),
                 health = Formulae.BaseHealth(stats)
             });
+            world.ecs.Assign(entity, new Skills { set = new List<Skill>() });
 
-            var skills = ComponentUtils.CreateSkillsFromProfessions(creature, stats.finesse, stats.intellect);
-            world.ecs.Assign(entity, skills);
+            ComponentUtils.ApplyProfession(world, entity, creature);
 
-            var level = ComponentUtils.GetLevel(creature);
             world.ecs.Assign(entity, new Experience
             {
-                level = level,
-                experience = ComponentUtils.GetExperience(level, stats, skills),
+                level = ComponentUtils.GetLevel(world, entity),
+                experience = GetSpentCharacterPoints(world, entity) / 100
             });
 
             if (creature.NaturalAttack != null)
@@ -181,17 +181,33 @@ namespace WasteDrudgers.Entities
 
         public static void AwardKillExperience(World world, Entity awardee, Entity killed)
         {
-            var exp = world.ecs.GetRef<Experience>(killed);
-            var skills = world.ecs.GetRef<Skills>(killed);
-            var stats = world.ecs.GetRef<Stats>(killed);
-
-            AwardExperience(world, awardee, ComponentUtils.GetExperience(exp.level, stats, skills));
+            AwardExperience(world, awardee, GetSpentCharacterPoints(world, killed) / 100);
         }
 
         public static void AwardExperience(World world, Entity entity, int experience)
         {
             ref var exp = ref world.ecs.GetRef<Experience>(entity);
             exp.experience += experience;
+        }
+
+        public static int GetSpentCharacterPoints(World world, Entity entity)
+        {
+            var stats = world.ecs.GetRef<Stats>(entity);
+            var skills = world.ecs.GetRef<Skills>(entity);
+
+            int characterPoints = 0;
+            for (int i = 0; i < 6; i++)
+            {
+                var type = (StatType)i;
+                characterPoints += stats.Get(type).Base * Formulae.GetStatCost(type);
+            }
+
+            foreach (var s in skills.set)
+            {
+                characterPoints += s.value * 2;
+            }
+
+            return characterPoints;
         }
     }
 }
