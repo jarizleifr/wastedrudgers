@@ -71,7 +71,7 @@ namespace WasteDrudgers.Render
                 HUD.DrawFooter(ctx, world, cursor);
 
                 Viewport.CameraOffset(cursor, map.width, map.height, rect.width, rect.height, out int xOffset, out int yOffset);
-                viewport.PutChar(cursor.x + rect.x - xOffset, cursor.y + rect.y - yOffset, 'X', ctx.Theme.white);
+                viewport.PutChar(cursor.x + rect.x - xOffset, cursor.y + rect.y - yOffset, 'X', ctx.Colors.white);
 
                 world.ShouldRedraw = false;
             }

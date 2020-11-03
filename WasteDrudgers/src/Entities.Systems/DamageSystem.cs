@@ -34,6 +34,9 @@ namespace WasteDrudgers.Entities
                 else
                 {
                     hlt.health.Damage += damage.damage;
+                    var c = world.Map[pos.coords];
+                    c.RandomNeighbor.Blood = BloodType.Red;
+
                     if (hlt.health.Current <= 0)
                     {
                         if (world.ecs.Has<PlayerInitiated>(entity))

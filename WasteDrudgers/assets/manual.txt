@@ -1,0 +1,44 @@
+STATS
+-----
+
+Derived Stats:
+--------------
+
+Action    - Percentage at which you accumulate energy to act again.
+Movement  - Energy cost for a single step.
+
+Heal Rate - Rate at which Vigor and Health regenerates.
+Lift      - Amount of weight you can lift without penalties.
+Reaction  - How others react to your presence.
+
+Saves:
+------
+
+Evasion   - Ability to dodge attacks, projectiles and explosions, 
+            evading traps
+Physical  - Ability to suffer punishment, resistance to pain
+Mental    - Ability to withstand mental strain, mind control
+
+Primary Stats:
+--------------
+
+STRENGTH  (ST)
+    Physical might, grit and muscle mass, ability to exert force with 
+    limbs, throwing range, melee damage
+
+ENDURANCE (EN)
+    Physical hardiness, resistance to pain and elements, general health and
+    well-being, ability to survive poisons and diseases
+
+FINESSE   (FI)
+    Manual dexterity and grace, physical reflexes and fine-motor skills
+
+INTELLECT (IN)
+    Mental power, problem-solving and learning new skills, spellcasting
+
+RESOLVE   (RE)
+    Strength of character, charisma, spellcasting, inner drive and
+    resistance to charms and mental effects
+
+AWARENESS (AW)
+    Perception of surroundings, intuition, noticing details, social cues

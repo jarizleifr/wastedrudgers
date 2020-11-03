@@ -89,7 +89,7 @@ namespace WasteDrudgers.Render
         {
             if (wrapper.equipped)
             {
-                layer.PutChar(inv.x - 1, inv.y + i, '•', ctx.Theme.white);
+                layer.PutChar(inv.x - 1, inv.y + i, '•', ctx.Colors.white);
             }
 
             layer.PutChar(inv.x, inv.y + i, (char)('A' + i), ctx.Theme.text);

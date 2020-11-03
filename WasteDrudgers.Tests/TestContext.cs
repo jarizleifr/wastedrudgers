@@ -7,6 +7,7 @@ namespace WasteDrudgers.Tests
     public class TestContext : IEngineContext
     {
         public UIData UIData { get; private set; }
+        public Colors Colors { get; private set; }
         public Theme Theme { get; private set; }
         public IConfig Config { get; private set; }
 

@@ -37,8 +37,8 @@ namespace WasteDrudgers.State
 
             HUD.DrawScreenBorders(root, ctx.Theme);
 
-            root.Print(root.Width / 2, root.Height / 2 - 2, "Game Over", ctx.Theme.healthDark, TextAlignment.Center);
-            root.Print(root.Width / 2, root.Height / 2 - 1, "You are dead", ctx.Theme.healthDark, TextAlignment.Center);
+            root.Print(root.Width / 2, root.Height / 2 - 2, "Game Over", ctx.Colors.redDark, TextAlignment.Center);
+            root.Print(root.Width / 2, root.Height / 2 - 1, "You are dead", ctx.Colors.redDark, TextAlignment.Center);
             root.Print(root.Width / 2, root.Height / 2 + 1, "Press 'Enter' or 'Escape' to return to main menu", ctx.Theme.text, TextAlignment.Center);
         }
     }

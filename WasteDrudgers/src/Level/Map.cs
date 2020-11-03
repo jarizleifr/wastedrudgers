@@ -4,6 +4,7 @@ using System.Linq;
 using Blaggard;
 using Blaggard.Common;
 using Newtonsoft.Json;
+using WasteDrudgers.Entities;
 
 namespace WasteDrudgers.Level
 {
@@ -11,8 +12,11 @@ namespace WasteDrudgers.Level
     {
         Tile Tile { get; set; }
         Visibility Visibility { get; set; }
+        BloodType Blood { get; set; }
         bool Flags(TileFlags flags);
-        IEnumerable<int> Neighbors { get; }
+
+        IEnumerable<IMapCell> Neighbors { get; }
+        IMapCell RandomNeighbor { get; }
     }
 
     [JsonObject(MemberSerialization.OptIn)]
@@ -29,6 +33,8 @@ namespace WasteDrudgers.Level
         [JsonConverter(typeof(VisibilityArrayConverter))]
         private Visibility[] visibility;
 
+        private BloodType[] blood;
+
         private Tile[] tiles;
 
         public Map(string name, int width, int height)
@@ -39,6 +45,7 @@ namespace WasteDrudgers.Level
             seed = RNG.Int(int.MaxValue);
             tiles = new Tile[width * height];
             visibility = new Visibility[width * height];
+            blood = new BloodType[width * height];
         }
 
         public IMapCell this[Vec2 vec2] => Cell.FromVec2(this, vec2);
@@ -46,6 +53,7 @@ namespace WasteDrudgers.Level
 
         public Tile[] GetTiles() => tiles;
         public Visibility[] GetVisibility() => visibility;
+        public BloodType[] GetBlood() => blood;
 
         /// <summary>A map accessor.</summary>
         private class Cell : IMapCell
@@ -55,10 +63,13 @@ namespace WasteDrudgers.Level
             {
                 public Tile Tile { get => null; set { } }
                 public Visibility Visibility { get => default(Visibility); set { } }
+                public BloodType Blood { get => default(BloodType); set { } }
                 public bool Flags(TileFlags flags) => true;
-                public IEnumerable<int> Neighbors => Enumerable.Empty<int>();
+                public IEnumerable<IMapCell> Neighbors => Enumerable.Empty<IMapCell>();
+                public IMapCell RandomNeighbor => NULL;
             }
 
+            private static readonly Vec2[] matrix = new[] { new Vec2(-1, -1), new Vec2(0, -1), new Vec2(1, -1), new Vec2(-1, 0), new Vec2(1, 0), new Vec2(-1, 1), new Vec2(0, 1), new Vec2(1, 1) };
             private readonly Map map;
             private readonly int index;
 
@@ -87,7 +98,18 @@ namespace WasteDrudgers.Level
                 get => map.visibility[index];
                 set => map.visibility[index] = value;
             }
-            public IEnumerable<int> Neighbors => Util.GetNeighbors(index, map.width);
+
+            public BloodType Blood
+            {
+                get => map.blood[index];
+                set => map.blood[index] = value;
+            }
+
+            public IEnumerable<IMapCell> Neighbors =>
+                matrix.Select(m => map[index + m.ToIndex(map.width)]);
+
+            public IMapCell RandomNeighbor =>
+                map[Vec2.FromIndex(index, map.width) + matrix[RNG.Int(8)]];
 
             public bool Flags(TileFlags flags) => (flags & map.tiles[index].flags) != 0;
         }

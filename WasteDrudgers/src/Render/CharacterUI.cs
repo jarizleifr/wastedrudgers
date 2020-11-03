@@ -58,7 +58,7 @@ namespace WasteDrudgers.Render
             var skills = world.ecs.GetRef<Skills>(playerData.entity);
 
             DrawInfo(ctx, world, rect.x + 2, rect.y + 1);
-            DrawPortrait(rect.x + 20, rect.y + 1, layer, ctx.Theme);
+            DrawPortrait(ctx, rect.x + 20, rect.y + 1, layer);
             layer.LineHoriz(rect.x + 1, rect.y + 4, rect.width - menu.width - 1, '═');
             layer.LineHoriz(rect.x + 1, rect.y + 5, rect.width - menu.width - 1, '─');
 
@@ -168,10 +168,10 @@ namespace WasteDrudgers.Render
             c.Print(x + 13, y + 2, next.ToString(), ctx.Theme.text, TextAlignment.Right);
         }
 
-        private static void DrawPortrait(int x, int y, IBlittable layer, Theme theme)
+        private static void DrawPortrait(IContext ctx, int x, int y, IBlittable layer)
         {
             layer.Rect(x, y, 3, 3, ' ', Color.black, Color.black);
-            layer.PutChar(x + 1, y + 1, '@', theme.white);
+            layer.PutChar(x + 1, y + 1, '@', ctx.Colors.white);
         }
 
         private static void DrawCalendar(IContext ctx, World world, int x, int y)

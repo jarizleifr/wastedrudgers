@@ -3,6 +3,7 @@ using Blaggard;
 using Blaggard.Common;
 using Blaggard.Graphics;
 using ManulECS;
+using WasteDrudgers.Entities;
 using WasteDrudgers.Level;
 
 namespace WasteDrudgers.Render
@@ -121,6 +122,7 @@ namespace WasteDrudgers.Render
         {
             var tiles = map.GetTiles();
             var vis = map.GetVisibility();
+            var blood = map.GetBlood();
             for (int y = 0; y < viewport.height; y++)
             {
                 for (int x = 0; x < viewport.width; x++)
@@ -129,11 +131,11 @@ namespace WasteDrudgers.Render
                     if (ctx.Config.Style == GraphicsStyle.Glyphs)
                     {
                         bool wallBelow = i + map.width > map.width * map.height || (tiles[i + map.width].flags & TileFlags.BlocksMovement) > 0;
-                        DrawTile(ctx, layer, tiles[i], vis[i], x, y, i, wallBelow);
+                        DrawTile(ctx, layer, tiles[i], vis[i], blood[i], x, y, i, wallBelow);
                     }
                     else
                     {
-                        DrawTile(ctx, layer, tiles[i], vis[i], x + viewport.x, y + viewport.y, i);
+                        DrawTile(ctx, layer, tiles[i], vis[i], blood[i], x + viewport.x, y + viewport.y, i);
                     }
                 }
             }
@@ -164,16 +166,28 @@ namespace WasteDrudgers.Render
             }
         }
 
-        private static void DrawTile(IContext ctx, IBlittable layer, Tile tile, Visibility vis, int x, int y, int i, bool wallBelow = false)
+        private static void DrawTile(IContext ctx, IBlittable layer, Tile tile, Visibility vis, BloodType blood, int x, int y, int i, bool wallBelow = false)
         {
             if (vis == Visibility.Hidden) return;
 
             switch (ctx.Config.Style)
             {
                 default:
-                    (var fore, var back) = vis == Visibility.Explored
-                        ? (ctx.Theme.shadowLight, ctx.Theme.shadowDark)
-                        : (tile.foreground, tile.background);
+                    Color fore, back;
+                    if (vis == Visibility.Visible)
+                    {
+                        fore = blood switch
+                        {
+                            BloodType.Red => ctx.Colors.redLight,
+                            BloodType.Yellow => ctx.Colors.beigeLight,
+                            _ => tile.foreground
+                        };
+                        back = tile.background;
+                    }
+                    else
+                    {
+                        (fore, back) = (ctx.Colors.shadowLight, ctx.Colors.shadow);
+                    }
 
                     if (ctx.Config.Style == GraphicsStyle.Glyphs && tile.glyph != 0)
                     {
@@ -208,7 +222,7 @@ namespace WasteDrudgers.Render
                     {
                         case Visibility.Explored:
                             if (onlyVisible) return;
-                            layer.PutChar(x, y, renderable.character, ctx.Theme.shadowLight);
+                            layer.PutChar(x, y, renderable.character, ctx.Colors.shadowLight);
 
                             break;
                         case Visibility.Visible:

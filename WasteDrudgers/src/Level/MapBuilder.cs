@@ -73,9 +73,8 @@ namespace WasteDrudgers.Level
                         int aliveNeighbors = 0;
                         var cell = map[Util.IndexFromXY(x, y, map.width)];
 
-                        foreach (var v in cell.Neighbors)
+                        foreach (var neighbor in cell.Neighbors)
                         {
-                            var neighbor = map[v];
                             if (neighbor.Flags(flags))
                                 aliveNeighbors++;
                         }

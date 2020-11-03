@@ -123,7 +123,7 @@ namespace WasteDrudgers.Render
 
             if (text != null)
             {
-                c.Print(sidebar.width + 1, c.Height - 1, text, ctx.Theme.white);
+                c.Print(sidebar.width + 1, c.Height - 1, text, ctx.Colors.white);
             }
         }
 
@@ -191,9 +191,9 @@ namespace WasteDrudgers.Render
                 {
                     var _ when mod < 0 => ctx.Theme.critical,
                     var _ when mod > 0 => ctx.Theme.fortified,
-                    _ => ctx.Theme.text
+                    _ => ctx.Colors.white
                 };
-                c.Print(x + 5, y, stats[(StatType)i].Current.ToString(), statColor, TextAlignment.Right);
+                c.Print(x + 5, y, stats[(StatType)i].Current.ToString(), statColor, ctx.Colors.black, TextAlignment.Right);
 
                 if (i < 5)
                 {
@@ -243,8 +243,8 @@ namespace WasteDrudgers.Render
             c.Print(o, rect.y + 3, playerData.name, ctx.Theme.caption);
 
             var health = world.ecs.GetRef<Health>(player);
-            DrawPlayerPool(ctx, c, o, rect.y + 4, "VIG", health.vigor, ctx.Theme.vigor, ctx.Theme.vigorDark, true);
-            DrawPlayerPool(ctx, c, o, rect.y + 5, "HLT", health.health, ctx.Theme.health, ctx.Theme.healthDark, true);
+            DrawPlayerPool(ctx, c, o, rect.y + 4, "VIG", health.vigor, ctx.Colors.white, ctx.Colors.blue, true);
+            DrawPlayerPool(ctx, c, o, rect.y + 5, "HLT", health.health, ctx.Colors.white, ctx.Colors.redLight, true);
 
             var combat = world.ecs.GetRef<Combat>(player);
             DrawAttack(c, ctx.Theme, o, rect.y + 7, combat);
@@ -255,7 +255,7 @@ namespace WasteDrudgers.Render
         // FIXME: Target doesn't always clear for some reason, related to level change oddities?
         public static void DrawTarget(IContext ctx, IBlittable layer, int x, int y, TargetData targetData)
         {
-            layer.Rect(x, y, 13, 2, ' ', ctx.Theme.windowFrame, ctx.Theme.shadowDark);
+            layer.Rect(x, y, 13, 2, ' ', ctx.Theme.windowFrame, ctx.Colors.shadow);
             if (targetData != null)
             {
                 layer.PutChar(x + 1, y, targetData.renderable.character, targetData.renderable.color);
@@ -289,10 +289,10 @@ namespace WasteDrudgers.Render
         public static void DrawClock(IContext ctx, World world, int hours)
         {
             // TODO: Hide clock in caves unless carrying clock item
-            var night = ctx.Theme.shadowDark;
-            var day = ctx.Theme.vigorDark;
-            var moon = ctx.Theme.white;
-            var sun = ctx.Theme.danger;
+            var night = ctx.Colors.shadow;
+            var day = ctx.Colors.blue;
+            var moon = ctx.Colors.white;
+            var sun = ctx.Colors.bronzeLight;
 
             ctx.GetCanvas(RenderLayer.Root);
             Cell[] clock = new Cell[]
@@ -329,14 +329,14 @@ namespace WasteDrudgers.Render
         private static void DrawEnemyPool(IContext ctx, IBlittable layer, int x, int y, int l, int cur, int max)
         {
             int amount = (int)(l * ((float)cur / (float)max));
-            layer.LineHoriz(x, y, amount, '=', ctx.Theme.white);
+            layer.LineHoriz(x, y, amount, '=', ctx.Colors.white);
         }
 
         private static void DrawPool(IContext ctx, IBlittable layer, int x, int y, int l, int cur, int max, Color fore, Color back, bool text = false)
         {
             int amount = (int)(l * ((float)cur / (float)max));
 
-            layer.LineHoriz(x, y, l, ' ', fore, ctx.Theme.black);
+            layer.LineHoriz(x, y, l, ' ', fore, ctx.Colors.black);
             layer.LineHoriz(x, y, amount, ' ', fore, back);
 
             if (text)
@@ -354,7 +354,7 @@ namespace WasteDrudgers.Render
             var l = 9;
             int amount = (int)(l * ((float)cur / (float)max));
 
-            layer.LineHoriz(x + 4, y, l, ' ', fore, ctx.Theme.black);
+            layer.LineHoriz(x + 4, y, l, ' ', fore, ctx.Colors.black);
             layer.LineHoriz(x + 4, y, amount, ' ', fore, back);
 
             if (text)

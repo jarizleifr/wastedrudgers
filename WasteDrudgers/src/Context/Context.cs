@@ -12,6 +12,7 @@ namespace WasteDrudgers
 {
     public interface IContext
     {
+        Colors Colors { get; }
         Theme Theme { get; }
         UIData UIData { get; }
         IConfig Config { get; }
@@ -44,6 +45,7 @@ namespace WasteDrudgers
         private LayerRenderer renderer;
 
         public UIData UIData { get; private set; }
+        public Colors Colors { get; private set; }
         public Theme Theme { get; private set; }
         public IConfig Config { get; private set; }
 
@@ -69,6 +71,7 @@ namespace WasteDrudgers
 
             UIData = new UIData(display);
             input = new Handler<Command>();
+            Colors = new Colors(world);
             Theme = new Theme(world);
 
             renderer = new LayerRenderer(new List<Func<IBlittable>> {
@@ -195,49 +198,25 @@ namespace WasteDrudgers
         public readonly Color windowFrame;
         public readonly Color windowBackground;
 
-        public readonly Color vigor;
-        public readonly Color vigorDark;
-
-        public readonly Color health;
-        public readonly Color healthDark;
-
-        public readonly Color shadowLight;
-        public readonly Color shadowDark;
-
-        public readonly Color white;
-        public readonly Color black;
-
         public readonly Color critical;
         public readonly Color danger;
         public readonly Color fortified;
 
         public Theme(World world)
         {
-            var colors = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText("assets/theme.json"))
+            var theme = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText("assets/theme.json"))
                 .ToDictionary(kv => kv.Key, kv => world.database.GetColor(kv.Value));
 
-            caption = colors["caption"];
-            text = colors["text"];
-            disabledText = colors["disabledText"];
-            selectedColor = colors["selectedColor"];
-            windowFrame = colors["windowFrame"];
-            windowBackground = colors["windowBackground"];
+            caption = theme["caption"];
+            text = theme["text"];
+            disabledText = theme["disabledText"];
+            selectedColor = theme["selectedColor"];
+            windowFrame = theme["windowFrame"];
+            windowBackground = theme["windowBackground"];
 
-            vigor = colors["vigor"];
-            vigorDark = colors["vigorDark"];
-
-            health = colors["health"];
-            healthDark = colors["healthDark"];
-
-            shadowLight = colors["shadowLight"];
-            shadowDark = colors["shadowDark"];
-
-            white = world.database.GetColor("c_white");
-            black = world.database.GetColor("c_black");
-
-            critical = world.database.GetColor("c_fuchsia_light");
-            danger = world.database.GetColor("c_bronze");
-            fortified = world.database.GetColor("c_teal_light");
+            critical = theme["critical"];
+            danger = theme["danger"];
+            fortified = theme["fortified"];
         }
     }
 }
