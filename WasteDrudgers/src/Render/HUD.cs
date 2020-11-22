@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Blaggard.Common;
@@ -9,53 +10,24 @@ using WasteDrudgers.Level;
 
 namespace WasteDrudgers.Render
 {
-    // TODO: We should cache hud information somewhere and have dirty flags to prevent unnecessary updates
-    public class HUDData
-    {
-        public readonly Actor actor;
-        public readonly Health health;
-        public readonly Stats stats;
-
-        public readonly Combat combat;
-        public readonly Experience exp;
-
-        public readonly HungerClock hunger;
-
-        public readonly List<StatusInfo> statusInfo;
-
-        public HUDData(World world, PlayerData data)
-        {
-            actor = world.ecs.GetRef<Actor>(data.entity);
-            health = world.ecs.GetRef<Health>(data.entity);
-            stats = world.ecs.GetRef<Stats>(data.entity);
-            combat = world.ecs.GetRef<Combat>(data.entity);
-            exp = world.ecs.GetRef<Experience>(data.entity);
-            hunger = world.ecs.GetRef<HungerClock>(data.entity);
-
-            statusInfo = new List<StatusInfo>();
-
-            if (hunger.State == HungerState.Hungry)
-            {
-                statusInfo.Add(new StatusInfo { text = "Hungry", color = world.database.GetColor("c_skin_light") });
-            }
-
-            if (health.fatigued)
-            {
-                statusInfo.Add(new StatusInfo { text = "Fatigued", color = world.database.GetColor("c_fuchsia_light") });
-            }
-
-            world.ecs.Loop((Entity entity, ref ActiveEffect effect, ref PlayerMarker p) =>
-            {
-                if (effect.effect == SpellEffect.InflictPoison)
-                {
-                    statusInfo.Add(new StatusInfo { text = "Poisoned", color = world.database.GetColor("c_green_light") });
-                }
-            });
-        }
-    }
-
     public static class HUD
     {
+        private static Cell[] clock = new Cell[]
+        {
+            new Cell('▒', Data.Colors.blue, Data.Colors.shadow),
+            new Cell('░', Data.Colors.blue, Data.Colors.shadow),
+            new Cell(' ', Data.Colors.white, Data.Colors.shadow),
+            new Cell('•', Data.Colors.white, Data.Colors.shadow),
+            new Cell(' ', Data.Colors.white, Data.Colors.shadow),
+            new Cell('░', Data.Colors.blue, Data.Colors.shadow),
+            new Cell('▒', Data.Colors.blue, Data.Colors.shadow),
+            new Cell('▓', Data.Colors.blue, Data.Colors.shadow),
+            new Cell(' ', Data.Colors.bronzeLight, Data.Colors.blue),
+            new Cell('☼', Data.Colors.bronzeLight, Data.Colors.blue),
+            new Cell(' ', Data.Colors.bronzeLight, Data.Colors.blue),
+            new Cell('▓', Data.Colors.blue, Data.Colors.shadow),
+        };
+
         public static void DrawScreenBorders(IBlittable layer, Theme theme)
         {
             layer.DefaultFore = theme.windowFrame;
@@ -123,7 +95,7 @@ namespace WasteDrudgers.Render
 
             if (text != null)
             {
-                c.Print(sidebar.width + 1, c.Height - 1, text, ctx.Colors.white);
+                c.Print(sidebar.width + 1, c.Height - 1, text, Data.Colors.white);
             }
         }
 
@@ -133,18 +105,18 @@ namespace WasteDrudgers.Render
             var hunger = world.ecs.GetRef<HungerClock>(player);
             if (hunger.State == HungerState.Hungry)
             {
-                statusInfo.Add(new StatusInfo { text = "Hungry", color = world.database.GetColor("c_skin_light") });
+                statusInfo.Add(new StatusInfo { text = "Hungry", color = Data.Colors.skinLight });
             }
             var health = world.ecs.GetRef<Health>(player);
             if (health.fatigued)
             {
-                statusInfo.Add(new StatusInfo { text = "Fatigued", color = world.database.GetColor("c_fuchsia_light") });
+                statusInfo.Add(new StatusInfo { text = "Fatigued", color = Data.Colors.fuchsiaLight });
             }
             world.ecs.Loop((Entity entity, ref ActiveEffect effect, ref PlayerMarker p) =>
             {
                 if (effect.effect == SpellEffect.InflictPoison)
                 {
-                    statusInfo.Add(new StatusInfo { text = "Poisoned", color = world.database.GetColor("c_green_light") });
+                    statusInfo.Add(new StatusInfo { text = "Poisoned", color = Data.Colors.greenLight });
                 }
             });
             return statusInfo;
@@ -191,9 +163,9 @@ namespace WasteDrudgers.Render
                 {
                     var _ when mod < 0 => ctx.Theme.critical,
                     var _ when mod > 0 => ctx.Theme.fortified,
-                    _ => ctx.Colors.white
+                    _ => Data.Colors.white
                 };
-                c.Print(x + 5, y, stats[(StatType)i].Current.ToString(), statColor, ctx.Colors.black, TextAlignment.Right);
+                c.Print(x + 5, y, stats[(StatType)i].Current.ToString(), statColor, Data.Colors.black, TextAlignment.Right);
 
                 if (i < 5)
                 {
@@ -229,22 +201,20 @@ namespace WasteDrudgers.Render
             var playerData = world.PlayerData;
             var player = playerData.entity;
 
-            var targetData = TargetData.Create(world, playerData);
-
             var rect = ctx.UIData.sidebar;
             int o = rect.width < 14 ? 0 : 1;
 
             c.DefaultFore = ctx.Theme.windowFrame;
             c.DefaultBack = ctx.Theme.windowBackground;
 
-            DrawTarget(ctx, c, 0, ctx.UIData.log.height + 1, targetData);
+            DrawTarget(ctx, world, c, 0, ctx.UIData.log.height + 1, playerData);
 
             c.Rect(rect.x, rect.y + 3, rect.width, rect.height - 3, ' ');
             c.Print(o, rect.y + 3, playerData.name, ctx.Theme.caption);
 
             var health = world.ecs.GetRef<Health>(player);
-            DrawPlayerPool(ctx, c, o, rect.y + 4, "VIG", health.vigor, ctx.Colors.white, ctx.Colors.blue, true);
-            DrawPlayerPool(ctx, c, o, rect.y + 5, "HLT", health.health, ctx.Colors.white, ctx.Colors.redLight, true);
+            DrawPlayerPool(ctx, c, o, rect.y + 4, "VIG", health.vigor, Data.Colors.white, Data.Colors.blue, true);
+            DrawPlayerPool(ctx, c, o, rect.y + 5, "HLT", health.health, Data.Colors.white, Data.Colors.redLight, true);
 
             var combat = world.ecs.GetRef<Combat>(player);
             DrawAttack(c, ctx.Theme, o, rect.y + 7, combat);
@@ -252,17 +222,31 @@ namespace WasteDrudgers.Render
             //layer.Print(o, rect.y + 22, "¢¶¥[=\"≈π!♀ôôδ", Color.white);
         }
 
-        // FIXME: Target doesn't always clear for some reason, related to level change oddities?
-        public static void DrawTarget(IContext ctx, IBlittable layer, int x, int y, TargetData targetData)
+        public static void DrawTarget(IContext ctx, World world, IBlittable layer, int x, int y, PlayerData playerData)
         {
-            layer.Rect(x, y, 13, 2, ' ', ctx.Theme.windowFrame, ctx.Colors.shadow);
-            if (targetData != null)
+            layer.Rect(x, y, 13, 2, ' ', ctx.Theme.windowFrame, Data.Colors.shadow);
+
+            if (playerData.lastTarget.HasValue)
             {
-                layer.PutChar(x + 1, y, targetData.renderable.character, targetData.renderable.color);
-                var cur = targetData.health.health.Current + targetData.health.vigor.Current;
-                var max = targetData.health.health.Max + targetData.health.vigor.Max;
+                var target = playerData.lastTarget.Value;
+                if (!world.ecs.IsAlive(target) || world.ecs.Has<Death>(target))
+                {
+                    playerData.lastTarget = null;
+                    return;
+                }
+
+                var renderable = world.ecs.GetRef<Renderable>(target);
+                var health = world.ecs.GetRef<Health>(target);
+
+                var attacker = world.ecs.GetRef<Combat>(playerData.entity);
+                var defender = world.ecs.GetRef<Combat>(target);
+
+                var hitChance = Math.Max(1, (attacker.hitChance * (100 - defender.dodge)) / 100);
+                layer.PutChar(x + 1, y, renderable.character, renderable.color);
+                var cur = health.health.Current + health.vigor.Current;
+                var max = health.health.Max + health.vigor.Max;
                 DrawEnemyPool(ctx, layer, x + 4, y, 9, cur, max);
-                layer.Print(x + 4 + 9 / 2, y + 1, $"Hit: {targetData.hitChance}%", ctx.Theme.text, TextAlignment.Center);
+                layer.Print(x + 4 + 9 / 2, y + 1, $"Hit: {hitChance}%", ctx.Theme.text, TextAlignment.Center);
             }
         }
 
@@ -277,7 +261,7 @@ namespace WasteDrudgers.Render
             layer.Print(x, y, wieldString, theme.caption);
             //layer.Print(x + 9, y, "(]{‼", Color.white);
             DrawPercentage(layer, theme, x, y + 1, 4, "", combat.hitChance);
-            DrawCustomValue(layer, theme, x, y + 1, 13, "", $"{combat.minDamage}─{combat.maxDamage}");
+            DrawCustomValue(layer, theme, x, y + 1, 13, "", combat.damage.ToString());
         }
 
         public static void DrawExperience(IBlittable layer, Theme theme, int x, int y, Experience exp)
@@ -288,29 +272,6 @@ namespace WasteDrudgers.Render
 
         public static void DrawClock(IContext ctx, World world, int hours)
         {
-            // TODO: Hide clock in caves unless carrying clock item
-            var night = ctx.Colors.shadow;
-            var day = ctx.Colors.blue;
-            var moon = ctx.Colors.white;
-            var sun = ctx.Colors.bronzeLight;
-
-            ctx.GetCanvas(RenderLayer.Root);
-            Cell[] clock = new Cell[]
-            {
-                new Cell('▒', day, night),
-                new Cell('░', day, night),
-                new Cell(' ', moon, night),
-                new Cell('•', moon, night),
-                new Cell(' ', moon, night),
-                new Cell('░', day, night),
-                new Cell('▒', day, night),
-                new Cell('▓', day, night),
-                new Cell(' ', sun, day),
-                new Cell('☼', sun, day),
-                new Cell(' ', sun, day),
-                new Cell('▓', day, night),
-            };
-
             var c = ctx.GetCanvas(RenderLayer.Root);
             var viewport = ctx.UIData.viewport;
             var x = viewport.x + viewport.width - 9;
@@ -329,14 +290,14 @@ namespace WasteDrudgers.Render
         private static void DrawEnemyPool(IContext ctx, IBlittable layer, int x, int y, int l, int cur, int max)
         {
             int amount = (int)(l * ((float)cur / (float)max));
-            layer.LineHoriz(x, y, amount, '=', ctx.Colors.white);
+            layer.LineHoriz(x, y, amount, '=', Data.Colors.white);
         }
 
         private static void DrawPool(IContext ctx, IBlittable layer, int x, int y, int l, int cur, int max, Color fore, Color back, bool text = false)
         {
             int amount = (int)(l * ((float)cur / (float)max));
 
-            layer.LineHoriz(x, y, l, ' ', fore, ctx.Colors.black);
+            layer.LineHoriz(x, y, l, ' ', fore, Data.Colors.black);
             layer.LineHoriz(x, y, amount, ' ', fore, back);
 
             if (text)
@@ -354,7 +315,7 @@ namespace WasteDrudgers.Render
             var l = 9;
             int amount = (int)(l * ((float)cur / (float)max));
 
-            layer.LineHoriz(x + 4, y, l, ' ', fore, ctx.Colors.black);
+            layer.LineHoriz(x + 4, y, l, ' ', fore, Data.Colors.black);
             layer.LineHoriz(x + 4, y, amount, ' ', fore, back);
 
             if (text)

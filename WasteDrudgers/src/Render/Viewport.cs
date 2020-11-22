@@ -15,7 +15,7 @@ namespace WasteDrudgers.Render
             switch (ctx.Config.Style)
             {
                 case GraphicsStyle.Tiles:
-                    DrawSpriteMode(ctx, layer, world, origin);
+                    //DrawSpriteMode(ctx, layer, world, origin);
                     break;
 
                 default:
@@ -51,7 +51,7 @@ namespace WasteDrudgers.Render
                 layer.PutChar(x, y, eff.characters[(int)eff.delta], eff.color);
             });
         }
-
+        /*
         public static void DrawSpriteMode(IContext ctx, IBlittable layer, World world, Vec2 origin)
         {
             var viewport = new Rect(0, 0, layer.Width / 2, layer.Height);
@@ -98,7 +98,7 @@ namespace WasteDrudgers.Render
             }
 
             DrawEntities<Actor>(ctx, layer, world, viewport, xOffset, yOffset, map.width, vis);
-        }
+        }*/
 
         public static void CameraOffset(Vec2 coords, int mapWidth, int mapHeight, int viewportWidth, int viewportHeight, out int xOffset, out int yOffset)
         {
@@ -178,17 +178,17 @@ namespace WasteDrudgers.Render
                     {
                         fore = blood switch
                         {
-                            BloodType.Red => ctx.Colors.redLight,
-                            BloodType.Yellow => ctx.Colors.beigeLight,
+                            BloodType.Red => Data.Colors.redLight,
+                            BloodType.Yellow => Data.Colors.beigeLight,
                             _ => tile.foreground
                         };
                         back = tile.background;
                     }
                     else
                     {
-                        (fore, back) = (ctx.Colors.shadowLight, ctx.Colors.shadow);
+                        (fore, back) = (Data.Colors.shadowLight, Data.Colors.shadow);
                     }
-
+                    /*
                     if (ctx.Config.Style == GraphicsStyle.Glyphs && tile.glyph != 0)
                     {
                         if ((tile.flags & TileFlags.BlocksMovement) > 0 && wallBelow)
@@ -198,7 +198,7 @@ namespace WasteDrudgers.Render
                         }
                         layer.PutChar(x, y, tile.glyph, fore, back);
                         return;
-                    }
+                    }*/
 
                     var ch = (tile.characters.Length > 1 && !ctx.Config.SimpleTiles)
                         ? 1 + HashNoise.GetIndex(i, tile.characters.Length - 1)
@@ -222,7 +222,7 @@ namespace WasteDrudgers.Render
                     {
                         case Visibility.Explored:
                             if (onlyVisible) return;
-                            layer.PutChar(x, y, renderable.character, ctx.Colors.shadowLight);
+                            layer.PutChar(x, y, renderable.character, Data.Colors.shadowLight);
 
                             break;
                         case Visibility.Visible:

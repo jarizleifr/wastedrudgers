@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Blaggard.Common;
 using Blaggard.Graphics;
 using Blaggard.Input;
@@ -12,7 +11,6 @@ namespace WasteDrudgers
 {
     public interface IContext
     {
-        Colors Colors { get; }
         Theme Theme { get; }
         UIData UIData { get; }
         IConfig Config { get; }
@@ -45,7 +43,6 @@ namespace WasteDrudgers
         private LayerRenderer renderer;
 
         public UIData UIData { get; private set; }
-        public Colors Colors { get; private set; }
         public Theme Theme { get; private set; }
         public IConfig Config { get; private set; }
 
@@ -71,7 +68,6 @@ namespace WasteDrudgers
 
             UIData = new UIData(display);
             input = new Handler<Command>();
-            Colors = new Colors(world);
             Theme = new Theme(world);
 
             renderer = new LayerRenderer(new List<Func<IBlittable>> {
@@ -204,8 +200,7 @@ namespace WasteDrudgers
 
         public Theme(World world)
         {
-            var theme = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText("assets/theme.json"))
-                .ToDictionary(kv => kv.Key, kv => world.database.GetColor(kv.Value));
+            var theme = JsonConvert.DeserializeObject<Dictionary<string, Color>>(File.ReadAllText("assets/theme.json"));
 
             caption = theme["caption"];
             text = theme["text"];

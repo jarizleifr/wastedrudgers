@@ -1,12 +1,12 @@
 {
-  "caption": "c_beige", 
-  "text": "c_grey_light",
-  "disabledText": "c_grey",
-  "selectedColor": "c_bronze",
-  "windowFrame": "c_grey",
-  "windowBackground": "c_grey_dark",
+  "caption": 14270602, 
+  "text": 8946553,
+  "disabledText": 5065027,
+  "selectedColor": 16759296,
+  "windowFrame": 5065027,
+  "windowBackground": 2038550,
 
-  "critical": "c_fuchsia",
-  "danger": "c_bronze",
-  "fortified": "c_teal_light"
+  "critical": 10501994,
+  "danger": 16759296,
+  "fortified": 6794161
 }

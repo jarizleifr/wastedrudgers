@@ -1,38 +1,9 @@
-using System;
 using Blaggard.Common;
 using ManulECS;
 using Newtonsoft.Json;
 
 namespace WasteDrudgers
 {
-    public class TargetData
-    {
-        public readonly Renderable renderable;
-        public readonly Health health;
-        public readonly string name;
-        public readonly int hitChance;
-
-        public static TargetData Create(World world, PlayerData data)
-        {
-            var target = data.lastTarget;
-            if (!target.HasValue || !world.ecs.IsAlive(target.Value)) return null;
-
-            return new TargetData(world, data.entity, target.Value);
-        }
-
-        private TargetData(World world, Entity player, Entity target)
-        {
-            renderable = world.ecs.GetRef<Renderable>(target);
-            health = world.ecs.GetRef<Health>(target);
-            name = world.ecs.GetRef<Identity>(target).rawName;
-
-            var attacker = world.ecs.GetRef<Combat>(player);
-            var defender = world.ecs.GetRef<Combat>(target);
-
-            hitChance = Math.Max(1, (attacker.hitChance * (100 - defender.dodge)) / 100);
-        }
-    }
-
     public struct StatusInfo
     {
         public string text;

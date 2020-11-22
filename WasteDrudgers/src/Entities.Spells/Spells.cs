@@ -1,5 +1,4 @@
 using ManulECS;
-using WasteDrudgers.Data;
 
 namespace WasteDrudgers.Entities
 {
@@ -7,7 +6,7 @@ namespace WasteDrudgers.Entities
     {
         public static void CastSpellOn(World world, Entity? caster, Entity target, string spellId)
         {
-            var rawSpell = world.database.GetSpell(spellId);
+            var rawSpell = Data.GetSpell(spellId);
             if (Spells.IsIncremental(rawSpell.Effect))
             {
                 ApplyIncrementalEffect(world, caster, target, rawSpell);
@@ -22,9 +21,9 @@ namespace WasteDrudgers.Entities
         public static void ApplyIncrementalEffect(World world, Entity? caster, Entity target, DBSpell rawSpell)
         {
             var pos = world.ecs.GetRef<Position>(target);
-            world.WriteToLog(rawSpell.Message.Id, pos.coords);
+            world.WriteToLog(rawSpell.Message, pos.coords);
 
-            var level = RNG.IntInclusive(rawSpell.MinMagnitude, rawSpell.MaxMagnitude);
+            var level = RNG.Extent(rawSpell.Magnitude);
             if (TryGetActiveEffect(world, target, rawSpell.Effect, out Entity activeEffect))
             {
                 ref var effect = ref world.ecs.GetRef<ActiveEffect>(activeEffect);
@@ -59,26 +58,27 @@ namespace WasteDrudgers.Entities
             var playerData = world.PlayerData;
             ref var stats = ref world.ecs.GetRef<Stats>(target);
             ref var health = ref world.ecs.GetRef<Health>(target);
-            var message = rawSpell.Message.Id ?? "";
+            var message = rawSpell.Message ?? "";
+            var spellStrength = RNG.Extent(rawSpell.Magnitude);
             switch (rawSpell.Effect)
             {
                 case SpellEffect.StrengthPermanent:
-                    stats.strength.Base += RNG.IntInclusive(rawSpell.MinMagnitude, rawSpell.MaxMagnitude);
+                    stats.strength.Base += spellStrength;
                     break;
                 case SpellEffect.EndurancePermanent:
-                    stats.endurance.Base += RNG.IntInclusive(rawSpell.MinMagnitude, rawSpell.MaxMagnitude);
+                    stats.endurance.Base += spellStrength;
                     break;
                 case SpellEffect.FinessePermanent:
-                    stats.finesse.Base += RNG.IntInclusive(rawSpell.MinMagnitude, rawSpell.MaxMagnitude);
+                    stats.finesse.Base += spellStrength;
                     break;
                 case SpellEffect.IntellectPermanent:
-                    stats.intellect.Base += RNG.IntInclusive(rawSpell.MinMagnitude, rawSpell.MaxMagnitude);
+                    stats.intellect.Base += spellStrength;
                     break;
                 case SpellEffect.ResolvePermanent:
-                    stats.resolve.Base += RNG.IntInclusive(rawSpell.MinMagnitude, rawSpell.MaxMagnitude);
+                    stats.resolve.Base += spellStrength;
                     break;
                 case SpellEffect.AwarenessPermanent:
-                    stats.awareness.Base += RNG.IntInclusive(rawSpell.MinMagnitude, rawSpell.MaxMagnitude);
+                    stats.awareness.Base += spellStrength;
                     break;
                 case SpellEffect.Identify:
                     Items.IdentifyInventory(world);
@@ -86,7 +86,7 @@ namespace WasteDrudgers.Entities
                 case SpellEffect.HealthHeal:
                     if (health.health.Damage > 0)
                     {
-                        health.health.Damage -= RNG.Int(1, 6);
+                        health.health.Damage -= spellStrength;
                     }
                     else
                     {
@@ -96,7 +96,7 @@ namespace WasteDrudgers.Entities
                 case SpellEffect.VigorHeal:
                     if (health.vigor.Damage > 0)
                     {
-                        health.vigor.Damage -= RNG.Int(1, 6);
+                        health.vigor.Damage -= spellStrength;
                     }
                     else
                     {

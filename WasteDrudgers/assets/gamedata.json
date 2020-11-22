@@ -1,0 +1,1702 @@
+{
+  "colors": {
+    "black": 0,
+    "shadow": 919830,
+    "shadow_light": 1774123,
+    "violet_dark": 5323625,
+    "violet": 9995184,
+    "violet_light": 14271730,
+    "brown_dark": 2760738,
+    "brown": 5587013,
+    "brown_light": 8087403,
+    "skin_dark": 4731434,
+    "skin": 9463125,
+    "skin_light": 16693927,
+    "beige_dark": 7102533,
+    "beige": 14270602,
+    "beige_light": 15525294,
+    "green_dark": 2175774,
+    "green": 4742199,
+    "green_light": 9484399,
+    "teal_dark": 1585210,
+    "teal": 3236213,
+    "teal_light": 6794161,
+    "blue_dark": 81779,
+    "blue": 5281752,
+    "blue_light": 9751035,
+    "fuchsia_dark": 7282235,
+    "fuchsia": 10501994,
+    "fuchsia_light": 15563429,
+    "red_dark": 4325378,
+    "red": 7146253,
+    "red_light": 13500938,
+    "bronze_dark": 8346880,
+    "bronze": 16759296,
+    "bronze_light": 16777042,
+    "grey_dark": 2038550,
+    "grey": 5065027,
+    "grey_light": 8946553,
+    "white": 16774637
+  },
+  "tiles": {
+    "cave_floor": {
+      "Index": 0,
+      "Id": "cave_floor",
+      "Characters": "··.,'`",
+      "Foreground": 5587013,
+      "Background": 2760738,
+      "Flags": "None",
+      "Description": "dirty floor"
+    },
+    "cave_wall": {
+      "Index": 1,
+      "Id": "cave_wall",
+      "Characters": "#░▒▓",
+      "Foreground": 81779,
+      "Background": 919830,
+      "Flags": "BlocksVision,BlocksMovement",
+      "Description": "dirty wall"
+    },
+    "road": {
+      "Index": 2,
+      "Id": "road",
+      "Characters": 0,
+      "Foreground": 9463125,
+      "Background": 2760738,
+      "Flags": "None",
+      "Description": "a weathered road"
+    },
+    "grass": {
+      "Index": 3,
+      "Id": "grass",
+      "Characters": "\"\"'ⁿτ",
+      "Foreground": 9484399,
+      "Background": 4742199,
+      "Flags": "None",
+      "Description": "soothing grasslands"
+    },
+    "forest": {
+      "Index": 4,
+      "Id": "forest",
+      "Characters": "♠♠♣↑τ",
+      "Foreground": 4742199,
+      "Background": 2175774,
+      "Flags": "BlocksVision",
+      "Description": "thick forest"
+    },
+    "jungle": {
+      "Index": 5,
+      "Id": "jungle",
+      "Characters": "♠♠♣&τ",
+      "Foreground": 3236213,
+      "Background": 1585210,
+      "Flags": "BlocksVision",
+      "Description": null
+    },
+    "mountain": {
+      "Index": 6,
+      "Id": "mountain",
+      "Characters": "▲▲^",
+      "Foreground": 81779,
+      "Background": 2760738,
+      "Flags": "BlocksMovement",
+      "Description": null
+    },
+    "desert": {
+      "Index": 7,
+      "Id": "desert",
+      "Characters": "≈≈~",
+      "Foreground": 14270602,
+      "Background": 7102533,
+      "Flags": "None",
+      "Description": null
+    },
+    "water": {
+      "Index": 8,
+      "Id": "water",
+      "Characters": "≈≈=~",
+      "Foreground": 5323625,
+      "Background": 1774123,
+      "Flags": "BlocksMovement",
+      "Description": null
+    },
+    "lava": {
+      "Index": 9,
+      "Id": "lava",
+      "Characters": "≈≈=~",
+      "Foreground": 0,
+      "Background": 13500938,
+      "Flags": "BlocksMovement",
+      "Description": null
+    },
+    "hills": {
+      "Index": 10,
+      "Id": "hills",
+      "Characters": "∩∩ⁿ",
+      "Foreground": 5587013,
+      "Background": 2760738,
+      "Flags": "BlocksVision",
+      "Description": null
+    },
+    "snow": {
+      "Index": 11,
+      "Id": "snow",
+      "Characters": "··.:",
+      "Foreground": 14271730,
+      "Background": 8946553,
+      "Flags": "None",
+      "Description": "glistening snow"
+    },
+    "ash": {
+      "Index": 12,
+      "Id": "ash",
+      "Characters": "··.,'`",
+      "Foreground": 5065027,
+      "Background": 2038550,
+      "Flags": "None",
+      "Description": null
+    },
+    "grassy_dirt": {
+      "Index": 13,
+      "Id": "grassy_dirt",
+      "Characters": "\"\"ⁿτ",
+      "Foreground": 9484399,
+      "Background": 2760738,
+      "Flags": "None",
+      "Description": "patches of grass"
+    },
+    "sandy_dirt": {
+      "Index": 14,
+      "Id": "sandy_dirt",
+      "Characters": "≈≈~",
+      "Foreground": 14270602,
+      "Background": 2760738,
+      "Flags": "None",
+      "Description": null
+    },
+    "dunes": {
+      "Index": 15,
+      "Id": "dunes",
+      "Characters": "≈≈~",
+      "Foreground": 15525294,
+      "Background": 14270602,
+      "Flags": "None",
+      "Description": "scorching dunes"
+    },
+    "ocean": {
+      "Index": 16,
+      "Id": "ocean",
+      "Characters": "≈≈=~",
+      "Foreground": 1774123,
+      "Background": 919830,
+      "Flags": "BlocksMovement",
+      "Description": null
+    }
+  },
+  "creatures": {
+    "mutorc": {
+      "Id": "mutorc",
+      "Name": "mutorc",
+      "Char": "o",
+      "Color": 9484399,
+      "ST": 10,
+      "EN": 10,
+      "FI": 10,
+      "IN": 10,
+      "RE": 10,
+      "AW": 10,
+      "NaturalAttack": null,
+      "DL": 0,
+      "LevelTags": [
+        "common"
+      ],
+      "Professions": [
+        "fighter:20",
+        "shaman:30"
+      ]
+    },
+    "mutogre": {
+      "Id": "mutogre",
+      "Name": "mutogre",
+      "Char": "O",
+      "Color": 9484399,
+      "ST": 12,
+      "EN": 12,
+      "FI": 10,
+      "IN": 10,
+      "RE": 10,
+      "AW": 10,
+      "NaturalAttack": null,
+      "DL": 0,
+      "LevelTags": [
+        "common"
+      ],
+      "Professions": []
+    },
+    "fungoid": {
+      "Id": "fungoid",
+      "Name": "fungoid",
+      "Char": "t",
+      "Color": 6794161,
+      "ST": 10,
+      "EN": 10,
+      "FI": 10,
+      "IN": 10,
+      "RE": 10,
+      "AW": 10,
+      "NaturalAttack": "fungoid_strike",
+      "DL": 0,
+      "LevelTags": [
+        "cave"
+      ],
+      "Professions": []
+    },
+    "mokrug": {
+      "Id": "mokrug",
+      "Name": "mokrug beetle",
+      "Char": "i",
+      "Color": 7146253,
+      "ST": 10,
+      "EN": 10,
+      "FI": 10,
+      "IN": 10,
+      "RE": 10,
+      "AW": 10,
+      "NaturalAttack": null,
+      "DL": 0,
+      "LevelTags": [],
+      "Professions": []
+    },
+    "mokrug_larva": {
+      "Id": "mokrug_larva",
+      "Name": "mokrug larva",
+      "Char": "w",
+      "Color": 14270602,
+      "ST": 10,
+      "EN": 10,
+      "FI": 10,
+      "IN": 10,
+      "RE": 10,
+      "AW": 10,
+      "NaturalAttack": null,
+      "DL": 0,
+      "LevelTags": [
+        "cave"
+      ],
+      "Professions": []
+    },
+    "grol": {
+      "Id": "grol",
+      "Name": "grol",
+      "Char": "F",
+      "Color": 9751035,
+      "ST": 10,
+      "EN": 10,
+      "FI": 10,
+      "IN": 10,
+      "RE": 10,
+      "AW": 9,
+      "NaturalAttack": null,
+      "DL": 0,
+      "LevelTags": [
+        "cave"
+      ],
+      "Professions": []
+    },
+    "skorrek": {
+      "Id": "skorrek",
+      "Name": "skorrek",
+      "Char": "r",
+      "Color": 8087403,
+      "ST": 10,
+      "EN": 10,
+      "FI": 10,
+      "IN": 10,
+      "RE": 10,
+      "AW": 10,
+      "NaturalAttack": null,
+      "DL": 0,
+      "LevelTags": [
+        "common"
+      ],
+      "Professions": [
+        "beast:50"
+      ]
+    },
+    "large_skorrek": {
+      "Id": "large_skorrek",
+      "Name": "large skorrek",
+      "Char": "r",
+      "Color": 8087403,
+      "ST": 15,
+      "EN": 10,
+      "FI": 10,
+      "IN": 10,
+      "RE": 10,
+      "AW": 10,
+      "NaturalAttack": null,
+      "DL": 0,
+      "LevelTags": [
+        "common"
+      ],
+      "Professions": [
+        "beast:150"
+      ]
+    }
+  },
+  "features": {
+    "vegetation": {
+      "Id": "vegetation",
+      "Name": "vegetation",
+      "Char": "τ",
+      "Color": 9484399,
+      "Trigger": null,
+      "Description": "some vegetation"
+    },
+    "thorns": {
+      "Id": "thorns",
+      "Name": "thorns",
+      "Char": "ß",
+      "Color": 8946553,
+      "Trigger": "Thorns",
+      "Description": "some spiky thorns"
+    },
+    "gravestone": {
+      "Id": "gravestone",
+      "Name": "gravestone",
+      "Char": "±",
+      "Color": 5065027,
+      "Trigger": null,
+      "Description": "gravestone"
+    },
+    "reeds": {
+      "Id": "reeds",
+      "Name": "reeds",
+      "Char": "√",
+      "Color": 14270602,
+      "Trigger": null,
+      "Description": "reeds"
+    },
+    "rubble_01": {
+      "Id": "rubble_01",
+      "Name": "rubble",
+      "Char": "≥",
+      "Color": 8946553,
+      "Trigger": null,
+      "Description": "some rubble"
+    },
+    "rubble_02": {
+      "Id": "rubble_02",
+      "Name": "rubble",
+      "Char": "≤",
+      "Color": 8946553,
+      "Trigger": null,
+      "Description": "some rubble"
+    },
+    "altar": {
+      "Id": "altar",
+      "Name": "altar",
+      "Char": "_",
+      "Color": 8946553,
+      "Trigger": null,
+      "Description": "altar"
+    },
+    "mushroom_patch": {
+      "Id": "mushroom_patch",
+      "Name": "mushroom patch",
+      "Char": "“",
+      "Color": 6794161,
+      "Trigger": null,
+      "Description": "some mushrooms"
+    },
+    "downstairs": {
+      "Id": "downstairs",
+      "Name": "downstairs",
+      "Char": "<",
+      "Color": 8946553,
+      "Trigger": null,
+      "Description": "a way down"
+    },
+    "upstairs": {
+      "Id": "upstairs",
+      "Name": "upstairs",
+      "Char": ">",
+      "Color": 8946553,
+      "Trigger": null,
+      "Description": "a way up"
+    },
+    "start_portal": {
+      "Id": "start_portal",
+      "Name": "portal",
+      "Char": "Ω",
+      "Color": 8946553,
+      "Trigger": null,
+      "Description": "a ruined portal"
+    }
+  },
+  "materials": {
+    "iron": {
+      "Id": "iron",
+      "Name": "iron",
+      "Rarity": 100,
+      "Damage": 1,
+      "Armor": 1,
+      "Quality": 0,
+      "WeightMult": 1,
+      "Color": 9751035,
+      "DL": 0,
+      "GroupTags": [
+        "metal"
+      ]
+    },
+    "bronze": {
+      "Id": "bronze",
+      "Name": "bronze",
+      "Rarity": 100,
+      "Damage": 2,
+      "Armor": 2,
+      "Quality": 1,
+      "WeightMult": 1,
+      "Color": 16759296,
+      "DL": 0,
+      "GroupTags": [
+        "metal"
+      ]
+    },
+    "wood": {
+      "Id": "wood",
+      "Name": "wood",
+      "Rarity": 100,
+      "Damage": -1,
+      "Armor": -1,
+      "Quality": 1,
+      "WeightMult": 1,
+      "Color": 9463125,
+      "DL": 0,
+      "GroupTags": [
+        "primitive"
+      ]
+    },
+    "leather": {
+      "Id": "leather",
+      "Name": "leather",
+      "Rarity": 100,
+      "Damage": 0,
+      "Armor": 0,
+      "Quality": 1,
+      "WeightMult": 1,
+      "Color": 7146253,
+      "DL": 0,
+      "GroupTags": [
+        "fabric"
+      ]
+    },
+    "bone": {
+      "Id": "bone",
+      "Name": "bone",
+      "Rarity": 100,
+      "Damage": 0,
+      "Armor": 0,
+      "Quality": 1,
+      "WeightMult": 1,
+      "Color": 15525294,
+      "DL": 0,
+      "GroupTags": [
+        "primitive"
+      ]
+    },
+    "stone": {
+      "Id": "stone",
+      "Name": "stone",
+      "Rarity": 100,
+      "Damage": -1,
+      "Armor": -1,
+      "Quality": 1,
+      "WeightMult": 2,
+      "Color": 8946553,
+      "DL": 0,
+      "GroupTags": [
+        "primitive"
+      ]
+    },
+    "gold": {
+      "Id": "gold",
+      "Name": "gold",
+      "Rarity": 100,
+      "Damage": -1,
+      "Armor": -1,
+      "Quality": 1,
+      "WeightMult": 1,
+      "Color": 16777042,
+      "DL": 0,
+      "GroupTags": []
+    },
+    "silver": {
+      "Id": "silver",
+      "Name": "silver",
+      "Rarity": 100,
+      "Damage": -1,
+      "Armor": -1,
+      "Quality": 1,
+      "WeightMult": 1,
+      "Color": 8946553,
+      "DL": 0,
+      "GroupTags": []
+    },
+    "cloth": {
+      "Id": "cloth",
+      "Name": "cloth",
+      "Rarity": 100,
+      "Damage": 0,
+      "Armor": 0,
+      "Quality": 1,
+      "WeightMult": 1,
+      "Color": 3236213,
+      "DL": 0,
+      "GroupTags": [
+        "fabric"
+      ]
+    },
+    "glass": {
+      "Id": "glass",
+      "Name": "glass",
+      "Rarity": 100,
+      "Damage": 0,
+      "Armor": 0,
+      "Quality": 1,
+      "WeightMult": 1,
+      "Color": 5281752,
+      "DL": 0,
+      "GroupTags": []
+    },
+    "paper": {
+      "Id": "paper",
+      "Name": "paper",
+      "Rarity": 100,
+      "Damage": 0,
+      "Armor": 0,
+      "Quality": 1,
+      "WeightMult": 1,
+      "Color": 15525294,
+      "DL": 0,
+      "GroupTags": []
+    },
+    "copper": {
+      "Id": "copper",
+      "Name": "copper",
+      "Rarity": 100,
+      "Damage": 0,
+      "Armor": 0,
+      "Quality": 1,
+      "WeightMult": 1,
+      "Color": 16693927,
+      "DL": 0,
+      "GroupTags": [
+        "primitive"
+      ]
+    },
+    "chitin": {
+      "Id": "chitin",
+      "Name": "chitin",
+      "Rarity": 100,
+      "Damage": 0,
+      "Armor": 0,
+      "Quality": 1,
+      "WeightMult": 1,
+      "Color": 16774637,
+      "DL": 0,
+      "GroupTags": [
+        "primitive"
+      ]
+    },
+    "flesh": {
+      "Id": "flesh",
+      "Name": "flesh",
+      "Rarity": 100,
+      "Damage": 0,
+      "Armor": 0,
+      "Quality": 1,
+      "WeightMult": 1,
+      "Color": 13500938,
+      "DL": 0,
+      "GroupTags": []
+    }
+  },
+  "items": {
+    "scroll_identify": {
+      "Id": "scroll_identify",
+      "Type": "Scroll",
+      "Name": "scroll of identify",
+      "Char": "?",
+      "DL": 0,
+      "LevelTags": [
+        "common"
+      ],
+      "Weight": 10,
+      "Value": 10,
+      "Material": "paper",
+      "MaterialTags": [],
+      "UseSpell": "identify"
+    },
+    "potion_strength": {
+      "Id": "potion_strength",
+      "Type": "Potion",
+      "Name": "strength mutagen",
+      "Char": "¿",
+      "DL": 0,
+      "LevelTags": [
+        "common"
+      ],
+      "Weight": 10,
+      "Value": 10,
+      "Material": "glass",
+      "MaterialTags": [],
+      "UseSpell": "strength_permanent"
+    },
+    "potion_endurance": {
+      "Id": "potion_endurance",
+      "Type": "Potion",
+      "Name": "endurance mutagen",
+      "Char": "¿",
+      "DL": 0,
+      "LevelTags": [
+        "common"
+      ],
+      "Weight": 10,
+      "Value": 10,
+      "Material": "glass",
+      "MaterialTags": [],
+      "UseSpell": "endurance_permanent"
+    },
+    "potion_finesse": {
+      "Id": "potion_finesse",
+      "Type": "Potion",
+      "Name": "finesse mutagen",
+      "Char": "¿",
+      "DL": 0,
+      "LevelTags": [
+        "common"
+      ],
+      "Weight": 10,
+      "Value": 10,
+      "Material": "glass",
+      "MaterialTags": [],
+      "UseSpell": "finesse_permanent"
+    },
+    "potion_intellect": {
+      "Id": "potion_intellect",
+      "Type": "Potion",
+      "Name": "intellect mutagen",
+      "Char": "¿",
+      "DL": 0,
+      "LevelTags": [
+        "common"
+      ],
+      "Weight": 10,
+      "Value": 10,
+      "Material": "glass",
+      "MaterialTags": [],
+      "UseSpell": "intellect_permanent"
+    },
+    "potion_resolve": {
+      "Id": "potion_resolve",
+      "Type": "Potion",
+      "Name": "resolve mutagen",
+      "Char": "¿",
+      "DL": 0,
+      "LevelTags": [
+        "common"
+      ],
+      "Weight": 10,
+      "Value": 10,
+      "Material": "glass",
+      "MaterialTags": [],
+      "UseSpell": "resolve_permanent"
+    },
+    "potion_awareness": {
+      "Id": "potion_awareness",
+      "Type": "Potion",
+      "Name": "awareness mutagen",
+      "Char": "¿",
+      "DL": 0,
+      "LevelTags": [
+        "common"
+      ],
+      "Weight": 10,
+      "Value": 10,
+      "Material": "glass",
+      "MaterialTags": [],
+      "UseSpell": "awareness_permanent"
+    },
+    "food_insect": {
+      "Id": "food_insect",
+      "Type": "Food",
+      "Name": "insect roast",
+      "Char": "%",
+      "DL": 0,
+      "LevelTags": [
+        "common"
+      ],
+      "Weight": 10,
+      "Value": 10,
+      "Material": "flesh",
+      "MaterialTags": [],
+      "UseSpell": null
+    },
+    "dagger": {
+      "$type": "WasteDrudgers.DBWeapon, WasteDrudgers",
+      "Id": "dagger",
+      "Type": "ShortBlade",
+      "Name": "dagger",
+      "Char": "(",
+      "DL": 0,
+      "LevelTags": [
+        "common"
+      ],
+      "Weight": 10,
+      "Value": 10,
+      "Material": "iron",
+      "MaterialTags": [
+        "metal"
+      ],
+      "BaseSkill": 5,
+      "Damage": "1-4",
+      "Traits": "Light,Finesse",
+      "Parry": 0,
+      "UseSpell": null
+    },
+    "bone_dagger": {
+      "$type": "WasteDrudgers.DBWeapon, WasteDrudgers",
+      "Id": "bone_dagger",
+      "Type": "ShortBlade",
+      "Name": "bone dagger",
+      "Char": "(",
+      "DL": 0,
+      "LevelTags": [
+        "common"
+      ],
+      "Weight": 10,
+      "Value": 10,
+      "Material": "bone",
+      "MaterialTags": [],
+      "BaseSkill": 5,
+      "Damage": "1-5",
+      "Traits": "Light,Finesse",
+      "Parry": 0,
+      "UseSpell": null
+    },
+    "khopesh": {
+      "$type": "WasteDrudgers.DBWeapon, WasteDrudgers",
+      "Id": "khopesh",
+      "Type": "LongBlade",
+      "Name": "khopesh",
+      "Char": "(",
+      "DL": 0,
+      "LevelTags": [
+        "common"
+      ],
+      "Weight": 10,
+      "Value": 10,
+      "Material": "iron",
+      "MaterialTags": [
+        "metal"
+      ],
+      "BaseSkill": 5,
+      "Damage": "1-8",
+      "Traits": null,
+      "Parry": 0,
+      "UseSpell": null
+    },
+    "morningstar": {
+      "$type": "WasteDrudgers.DBWeapon, WasteDrudgers",
+      "Id": "morningstar",
+      "Type": "AxeMace",
+      "Name": "morningstar",
+      "Char": "(",
+      "DL": 0,
+      "LevelTags": [
+        "common"
+      ],
+      "Weight": 10,
+      "Value": 10,
+      "Material": "iron",
+      "MaterialTags": [
+        "metal"
+      ],
+      "BaseSkill": 5,
+      "Damage": "1-8",
+      "Traits": null,
+      "Parry": 0,
+      "UseSpell": null
+    },
+    "quarterstaff": {
+      "$type": "WasteDrudgers.DBWeapon, WasteDrudgers",
+      "Id": "quarterstaff",
+      "Type": "Polearm",
+      "Name": "quarterstaff",
+      "Char": "(",
+      "DL": 0,
+      "LevelTags": [
+        "common"
+      ],
+      "Weight": 10,
+      "Value": 10,
+      "Material": "wood",
+      "MaterialTags": [],
+      "BaseSkill": 0,
+      "Damage": "1-8",
+      "Traits": "Versatile",
+      "Parry": 0,
+      "UseSpell": null
+    },
+    "rapier": {
+      "$type": "WasteDrudgers.DBWeapon, WasteDrudgers",
+      "Id": "rapier",
+      "Type": "Fencing",
+      "Name": "rapier",
+      "Char": "(",
+      "DL": 0,
+      "LevelTags": [
+        "common"
+      ],
+      "Weight": 10,
+      "Value": 10,
+      "Material": "iron",
+      "MaterialTags": [
+        "metal"
+      ],
+      "BaseSkill": 0,
+      "Damage": "2-8",
+      "Traits": "Finesse",
+      "Parry": 0,
+      "UseSpell": null
+    },
+    "whip": {
+      "$type": "WasteDrudgers.DBWeapon, WasteDrudgers",
+      "Id": "whip",
+      "Type": "Whip",
+      "Name": "whip",
+      "Char": "(",
+      "DL": 0,
+      "LevelTags": [
+        "common"
+      ],
+      "Weight": 10,
+      "Value": 10,
+      "Material": "leather",
+      "MaterialTags": [],
+      "BaseSkill": -5,
+      "Damage": "3-6",
+      "Traits": "Light,Finesse",
+      "Parry": 0,
+      "UseSpell": null
+    },
+    "buckler": {
+      "$type": "WasteDrudgers.DBWeapon, WasteDrudgers",
+      "Id": "buckler",
+      "Type": "Shield",
+      "Name": "buckler",
+      "Char": "♦",
+      "DL": 0,
+      "LevelTags": [
+        "common"
+      ],
+      "Weight": 10,
+      "Value": 10,
+      "Material": "iron",
+      "MaterialTags": [
+        "metal"
+      ],
+      "BaseSkill": 10,
+      "Damage": null,
+      "Traits": null,
+      "Parry": null,
+      "UseSpell": null
+    },
+    "round_shield": {
+      "$type": "WasteDrudgers.DBWeapon, WasteDrudgers",
+      "Id": "round_shield",
+      "Type": "Shield",
+      "Name": "round shield",
+      "Char": "♦",
+      "DL": 0,
+      "LevelTags": [
+        "common"
+      ],
+      "Weight": 10,
+      "Value": 10,
+      "Material": "iron",
+      "MaterialTags": [
+        "metal"
+      ],
+      "BaseSkill": 20,
+      "Damage": null,
+      "Traits": null,
+      "Parry": null,
+      "UseSpell": null
+    },
+    "cap": {
+      "$type": "WasteDrudgers.DBApparel, WasteDrudgers",
+      "Id": "cap",
+      "Type": "Helmet",
+      "Name": "cap",
+      "Char": "¢",
+      "DL": 0,
+      "LevelTags": [
+        "common"
+      ],
+      "Weight": 10,
+      "Value": 10,
+      "Material": "leather",
+      "MaterialTags": [
+        "fabric"
+      ],
+      "Evasion": 0,
+      "Armor": 1,
+      "UseSpell": null
+    },
+    "cloak": {
+      "$type": "WasteDrudgers.DBApparel, WasteDrudgers",
+      "Id": "cloak",
+      "Type": "Cloak",
+      "Name": "cloak",
+      "Char": "¶",
+      "DL": 0,
+      "LevelTags": [
+        "common"
+      ],
+      "Weight": 10,
+      "Value": 10,
+      "Material": "cloth",
+      "MaterialTags": [
+        "fabric"
+      ],
+      "Evasion": 0,
+      "Armor": 0,
+      "UseSpell": null
+    },
+    "scale_armor": {
+      "$type": "WasteDrudgers.DBApparel, WasteDrudgers",
+      "Id": "scale_armor",
+      "Type": "Armor",
+      "Name": "scale armor",
+      "Char": "¥",
+      "DL": 0,
+      "LevelTags": [
+        "common"
+      ],
+      "Weight": 10,
+      "Value": 10,
+      "Material": "iron",
+      "MaterialTags": [
+        "metal"
+      ],
+      "Evasion": 0,
+      "Armor": 2,
+      "UseSpell": null
+    },
+    "breastplate": {
+      "$type": "WasteDrudgers.DBApparel, WasteDrudgers",
+      "Id": "breastplate",
+      "Type": "Armor",
+      "Name": "breastplate",
+      "Char": "¥",
+      "DL": 0,
+      "LevelTags": [
+        "common"
+      ],
+      "Weight": 10,
+      "Value": 10,
+      "Material": "iron",
+      "MaterialTags": [
+        "metal"
+      ],
+      "Evasion": 0,
+      "Armor": 3,
+      "UseSpell": null
+    },
+    "padded_shirt": {
+      "$type": "WasteDrudgers.DBApparel, WasteDrudgers",
+      "Id": "padded_shirt",
+      "Type": "Undershirt",
+      "Name": "padded shirt",
+      "Char": "φ",
+      "DL": 0,
+      "LevelTags": [
+        "common"
+      ],
+      "Weight": 10,
+      "Value": 10,
+      "Material": "cloth",
+      "MaterialTags": [],
+      "Evasion": 0,
+      "Armor": 1,
+      "UseSpell": null
+    },
+    "hauberk": {
+      "$type": "WasteDrudgers.DBApparel, WasteDrudgers",
+      "Id": "hauberk",
+      "Type": "Undershirt",
+      "Name": "hauberk",
+      "Char": "φ",
+      "DL": 0,
+      "LevelTags": [
+        "common"
+      ],
+      "Weight": 10,
+      "Value": 10,
+      "Material": "iron",
+      "MaterialTags": [
+        "metal"
+      ],
+      "Evasion": 0,
+      "Armor": 2,
+      "UseSpell": null
+    },
+    "belt": {
+      "$type": "WasteDrudgers.DBApparel, WasteDrudgers",
+      "Id": "belt",
+      "Type": "Belt",
+      "Name": "belt",
+      "Char": "=",
+      "DL": 0,
+      "LevelTags": [
+        "common"
+      ],
+      "Weight": 10,
+      "Value": 10,
+      "Material": "leather",
+      "MaterialTags": [],
+      "Evasion": 0,
+      "Armor": 0,
+      "UseSpell": null
+    },
+    "bracers": {
+      "$type": "WasteDrudgers.DBApparel, WasteDrudgers",
+      "Id": "bracers",
+      "Type": "Bracers",
+      "Name": "bracers",
+      "Char": "≈",
+      "DL": 0,
+      "LevelTags": [
+        "common"
+      ],
+      "Weight": 10,
+      "Value": 10,
+      "Material": "leather",
+      "MaterialTags": [],
+      "Evasion": 0,
+      "Armor": 0,
+      "UseSpell": null
+    },
+    "gauntlets": {
+      "$type": "WasteDrudgers.DBApparel, WasteDrudgers",
+      "Id": "gauntlets",
+      "Type": "Gloves",
+      "Name": "gauntlets",
+      "Char": "\"",
+      "DL": 0,
+      "LevelTags": [
+        "common"
+      ],
+      "Weight": 10,
+      "Value": 10,
+      "Material": "iron",
+      "MaterialTags": [
+        "metal"
+      ],
+      "Evasion": 0,
+      "Armor": 1,
+      "UseSpell": null
+    },
+    "boots": {
+      "$type": "WasteDrudgers.DBApparel, WasteDrudgers",
+      "Id": "boots",
+      "Type": "Boots",
+      "Name": "boots",
+      "Char": "π",
+      "DL": 0,
+      "LevelTags": [
+        "common"
+      ],
+      "Weight": 10,
+      "Value": 10,
+      "Material": "leather",
+      "MaterialTags": [],
+      "Evasion": 0,
+      "Armor": 1,
+      "UseSpell": null
+    },
+    "chausses": {
+      "$type": "WasteDrudgers.DBApparel, WasteDrudgers",
+      "Id": "chausses",
+      "Type": "Boots",
+      "Name": "chausses",
+      "Char": "π",
+      "DL": 0,
+      "LevelTags": [
+        "common"
+      ],
+      "Weight": 10,
+      "Value": 10,
+      "Material": "iron",
+      "MaterialTags": [
+        "metal"
+      ],
+      "Evasion": 0,
+      "Armor": 2,
+      "UseSpell": null
+    },
+    "earring": {
+      "$type": "WasteDrudgers.DBApparel, WasteDrudgers",
+      "Id": "earring",
+      "Type": "Earring",
+      "Name": "earring",
+      "Char": "δ",
+      "DL": 0,
+      "LevelTags": [
+        "common"
+      ],
+      "Weight": 10,
+      "Value": 10,
+      "Material": "gold",
+      "MaterialTags": [],
+      "Evasion": 0,
+      "Armor": 0,
+      "UseSpell": null
+    },
+    "ring": {
+      "$type": "WasteDrudgers.DBApparel, WasteDrudgers",
+      "Id": "ring",
+      "Type": "Ring",
+      "Name": "ring",
+      "Char": "ô",
+      "DL": 0,
+      "LevelTags": [
+        "common"
+      ],
+      "Weight": 10,
+      "Value": 10,
+      "Material": "gold",
+      "MaterialTags": [],
+      "Evasion": 0,
+      "Armor": 0,
+      "UseSpell": null
+    },
+    "amulet": {
+      "$type": "WasteDrudgers.DBApparel, WasteDrudgers",
+      "Id": "amulet",
+      "Type": "Amulet",
+      "Name": "amulet",
+      "Char": "♀",
+      "DL": 0,
+      "LevelTags": [
+        "common"
+      ],
+      "Weight": 10,
+      "Value": 10,
+      "Material": "gold",
+      "MaterialTags": [],
+      "Evasion": 0,
+      "Armor": 0,
+      "UseSpell": null
+    }
+  },
+  "spells": {
+    "vigor_heal": {
+      "Id": "vigor_heal",
+      "Name": "Heal Vigor",
+      "Magnitude": "1-6",
+      "Duration": 0,
+      "Effect": "VigorHeal",
+      "Message": "use_item_vigor_potion"
+    },
+    "health_heal": {
+      "Id": "health_heal",
+      "Name": "Heal Health",
+      "Magnitude": "1-6",
+      "Duration": 0,
+      "Effect": "HealthHeal",
+      "Message": "use_item_health_potion"
+    },
+    "identify": {
+      "Id": "identify",
+      "Name": "Identify",
+      "Magnitude": "25-50",
+      "Duration": 0,
+      "Effect": "Identify",
+      "Message": "use_item_identify_scroll"
+    },
+    "strength_permanent": {
+      "Id": "strength_permanent",
+      "Name": "Strength Permanent",
+      "Magnitude": "1-2",
+      "Duration": 0,
+      "Effect": "StrengthPermanent",
+      "Message": "use_item_strength_potion"
+    },
+    "endurance_permanent": {
+      "Id": "endurance_permanent",
+      "Name": "Endurance Permanent",
+      "Magnitude": "1-2",
+      "Duration": 0,
+      "Effect": "EndurancePermanent",
+      "Message": "use_item_endurance_potion"
+    },
+    "finesse_permanent": {
+      "Id": "finesse_permanent",
+      "Name": "Finesse Permanent",
+      "Magnitude": "1-2",
+      "Duration": 0,
+      "Effect": "FinessePermanent",
+      "Message": "use_item_finesse_potion"
+    },
+    "intellect_permanent": {
+      "Id": "intellect_permanent",
+      "Name": "Intellect Permanent",
+      "Magnitude": "1-2",
+      "Duration": 0,
+      "Effect": "IntellectPermanent",
+      "Message": "use_item_intellect_potion"
+    },
+    "resolve_permanent": {
+      "Id": "resolve_permanent",
+      "Name": "Resolve Permanent",
+      "Magnitude": "1-2",
+      "Duration": 0,
+      "Effect": "ResolvePermanent",
+      "Message": "use_item_resolve_potion"
+    },
+    "awareness_permanent": {
+      "Id": "awareness_permanent",
+      "Name": "Awareness Permanent",
+      "Magnitude": "1-2",
+      "Duration": 0,
+      "Effect": "AwarenessPermanent",
+      "Message": "use_item_awareness_potion"
+    },
+    "poison_weak": {
+      "Id": "poison_weak",
+      "Name": "Weak Poison",
+      "Magnitude": "4-16",
+      "Duration": 0,
+      "Effect": "InflictPoison",
+      "Message": "use_item_poison_potion"
+    }
+  },
+  "naturalAttacks": {
+    "fungoid_strike": {
+      "Id": "fungoid_strike",
+      "BaseSkill": 40,
+      "Damage": "1-4",
+      "CastOnStrike": "poison_weak"
+    }
+  },
+  "levels": {
+    "world": {
+      "Id": "world",
+      "DL": -1,
+      "LevelTags": [],
+      "Spawns": null,
+      "Strategy": {
+        "$type": "WasteDrudgers.Level.Generation.LoadStrategy, WasteDrudgers",
+        "filename": "world"
+      },
+      "Portals": [
+        {
+          "Origin": "world",
+          "Target": "starting_cave_01",
+          "Feature": "downstairs",
+          "Coords": null
+        },
+        {
+          "Origin": "world",
+          "Target": "dungeon_01",
+          "Feature": "downstairs",
+          "Coords": null
+        },
+        {
+          "Origin": "world",
+          "Target": "labyrinth_01",
+          "Feature": "downstairs",
+          "Coords": null
+        }
+      ]
+    },
+    "starting_cave_01": {
+      "Id": "starting_cave_01",
+      "DL": 0,
+      "LevelTags": [
+        "common",
+        "cave"
+      ],
+      "Spawns": "20-50",
+      "Strategy": {
+        "$type": "WasteDrudgers.Level.Generation.CaveStrategy, WasteDrudgers",
+        "width": "96",
+        "height": "96",
+        "floor": "cave_floor",
+        "wall": "cave_wall"
+      },
+      "Portals": [
+        {
+          "Origin": "starting_cave_01",
+          "Target": "world",
+          "Feature": "upstairs",
+          "Coords": null
+        },
+        {
+          "Origin": "starting_cave_01",
+          "Target": "starting_cave_02",
+          "Feature": "downstairs",
+          "Coords": null
+        }
+      ]
+    },
+    "starting_cave_02": {
+      "Id": "starting_cave_02",
+      "DL": 2,
+      "LevelTags": [
+        "common",
+        "cave"
+      ],
+      "Spawns": "20-50",
+      "Strategy": {
+        "$type": "WasteDrudgers.Level.Generation.CaveStrategy, WasteDrudgers",
+        "width": "96",
+        "height": "96",
+        "floor": "cave_floor",
+        "wall": "cave_wall"
+      },
+      "Portals": [
+        {
+          "Origin": "starting_cave_02",
+          "Target": "starting_cave_01",
+          "Feature": "upstairs",
+          "Coords": null
+        }
+      ]
+    },
+    "dungeon_01": {
+      "Id": "dungeon_01",
+      "DL": 0,
+      "LevelTags": [
+        "common"
+      ],
+      "Spawns": null,
+      "Strategy": {
+        "$type": "WasteDrudgers.Level.Generation.DungeonStrategy, WasteDrudgers",
+        "roomchance": "50",
+        "minroomsize": "3",
+        "maxroomsize": "8",
+        "mincorridorlength": "4",
+        " maxcorridorlength": "10",
+        "maxfeatures": "10",
+        "maxiterations": "1000",
+        "width": "96",
+        "height": "96",
+        "floor": "cave_floor",
+        "wall": "cave_wall"
+      },
+      "Portals": [
+        {
+          "Origin": "dungeon_01",
+          "Target": "world",
+          "Feature": "upstairs",
+          "Coords": null
+        }
+      ]
+    },
+    "labyrinth_01": {
+      "Id": "labyrinth_01",
+      "DL": 0,
+      "LevelTags": [
+        "common"
+      ],
+      "Spawns": null,
+      "Strategy": {
+        "$type": "WasteDrudgers.Level.Generation.MazeStrategy, WasteDrudgers",
+        "width": "96",
+        "height": "96",
+        "floor": "cave_floor",
+        "wall": "cave_wall"
+      },
+      "Portals": [
+        {
+          "Origin": "labyrinth_01",
+          "Target": "world",
+          "Feature": "upstairs",
+          "Coords": null
+        }
+      ]
+    }
+  },
+  "obfuscated": {
+    "Potion": [
+      "bubbling",
+      "clear",
+      "cloudy",
+      "kaleidoscopic",
+      "mottled",
+      "prismatic",
+      "smelly",
+      "specked",
+      "thick"
+    ],
+    "Scroll": [
+      "xatham-ryaa",
+      "thazai-tonn",
+      "kakurra xukul",
+      "kuroc gulkor",
+      "gul-kothoth",
+      "yagkoolan yok",
+      "tha xuthalla",
+      "racan ahalgana",
+      "chamiabac ahalmez",
+      "ahatocob tocapa",
+      "chiamiaholom achami",
+      "temba darmok",
+      "jalad tanagra",
+      "khelatra satkhos",
+      "thorr skelosh",
+      "thugra thune",
+      "thuzun khotan",
+      "xaltothun",
+      "xytos xotli",
+      "xuthal fhtagn",
+      "xapur",
+      "yag-kosha",
+      "jhebbal sag"
+    ]
+  },
+  "professions": {
+    "fighter": [
+      "MartialArts",
+      "Dodge",
+      "Vigor",
+      "Health",
+      "Strength",
+      "Endurance",
+      "Finesse",
+      "Awareness"
+    ],
+    "shaman": [
+      "Vigor",
+      "Health",
+      "Endurance",
+      "Intellect",
+      "Resolve",
+      "Awareness"
+    ],
+    "beast": [
+      "Vigor",
+      "Health",
+      "Strength",
+      "Endurance",
+      "Finesse",
+      "Awareness"
+    ]
+  },
+  "messages": {
+    "inventory_empty": {
+      "Id": "inventory_empty",
+      "LoggingLevel": "Global",
+      "Message": "You don't own any items!"
+    },
+    "crashed_to_wall": {
+      "Id": "crashed_to_wall",
+      "LoggingLevel": "Global",
+      "Message": "Bonk! You crashed into a wall!"
+    },
+    "character_points_earned": {
+      "Id": "character_points_earned",
+      "LoggingLevel": "Global",
+      "Message": "You have earned {0} character points!"
+    },
+    "miss": {
+      "Id": "miss",
+      "LoggingLevel": "Player",
+      "Message": "{0} missed {1}."
+    },
+    "miss_critical": {
+      "Id": "miss_critical",
+      "LoggingLevel": "Player",
+      "Message": "{0} critically missed {1}!"
+    },
+    "hit_no_damage": {
+      "Id": "hit_no_damage",
+      "LoggingLevel": "Player",
+      "Message": "{0} hit {1}, but failed to cause harm."
+    },
+    "hit_special": {
+      "Id": "hit_special",
+      "LoggingLevel": "Visible",
+      "Message": "{0} perfectly hit {1} for {2} damage."
+    },
+    "hit": {
+      "Id": "hit",
+      "LoggingLevel": "Visible",
+      "Message": "{0} hit {1} for {2} damage!"
+    },
+    "hit_critical": {
+      "Id": "hit_critical",
+      "LoggingLevel": "Visible",
+      "Message": "{1} critically hit {1} for {2} damage!"
+    },
+    "death": {
+      "Id": "death",
+      "LoggingLevel": "Visible",
+      "Message": "{0} died!"
+    },
+    "death_instant": {
+      "Id": "death_instant",
+      "LoggingLevel": "Visible",
+      "Message": "{0} died instantly!"
+    },
+    "death_affliction": {
+      "Id": "death_affliction",
+      "LoggingLevel": "Visible",
+      "Message": "{0} painfully succumbs to an affliction."
+    },
+    "get_item": {
+      "Id": "get_item",
+      "LoggingLevel": "Visible",
+      "Message": "{0} picked up {1}."
+    },
+    "status_poison_damage": {
+      "Id": "status_poison_damage",
+      "LoggingLevel": "Visible",
+      "Message": "Poison injures {0} for {1} damage!"
+    },
+    "status_affliction_healed": {
+      "Id": "status_affliction_healed",
+      "LoggingLevel": "Global",
+      "Message": "You feel much better."
+    },
+    "use_item_strength_potion": {
+      "Id": "use_item_strength_potion",
+      "LoggingLevel": "Global",
+      "Message": "You feel stronger!"
+    },
+    "use_item_endurance_potion": {
+      "Id": "use_item_endurance_potion",
+      "LoggingLevel": "Global",
+      "Message": "You feel tougher!"
+    },
+    "use_item_finesse_potion": {
+      "Id": "use_item_finesse_potion",
+      "LoggingLevel": "Global",
+      "Message": "You feel more graceful!"
+    },
+    "use_item_intellect_potion": {
+      "Id": "use_item_intellect_potion",
+      "LoggingLevel": "Global",
+      "Message": "You feel smarter!"
+    },
+    "use_item_resolve_potion": {
+      "Id": "use_item_resolve_potion",
+      "LoggingLevel": "Global",
+      "Message": "You feel determined!"
+    },
+    "use_item_awareness_potion": {
+      "Id": "use_item_awareness_potion",
+      "LoggingLevel": "Global",
+      "Message": "You feel more perceptive!"
+    },
+    "use_item_identify_scroll": {
+      "Id": "use_item_identify_scroll",
+      "LoggingLevel": "Global",
+      "Message": "Suddenly you understand the function of your items!"
+    },
+    "use_item_health_potion": {
+      "Id": "use_item_health_potion",
+      "LoggingLevel": "Global",
+      "Message": "You feel somewhat healed."
+    },
+    "use_item_vigor_potion": {
+      "Id": "use_item_vigor_potion",
+      "LoggingLevel": "Global",
+      "Message": "You feel rejuvenated!"
+    },
+    "use_item_poison_potion": {
+      "Id": "use_item_poison_potion",
+      "LoggingLevel": "Global",
+      "Message": "Urgh! Poison!"
+    },
+    "nothing_happens": {
+      "Id": "nothing_happens",
+      "LoggingLevel": "Global",
+      "Message": "Nothing happened."
+    },
+    "stepped_on_thorns": {
+      "Id": "stepped_on_thorns",
+      "LoggingLevel": "Visible",
+      "Message": "Spiky thorns tear {0} for {1} damage!"
+    }
+  },
+  "lootLists": {
+    "common": [
+      "scroll_identify",
+      "potion_strength",
+      "potion_endurance",
+      "potion_finesse",
+      "potion_intellect",
+      "potion_resolve",
+      "potion_awareness",
+      "food_insect",
+      "dagger",
+      "bone_dagger",
+      "khopesh",
+      "morningstar",
+      "quarterstaff",
+      "rapier",
+      "whip",
+      "buckler",
+      "round_shield",
+      "cap",
+      "cloak",
+      "scale_armor",
+      "breastplate",
+      "padded_shirt",
+      "hauberk",
+      "belt",
+      "bracers",
+      "gauntlets",
+      "boots",
+      "chausses",
+      "earring",
+      "ring",
+      "amulet"
+    ]
+  },
+  "spawnLists": {
+    "common": [
+      "mutorc",
+      "mutogre",
+      "skorrek",
+      "large_skorrek"
+    ],
+    "cave": [
+      "fungoid",
+      "mokrug_larva",
+      "grol"
+    ]
+  },
+  "materialLists": {
+    "metal": [
+      "iron",
+      "bronze"
+    ],
+    "primitive": [
+      "wood",
+      "bone",
+      "stone",
+      "copper",
+      "chitin"
+    ],
+    "fabric": [
+      "leather",
+      "cloth"
+    ]
+  }
+}

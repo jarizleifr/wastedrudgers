@@ -1,7 +1,10 @@
 using System;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace WasteDrudgers.Entities
 {
+    [JsonConverter(typeof(StringEnumConverter))]
     public enum ItemType
     {
         Misc,

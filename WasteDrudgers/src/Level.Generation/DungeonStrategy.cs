@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.IO;
+using System.Linq;
 using Blaggard.Common;
 using Newtonsoft.Json;
 
@@ -62,8 +62,8 @@ namespace WasteDrudgers.Level.Generation
 
             rooms = new List<Room>();
 
-            floor = world.database.GetTile(Floor);
-            wall = world.database.GetTile(Wall);
+            floor = Data.GetTile(Floor);
+            wall = Data.GetTile(Wall);
 
             RNG.Seed(map.seed);
 

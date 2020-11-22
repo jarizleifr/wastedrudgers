@@ -171,7 +171,7 @@ namespace WasteDrudgers.Render
         private static void DrawPortrait(IContext ctx, int x, int y, IBlittable layer)
         {
             layer.Rect(x, y, 3, 3, ' ', Color.black, Color.black);
-            layer.PutChar(x + 1, y + 1, '@', ctx.Colors.white);
+            layer.PutChar(x + 1, y + 1, '@', Data.Colors.white);
         }
 
         private static void DrawCalendar(IContext ctx, World world, int x, int y)
@@ -248,7 +248,7 @@ namespace WasteDrudgers.Render
             var playerData = world.PlayerData;
             var combat = world.ecs.GetRef<Combat>(playerData.entity);
             c.Print(x, y, "Damage", ctx.Theme.caption);
-            c.Print(x + 13, y, $"{combat.minDamage}-{combat.maxDamage}", ctx.Theme.text, TextAlignment.Right);
+            c.Print(x + 13, y, combat.damage.ToString(), ctx.Theme.text, TextAlignment.Right);
             c.Print(x, y + 1, "To-Hit", ctx.Theme.caption);
             c.Print(x + 14, y + 1, $"{combat.hitChance}%", ctx.Theme.text, TextAlignment.Right);
             c.Print(x, y + 2, "Speed", ctx.Theme.caption);

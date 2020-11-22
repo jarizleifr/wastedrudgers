@@ -1,0 +1,12 @@
+Id	Name	Char	Color	Trigger	Description
+vegetation	vegetation	τ	green_light		some vegetation
+thorns	thorns	ß	grey_light	Thorns	some spiky thorns
+gravestone	gravestone	±	grey		gravestone
+reeds	reeds	√	beige		reeds
+rubble_01	rubble	≥	grey_light		some rubble
+rubble_02	rubble	≤	grey_light		some rubble
+altar	altar	_	grey_light		altar
+mushroom_patch	mushroom patch	“	teal_light		some mushrooms
+downstairs	downstairs	<	grey_light		a way down
+upstairs	upstairs	>	grey_light		a way up
+start_portal	portal	Ω	grey_light		a ruined portal

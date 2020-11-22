@@ -1,0 +1,11 @@
+Id	Name	Magnitude	Duration	Effect	Message
+vigor_heal	Heal Vigor	1-6	0	VigorHeal	use_item_vigor_potion
+health_heal	Heal Health	1-6	0	HealthHeal	use_item_health_potion
+identify	Identify	25-50	0	Identify	use_item_identify_scroll
+strength_permanent	Strength Permanent	1-2	0	StrengthPermanent	use_item_strength_potion
+endurance_permanent	Endurance Permanent	1-2	0	EndurancePermanent	use_item_endurance_potion
+finesse_permanent	Finesse Permanent	1-2	0	FinessePermanent	use_item_finesse_potion
+intellect_permanent	Intellect Permanent	1-2	0	IntellectPermanent	use_item_intellect_potion
+resolve_permanent	Resolve Permanent	1-2	0	ResolvePermanent	use_item_resolve_potion
+awareness_permanent	Awareness Permanent	1-2	0	AwarenessPermanent	use_item_awareness_potion
+poison_weak	Weak Poison	4-16	0	InflictPoison	use_item_poison_potion

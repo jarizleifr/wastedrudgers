@@ -59,8 +59,7 @@ namespace WasteDrudgers.Level
                 return false;
             }
             return Bresenham.GetPath(map, origin, target)
-                .Select(node => node.Flags(TileFlags.BlocksMovement))
-                .All(blocks => !blocks);
+                .All(node => !node.Flags(TileFlags.BlocksMovement));
         }
 
         // TODO: Look needs visibility checks

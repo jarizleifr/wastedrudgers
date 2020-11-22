@@ -1,0 +1,9 @@
+Origin	Target	Feature	Coords
+world	starting_cave_01	downstairs	
+world	dungeon_01	downstairs	
+world	labyrinth_01	downstairs	
+starting_cave_01	world	upstairs	
+starting_cave_01	starting_cave_02	downstairs	
+starting_cave_02	starting_cave_01	upstairs	
+dungeon_01	world	upstairs	
+labyrinth_01	world	upstairs	

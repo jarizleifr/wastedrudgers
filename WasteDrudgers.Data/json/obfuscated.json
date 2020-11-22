@@ -1,0 +1,38 @@
+{
+  "Potion": [
+    "bubbling",
+    "clear",
+    "cloudy",
+    "kaleidoscopic",
+    "mottled",
+    "prismatic",
+    "smelly",
+    "specked",
+    "thick"
+  ],
+  "Scroll": [
+	"xatham-ryaa",
+	"thazai-tonn",
+	"kakurra xukul",
+	"kuroc gulkor",
+	"gul-kothoth",
+	"yagkoolan yok",
+	"tha xuthalla",
+	"racan ahalgana",
+	"chamiabac ahalmez",
+	"ahatocob tocapa",
+	"chiamiaholom achami",
+	"temba darmok",
+	"jalad tanagra",
+	"khelatra satkhos",
+	"thorr skelosh",
+	"thugra thune",
+	"thuzun khotan",
+	"xaltothun",
+	"xytos xotli",
+	"xuthal fhtagn",
+	"xapur",
+	"yag-kosha",
+	"jhebbal sag"
+  ]
+}

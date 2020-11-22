@@ -1,0 +1,9 @@
+Id	Base	Name	Char	Color	ST	EN	FI	IN	RE	AW	NaturalAttack	DL	LevelTags	Professions
+mutorc		mutorc	o	green_light	10	10	10	10	10	10		0	common	fighter:20,shaman:30
+mutogre		mutogre	O	green_light	12	12	10	10	10	10		0	common	
+fungoid		fungoid	t	teal_light	10	10	10	10	10	10	fungoid_strike	0	cave	
+mokrug		mokrug beetle	i	red	10	10	10	10	10	10		0		
+mokrug_larva		mokrug larva	w	beige	10	10	10	10	10	10		0	cave	
+grol		grol	F	blue_light	10	10	10	10	10	9		0	cave	
+skorrek		skorrek	r	brown_light	10	10	10	10	10	10		0	common	beast:50
+large_skorrek	skorrek	large skorrek			15							0	common	beast:150

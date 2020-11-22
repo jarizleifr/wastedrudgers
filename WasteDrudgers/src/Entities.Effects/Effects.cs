@@ -13,7 +13,7 @@ namespace WasteDrudgers.Entities
             world.ecs.Assign(entity, new Effect
             {
                 characters = "*X+",
-                color = world.database.GetColor("c_blue_light"),
+                color = Data.Colors.blueLight,
                 delta = 0
             });
 

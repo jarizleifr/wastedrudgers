@@ -3,5 +3,8 @@ bin
 obj
 .vscode
 
+node_modules
+output
+
 notes.txt
 *.psd

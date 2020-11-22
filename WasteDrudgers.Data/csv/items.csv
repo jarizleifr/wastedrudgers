@@ -1,0 +1,9 @@
+Id	Type	Name	Char	DL	LevelTags	Weight	Value	Material	MaterialTags	UseSpell
+scroll_identify	Scroll	scroll of identify	?	0	common	10	10	paper		identify
+potion_strength	Potion	strength mutagen	¿	0	common	10	10	glass		strength_permanent
+potion_endurance	Potion	endurance mutagen	¿	0	common	10	10	glass		endurance_permanent
+potion_finesse	Potion	finesse mutagen	¿	0	common	10	10	glass		finesse_permanent
+potion_intellect	Potion	intellect mutagen	¿	0	common	10	10	glass		intellect_permanent
+potion_resolve	Potion	resolve mutagen	¿	0	common	10	10	glass		resolve_permanent
+potion_awareness	Potion	awareness mutagen	¿	0	common	10	10	glass		awareness_permanent
+food_insect	Food	insect roast	%	0	common	10	10	flesh		

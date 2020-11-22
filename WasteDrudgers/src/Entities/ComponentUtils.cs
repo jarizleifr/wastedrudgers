@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using ManulECS;
-using WasteDrudgers.Data;
 
 namespace WasteDrudgers.Entities
 {
@@ -17,10 +16,12 @@ namespace WasteDrudgers.Entities
 
             foreach (var profession in raw.Professions)
             {
-                var points = profession.Item2 + pointsLeft;
+                var split = profession.Split(":");
+                var rawProfession = Data.GetProfession(split[0]);
+                var points = int.Parse(split[1]) + pointsLeft;
                 while (points >= 2)
                 {
-                    var available = profession.Item1.Where(p => p.GetCost() <= points).ToList();
+                    var available = rawProfession.Where(p => p.GetCost() <= points).ToList();
 
                     var costs20 = available.Where(p => p.GetCost() == 20).ToList();
                     var costs10 = available.Where(p => p.GetCost() == 10).ToList();

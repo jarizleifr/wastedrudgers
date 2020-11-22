@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Blaggard.Common;
 
 namespace WasteDrudgers.Level
@@ -37,10 +36,11 @@ namespace WasteDrudgers.Level
             int yStep = y1 < y2 ? 1 : -1;
             int y = y1;
 
-            var nodes = new List<Vec2>();
+            var nodes = new List<IMapCell>();
             for (int x = x1; x <= x2; x++)
             {
-                nodes.Add((steep) ? new Vec2(y, x * sign) : new Vec2(x * sign, y));
+                var pos = (steep) ? new Vec2(y, x * sign) : new Vec2(x * sign, y);
+                nodes.Add(map[pos]);
                 err -= Math.Abs(dy);
                 if (err < 0)
                 {
@@ -48,7 +48,7 @@ namespace WasteDrudgers.Level
                     err += dx;
                 }
             }
-            return nodes.Select(n => map[n]);
+            return nodes;
         }
     }
 }

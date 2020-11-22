@@ -75,9 +75,10 @@ namespace WasteDrudgers.Level
         public void ClearCreatureAt(Vec2 pos) => creatures.Remove(pos);
 
         public IEnumerable<Vec2> GetPositionsWithItems() => items.Keys;
-        public Renderable GetItemsRenderable(Vec2 position, World world) => items[position]
-            .Select(i => new { item = world.ecs.GetRef<Item>(i), renderable = world.ecs.GetRef<Renderable>(i) })
-            .Aggregate((acc, cur) => cur.item.weight >= acc.item.weight ? cur : acc).renderable;
+        public Renderable GetItemsRenderable(Vec2 position, World world) => world.ecs.GetRef<Renderable>
+        (
+            items[position].OrderByDescending((i) => world.ecs.GetRef<Item>(i).weight).First()
+        );
 
         public bool TryGetItems(Vec2 key, out HashSet<Entity> entities) => items.TryGetValue(key, out entities);
 

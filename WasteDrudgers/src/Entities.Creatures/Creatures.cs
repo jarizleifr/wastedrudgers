@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Blaggard.Common;
 using ManulECS;
 
-using WasteDrudgers.Data;
+using WasteDrudgers.Common;
 
 namespace WasteDrudgers.Entities
 {
@@ -11,7 +11,7 @@ namespace WasteDrudgers.Entities
     {
         public static Entity Create(World world, string id, Vec2 pos)
         {
-            var creature = world.database.GetCreature(id);
+            var creature = Data.GetCreature(id);
             return Create(world, creature, pos);
         }
 
@@ -23,7 +23,7 @@ namespace WasteDrudgers.Entities
             world.ecs.Assign(entity, new Position { coords = pos });
             world.ecs.Assign(entity, new Renderable
             {
-                character = creature.Character,
+                character = creature.Char,
                 color = creature.Color,
             });
             world.ecs.Assign(entity, new AI { });
@@ -61,15 +61,15 @@ namespace WasteDrudgers.Entities
 
             if (creature.NaturalAttack != null)
             {
+                var rawNaturalAttack = Data.GetNaturalAttack(creature.NaturalAttack);
                 var naturalAttack = new NaturalAttack
                 {
-                    baseSkill = creature.NaturalAttack.BaseSkill,
-                    minDamage = creature.NaturalAttack.MinDamage,
-                    maxDamage = creature.NaturalAttack.MaxDamage
+                    baseSkill = rawNaturalAttack.BaseSkill,
+                    damage = rawNaturalAttack.Damage,
                 };
-                if (creature.NaturalAttack.CastOnStrike != null)
+                if (rawNaturalAttack.CastOnStrike != null)
                 {
-                    naturalAttack.castOnStrike = creature.NaturalAttack.CastOnStrike.Id;
+                    naturalAttack.castOnStrike = rawNaturalAttack.CastOnStrike;
                 }
                 world.ecs.Assign(entity, naturalAttack);
             }
@@ -99,8 +99,7 @@ namespace WasteDrudgers.Entities
             var combat = new Combat
             {
                 hitChance = unarmed,
-                minDamage = 1 + Formulae.MeleeDamage(stats),
-                maxDamage = 2 + Formulae.MeleeDamage(stats),
+                damage = new Extent(1 + Formulae.MeleeDamage(stats), 2 + Formulae.MeleeDamage(stats)),
                 dodge = Formulae.BaseSkill(SkillType.Dodge, stats) + skills.GetRank(SkillType.Dodge) + (int)(unarmed * .33f),
                 armor = 0
             };
@@ -109,8 +108,10 @@ namespace WasteDrudgers.Entities
             if (world.ecs.TryGet(entity, out NaturalAttack naturalAttack))
             {
                 unarmed = naturalAttack.baseSkill + skills.GetRank(SkillType.MartialArts);
-                combat.minDamage = Math.Max(1, naturalAttack.minDamage + Formulae.MeleeDamage(stats));
-                combat.maxDamage = Math.Max(2, naturalAttack.maxDamage + Formulae.MeleeDamage(stats));
+                combat.damage = new Extent(
+                    Math.Max(1, naturalAttack.damage.min + Formulae.MeleeDamage(stats)),
+                    Math.Max(2, naturalAttack.damage.max + Formulae.MeleeDamage(stats))
+                );
                 combat.dodge = Formulae.BaseSkill(SkillType.Dodge, stats) + skills.GetRank(SkillType.Dodge) + (int)(unarmed * .33f);
 
                 if (naturalAttack.castOnStrike != null)
@@ -151,8 +152,10 @@ namespace WasteDrudgers.Entities
                     var skill = Formulae.BaseSkill(skillType, stats) + skills.GetRank(skillType) + attack.chance;
                     combat.wielding = Wielding.SingleWeapon;
                     combat.hitChance = skill;
-                    combat.minDamage = attack.min + Formulae.MeleeDamage(stats);
-                    combat.maxDamage = attack.max + Formulae.MeleeDamage(stats);
+                    combat.damage = new Extent(
+                        attack.damage.min + Formulae.MeleeDamage(stats),
+                        attack.damage.max + Formulae.MeleeDamage(stats)
+                    );
 
                     // If no shield, add weapon parry to dodge
                     if (!isShieldEquipped)
@@ -162,8 +165,7 @@ namespace WasteDrudgers.Entities
                         // If versatile and without shield, add +2 to damage rolls
                         if (attack.style == WeaponStyle.Versatile)
                         {
-                            combat.minDamage += 2;
-                            combat.maxDamage += 2;
+                            combat.damage = new Extent(combat.damage.min + 2, combat.damage.max + 2);
                         }
                     }
                 }

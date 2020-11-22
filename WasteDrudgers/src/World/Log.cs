@@ -3,12 +3,12 @@ using System.Linq;
 using Blaggard.Common;
 using Blaggard.Graphics;
 using ManulECS;
-using WasteDrudgers.Data;
 using WasteDrudgers.Entities;
 using WasteDrudgers.Level;
 
 namespace WasteDrudgers
 {
+    // TODO: Log might cause some garbage due to allocations
     public enum LoggingLevel
     {
         Never,
@@ -68,7 +68,7 @@ namespace WasteDrudgers
         public LogNumber(int num) => this.num = num;
         public override bool PlayerInvolved(Entity playerEntity) => false;
 
-        public override ColoredString Fetch(World world) => new ColoredString(num.ToString(), world.database.GetColor("c_white"));
+        public override ColoredString Fetch(World world) => new ColoredString(num.ToString(), Data.Colors.white);
     }
 
     public class LogThing : LogItem

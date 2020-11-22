@@ -1,5 +1,6 @@
-using Blaggard.Common;
 using System;
+using Blaggard.Common;
+using WasteDrudgers.Common;
 
 namespace WasteDrudgers
 {
@@ -31,6 +32,8 @@ namespace WasteDrudgers
 
         public static int Int(int max) => random.Next(max);
         public static int Int(int min, int max) => random.Next(min, max);
+
+        public static int Extent(Extent extent) => IntInclusive(extent.min, extent.max);
 
         public static int IntInclusive(int min, int max) => random.Next(min, max + 1);
 

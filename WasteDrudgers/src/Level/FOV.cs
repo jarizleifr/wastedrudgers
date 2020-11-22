@@ -13,17 +13,19 @@ namespace WasteDrudgers.Level
 
         public void Recalculate(Map map, Vec2 origin, int fovRange)
         {
+            var newCells = LightCaster.CalculateFOV(map, origin, fovRange, (cell) => cell.Flags(TileFlags.BlocksVision));
+
             foreach (var cell in cells)
             {
+                if (newCells.Contains(cell)) continue;
                 cell.Visibility = Visibility.Explored;
             }
-
-            cells = LightCaster.CalculateFOV(map, origin, fovRange, (cell) => cell.Flags(TileFlags.BlocksVision));
-
-            foreach (var cell in cells)
+            foreach (var cell in newCells)
             {
+                if (cells.Contains(cell)) continue;
                 cell.Visibility = Visibility.Visible;
             }
+            cells = newCells;
         }
     }
 }

@@ -1,9 +1,6 @@
 using Blaggard.Common;
 using ManulECS;
 
-using WasteDrudgers.Data;
-using WasteDrudgers.Level;
-
 namespace WasteDrudgers.Entities
 {
     public static class Features
@@ -11,11 +8,11 @@ namespace WasteDrudgers.Entities
         public static Entity CreatePortal(World world, Vec2 pos, DBPortal portal)
         {
             var entity = CreateFeature(world, pos, portal.Feature);
-            world.ecs.Assign(entity, new Portal { targetLevel = portal.TargetLevelId });
+            world.ecs.Assign(entity, new Portal { targetLevel = portal.Target });
             return entity;
         }
 
-        public static Entity CreateFeature(World world, Vec2 pos, string id) => CreateFeature(world, pos, world.database.GetFeature(id));
+        public static Entity CreateFeature(World world, Vec2 pos, string id) => CreateFeature(world, pos, Data.GetFeature(id));
 
         public static Entity CreateFeature(World world, Vec2 pos, DBFeature feature)
         {
@@ -31,7 +28,7 @@ namespace WasteDrudgers.Entities
             });
             world.ecs.Assign(entity, new Renderable
             {
-                character = feature.Character,
+                character = feature.Char,
                 color = feature.Color,
             });
 

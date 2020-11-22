@@ -16,7 +16,7 @@ namespace WasteDrudgers.State
 
             var player = world.ecs.Create();
             world.ecs.Assign(player, new Position { coords = new Vec2(0, 0) });
-            world.ecs.Assign(player, new Renderable { character = '@', glyph = (char)256, color = world.database.GetColor("c_white") });
+            world.ecs.Assign(player, new Renderable { character = '@', glyph = (char)256, color = Data.Colors.white });
             world.ecs.Assign(player, new Actor { energy = 0, speed = 100 });
             world.ecs.Assign(player, new Player { });
             world.ecs.Assign(player, new Identity { name = name, rawName = "player" });
@@ -31,7 +31,7 @@ namespace WasteDrudgers.State
                 health = Formulae.BaseHealth(stats)
             });
 
-            var startingLevel = "lvl_starting_cave_01";
+            var startingLevel = "starting_cave_01";
             world.PlayerData = new PlayerData { entity = player, name = name, coords = Vec2.Zero, currentLevel = startingLevel, lastTarget = null };
             world.ObfuscatedNames = new ObfuscatedNames();
             world.Calendar = new Calendar(135, 1, 1, 12, 0, 0);
@@ -39,10 +39,10 @@ namespace WasteDrudgers.State
 #if DEBUG
             var startingItems = new List<string>
             {
-                "itm_food_insect_roast",
-                "itm_food_insect_roast",
-                "itm_food_insect_roast",
-                "itm_food_insect_roast",
+                "food_insect",
+                "food_insect",
+                "food_insect",
+                "food_insect",
             };
             foreach (var i in startingItems)
             {

@@ -1,8 +1,7 @@
 using System.Collections.Generic;
-using System.Linq;
 using Blaggard.Common;
 using ManulECS;
-using WasteDrudgers.Data;
+using WasteDrudgers.Common;
 using WasteDrudgers.Entities;
 
 namespace WasteDrudgers.Level
@@ -11,32 +10,24 @@ namespace WasteDrudgers.Level
     public class EntitySpawner
     {
         private int dangerLevel;
-        private int min, max;
+        private Extent spawns;
         private List<DBCreature> creatures;
         private List<DBItem> items;
 
         public EntitySpawner(IContext ctx, World world, DBLevel level)
         {
-            if (level.Creatures.Count != 0)
-            {
-                creatures = level.Creatures.SelectMany(list => list.Creatures).ToList();
-            }
-
-            if (level.Loot.Count != 0)
-            {
-                items = level.Loot.SelectMany(list => list.Items).ToList();
-            }
+            creatures = Data.GetLevelSpawns(level);
+            items = Data.GetLevelLoot(level);
 
             dangerLevel = level.DangerLevel;
-            min = level.MinSpawn;
-            max = level.MaxSpawn;
+            spawns = level.Spawns ?? new Extent(0, 0);
         }
 
         public void InitialSpawning(World world)
         {
             if (creatures != null)
             {
-                for (int i = 0; i < RNG.Int(min, max); i++)
+                for (int i = 0; i < RNG.Extent(spawns); i++)
                 {
                     Spawn(world, LevelUtils.GetRandomPassablePositionWithoutCreature(world));
                 }
@@ -44,7 +35,7 @@ namespace WasteDrudgers.Level
 
             if (items != null)
             {
-                for (int i = 0; i < RNG.Int(min, max); i++)
+                for (int i = 0; i < RNG.Extent(spawns); i++)
                 {
                     SpawnItem(world, LevelUtils.GetRandomPassablePosition(world));
                 }
@@ -65,19 +56,12 @@ namespace WasteDrudgers.Level
             while (randomItem == null)
             {
                 var candidateItem = items[RNG.Int(items.Count)];
-                var candidateMaterial = candidateItem.BaseMaterial;
+                var candidateMaterial = Data.GetMaterial(candidateItem.Material);
 
-                if (candidateItem.MaterialGroup != null)
+                if (candidateItem.MaterialTags.Count > 0)
                 {
-                    int acc = 0;
-                    var random = new List<(DBMaterial material, int randomIndex)>();
-                    foreach (var m in candidateItem.MaterialGroup.Materials)
-                    {
-                        random.Add((m.material, m.probability + acc));
-                        acc += m.probability;
-                    }
-                    var r = RNG.IntInclusive(1, 100);
-                    candidateMaterial = random.Find(m => r <= m.randomIndex).material;
+                    var materials = Data.GetItemMaterials(candidateItem);
+                    candidateMaterial = materials[RNG.Int(materials.Count)];
                 }
 
                 if (candidateItem.DangerLevel + candidateMaterial.DangerLevelModifier <= dangerLevel)

@@ -1,8 +1,8 @@
 using System;
 using Blaggard.Common;
 using ManulECS;
+using WasteDrudgers.Common;
 
-using WasteDrudgers.Data;
 using WasteDrudgers.Level;
 
 namespace WasteDrudgers.Entities
@@ -12,14 +12,15 @@ namespace WasteDrudgers.Entities
     {
         public static Entity Create(World world, string key, Vec2 pos)
         {
-            var rawItem = world.database.GetItem(key);
-            return CreateItem(world, rawItem, rawItem.BaseMaterial, pos);
+            var rawItem = Data.GetItem(key);
+            var rawMaterial = Data.GetMaterial(rawItem.Material);
+            return CreateItem(world, rawItem, rawMaterial, pos);
         }
 
         public static Entity CreateItem(World world, string key, string keyMat, Vec2 pos)
         {
-            var raw = world.database.GetItem(key);
-            var rawMat = world.database.GetMaterial(keyMat);
+            var raw = Data.GetItem(key);
+            var rawMat = Data.GetMaterial(keyMat);
             return CreateItem(world, raw, rawMat, pos);
         }
 
@@ -29,7 +30,7 @@ namespace WasteDrudgers.Entities
             world.ecs.Assign(entity, new Position { coords = pos });
             world.ecs.Assign(entity, new Renderable
             {
-                character = raw.Character,
+                character = raw.Char,
                 color = material.Color,
             });
             world.ecs.Assign(entity, new Item
@@ -46,6 +47,7 @@ namespace WasteDrudgers.Entities
                 description = "",
             });
 
+            var baseMaterial = Data.GetMaterial(raw.Material);
             if (raw.Type.IsWeapon())
             {
                 var wpn = (DBWeapon)raw;
@@ -58,8 +60,10 @@ namespace WasteDrudgers.Entities
                     world.ecs.Assign(entity, new Weapon
                     {
                         chance = wpn.BaseSkill,
-                        min = wpn.MinDamage + (material.DamageBonus - raw.BaseMaterial.DamageBonus),
-                        max = wpn.MaxDamage + (material.DamageBonus - raw.BaseMaterial.DamageBonus),
+                        damage = new Extent(
+                            wpn.Damage.min + (material.DamageBonus - baseMaterial.DamageBonus),
+                            wpn.Damage.max + (material.DamageBonus - baseMaterial.DamageBonus)
+                        ),
                         parry = wpn.Parry,
                     });
                 }
@@ -71,7 +75,7 @@ namespace WasteDrudgers.Entities
                 world.ecs.Assign(entity, new Defense
                 {
                     dodge = apr.Dodge,
-                    armor = apr.Armor + (material.ArmorBonus - raw.BaseMaterial.ArmorBonus),
+                    armor = apr.Armor + (material.ArmorBonus - baseMaterial.ArmorBonus),
                 });
             }
 
@@ -86,8 +90,7 @@ namespace WasteDrudgers.Entities
 
             if (raw.UseSpell != null)
             {
-                var spell = raw.UseSpell;
-                world.ecs.Assign<CastOnUse>(entity, new CastOnUse { spellId = spell.Id });
+                world.ecs.Assign<CastOnUse>(entity, new CastOnUse { spellId = raw.UseSpell });
             }
 
             world.spatial.PlaceItem(world, pos, entity);
@@ -119,12 +122,12 @@ namespace WasteDrudgers.Entities
             if (item.status != IdentificationStatus.Unknown)
             {
                 var displayName = identity.name;
-                var rawItem = world.database.GetItem(identity.rawName);
+                var rawItem = Data.GetItem(identity.rawName);
 
                 // Only show material in name if there are more than one material
-                if (rawItem.MaterialGroup != null)
+                if (rawItem.MaterialTags.Count > 0)
                 {
-                    var rawMaterial = world.database.GetMaterial(item.material);
+                    var rawMaterial = Data.GetMaterial(item.material);
                     var material = rawMaterial.Name.ToLower();
                     displayName = $"{material} {identity.name}";
                 }

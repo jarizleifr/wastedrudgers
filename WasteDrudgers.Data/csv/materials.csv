@@ -1,0 +1,15 @@
+Id	Name	Rarity	Damage	Armor	Quality	WeightMult	Color	DL	GroupTags
+iron	iron	100	1	1	0.8	1	blue_light	0	metal
+bronze	bronze	100	2	2	1	1	bronze	0	metal
+wood	wood	100	-1	-1	1	1	skin	0	primitive
+leather	leather	100	0	0	1	1	red	0	fabric
+bone	bone	100	0	0	1	1	beige_light	0	primitive
+stone	stone	100	-1	-1	1	2	grey_light	0	primitive
+gold	gold	100	-1	-1	1	1	bronze_light	0	
+silver	silver	100	-1	-1	1	1	grey_light	0	
+cloth	cloth	100	0	0	1	1	teal	0	fabric
+glass	glass	100	0	0	1	1	blue	0	
+paper	paper	100	0	0	1	1	beige_light	0	
+copper	copper	100	0	0	1	1	skin_light	0	primitive
+chitin	chitin	100	0	0	1	1	white	0	primitive
+flesh	flesh	100	0	0	1	1	red_light	0	

@@ -10,7 +10,7 @@ namespace WasteDrudgers.State
         public void Run(IContext ctx, World world)
         {
             var root = ctx.QueueCanvas(RenderLayer.Root);
-            root.Print(root.Width - 1, 2, "-MORE-", world.database.GetColor("c_white"), TextAlignment.Right);
+            root.Print(root.Width - 1, 2, "-MORE-", Data.Colors.white, TextAlignment.Right);
 
             if (ctx.Command != Command.None)
             {

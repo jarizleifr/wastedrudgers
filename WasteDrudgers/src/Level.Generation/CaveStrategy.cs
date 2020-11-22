@@ -1,6 +1,6 @@
 namespace WasteDrudgers.Level.Generation
 {
-    public class WorldStrategy : ILevelGenerationStrategy
+    public class CaveStrategy : ILevelGenerationStrategy
     {
         public int Width { get; set; }
         public int Height { get; set; }
@@ -15,8 +15,8 @@ namespace WasteDrudgers.Level.Generation
             }
             RNG.Seed(map.seed);
 
-            var floor = world.database.GetTile(Floor);
-            var wall = world.database.GetTile(Wall);
+            var floor = Data.GetTile(Floor);
+            var wall = Data.GetTile(Wall);
 
             map = new MapBuilder(map)
                 .Fill(floor)

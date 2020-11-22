@@ -1,0 +1,10 @@
+Id	Type	Name	Char	DL	LevelTags	Weight	Value	Material	MaterialTags	BaseSkill	Damage	Traits	Parry	UseSpell
+dagger	ShortBlade	dagger	(	0	common	10	10	iron	metal	5	1-4	Light,Finesse	0.25	
+bone_dagger	ShortBlade	bone dagger	(	0	common	10	10	bone		5	1-5	Light,Finesse	0.25	
+khopesh	LongBlade	khopesh	(	0	common	10	10	iron	metal	5	1-8		0.33	
+morningstar	AxeMace	morningstar	(	0	common	10	10	iron	metal	5	1-8		0.25	
+quarterstaff	Polearm	quarterstaff	(	0	common	10	10	wood		0	1-8	Versatile	0.5	
+rapier	Fencing	rapier	(	0	common	10	10	iron	metal	0	2-8	Finesse	0.5	
+whip	Whip	whip	(	0	common	10	10	leather		-5	3-6	Light,Finesse	0.25	
+buckler	Shield	buckler	♦	0	common	10	10	iron	metal	10				
+round_shield	Shield	round shield	♦	0	common	10	10	iron	metal	20				

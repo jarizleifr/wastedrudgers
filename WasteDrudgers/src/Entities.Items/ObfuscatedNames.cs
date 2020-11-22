@@ -1,9 +1,7 @@
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using Newtonsoft.Json;
 using ManulECS;
+using Newtonsoft.Json;
 
 namespace WasteDrudgers.Entities
 {
@@ -45,7 +43,7 @@ namespace WasteDrudgers.Entities
 
         private static string Add(World world, ItemType type, string itemName, Dictionary<string, string> dict)
         {
-            var available = world.database.GetObfuscatedNames(type).Except(dict.Values).ToList();
+            var available = Data.GetObfuscatedNames(type).Except(dict.Values).ToList();
             var i = RNG.Int(0, available.Count);
 
             var obfuscated = available[i];

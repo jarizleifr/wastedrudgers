@@ -1,0 +1,28 @@
+Id	LoggingLevel	Message
+inventory_empty	Global	You don't own any items!
+crashed_to_wall	Global	Bonk! You crashed into a wall!
+character_points_earned	Global	You have earned {0} character points!
+miss	Player	{0} missed {1}.
+miss_critical	Player	{0} critically missed {1}!
+hit_no_damage	Player	{0} hit {1}, but failed to cause harm.
+hit_special	Visible	{0} perfectly hit {1} for {2} damage.
+hit	Visible	{0} hit {1} for {2} damage!
+hit_critical	Visible	{1} critically hit {1} for {2} damage!
+death	Visible	{0} died!
+death_instant	Visible	{0} died instantly!
+death_affliction	Visible	{0} painfully succumbs to an affliction.
+get_item	Visible	{0} picked up {1}.
+status_poison_damage	Visible	Poison injures {0} for {1} damage!
+status_affliction_healed	Global	You feel much better.
+use_item_strength_potion	Global	You feel stronger!
+use_item_endurance_potion	Global	You feel tougher!
+use_item_finesse_potion	Global	You feel more graceful!
+use_item_intellect_potion	Global	You feel smarter!
+use_item_resolve_potion	Global	You feel determined!
+use_item_awareness_potion	Global	You feel more perceptive!
+use_item_identify_scroll	Global	Suddenly you understand the function of your items!
+use_item_health_potion	Global	You feel somewhat healed.
+use_item_vigor_potion	Global	You feel rejuvenated!
+use_item_poison_potion	Global	Urgh! Poison!
+nothing_happens	Global	Nothing happened.
+stepped_on_thorns	Visible	Spiky thorns tear {0} for {1} damage!

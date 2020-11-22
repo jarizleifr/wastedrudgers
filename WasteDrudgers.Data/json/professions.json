@@ -1,0 +1,28 @@
+{
+  "fighter": [
+    "MartialArts",
+    "Dodge",
+    "Vigor",
+    "Health",
+    "Strength",
+    "Endurance",
+    "Finesse",
+    "Awareness"
+  ],
+  "shaman": [
+    "Vigor",
+    "Health",
+    "Endurance",
+    "Intellect",
+    "Resolve",
+    "Awareness"
+  ],
+  "beast": [
+    "Vigor",
+    "Health",
+    "Strength",
+    "Endurance",
+    "Finesse",
+    "Awareness"
+  ]
+}

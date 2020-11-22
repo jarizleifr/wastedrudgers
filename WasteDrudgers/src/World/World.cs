@@ -1,5 +1,5 @@
+using System;
 using Blaggard.Common;
-using WasteDrudgers.Data;
 using WasteDrudgers.Entities;
 using WasteDrudgers.Level;
 using WasteDrudgers.State;
@@ -9,7 +9,6 @@ namespace WasteDrudgers
     public partial class World
     {
         public readonly ManulECS.World ecs;
-        public readonly Database database;
 
         public readonly Log log;
         public readonly FOV fov;
@@ -51,8 +50,6 @@ namespace WasteDrudgers
 
         public World()
         {
-            database = new Database();
-
             ecs = new ManulECS.World();
             DeclareComponents(ecs);
 
@@ -73,7 +70,11 @@ namespace WasteDrudgers
             State = nextState;
         }
 
-        public void Tick(IEngineContext ctx) => State.Run(ctx, this);
+        public void Tick(IEngineContext ctx)
+        {
+            State.Run(ctx, this);
+            //System.Console.WriteLine(GC.GetTotalMemory(false) / 1024);
+        }
 
         public void IncrementGameTicks()
         {
@@ -84,7 +85,7 @@ namespace WasteDrudgers
         public void WriteToLog(string key, Vec2 position, params LogItem[] items)
         {
             // Trigger redraw if log was updated
-            if (log.Add(this, new LogMessage(database.GetLogMessage(key), position, items)))
+            if (log.Add(this, new LogMessage(Data.GetMessage(key), position, items)))
             {
                 ShouldRedraw = true;
             }

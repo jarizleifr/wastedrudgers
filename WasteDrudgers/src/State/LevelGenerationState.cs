@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using ManulECS;
-using WasteDrudgers.Data;
 using WasteDrudgers.Entities;
 using WasteDrudgers.Level;
 
@@ -16,7 +15,7 @@ namespace WasteDrudgers.State
         {
             bool initial = map == null;
 
-            var level = world.database.GetLevel(levelName);
+            var level = Data.GetLevel(levelName);
             level.Strategy.Generate(world, levelName, ref map);
 
             world.Map = map;
@@ -26,7 +25,7 @@ namespace WasteDrudgers.State
             CreatePortals(world, map, level.Portals);
             TryLevelTransition(world);
 
-            if (level.MinSpawn > 0 && level.MaxSpawn > 0)
+            if (level.Spawns != null)
             {
                 var spawner = new EntitySpawner(ctx, world, level);
                 if (initial)
@@ -42,7 +41,7 @@ namespace WasteDrudgers.State
             {
                 var playerData = world.PlayerData;
                 var pos = LevelUtils.GetRandomPassableEmptyPosition(world);
-                Features.CreateFeature(world, pos, "fea_start_portal");
+                Features.CreateFeature(world, pos, "start_portal");
                 world.ecs.AssignOrReplace(playerData.entity, new Position { coords = pos });
             }
 
@@ -60,14 +59,14 @@ namespace WasteDrudgers.State
 
                 Features.CreateFeature(world, pos, RNG.Int(8) switch
                 {
-                    0 => "fea_vegetation",
-                    1 => "fea_thorns",
-                    2 => "fea_gravestone",
-                    3 => "fea_reeds",
-                    4 => "fea_rubble",
-                    5 => "fea_rubble2",
-                    6 => "fea_altar",
-                    7 => "fea_mushroom_patch",
+                    0 => "vegetation",
+                    1 => "thorns",
+                    2 => "gravestone",
+                    3 => "reeds",
+                    4 => "rubble_01",
+                    5 => "rubble_02",
+                    6 => "altar",
+                    7 => "mushroom_patch",
                 });
             }
         }

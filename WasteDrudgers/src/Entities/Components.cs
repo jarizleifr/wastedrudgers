@@ -3,6 +3,7 @@ using Blaggard.Common;
 using Blaggard.Graphics;
 using ManulECS;
 using Newtonsoft.Json;
+using WasteDrudgers.Common;
 using WasteDrudgers.Entities;
 
 namespace WasteDrudgers
@@ -346,8 +347,7 @@ namespace WasteDrudgers
     public struct NaturalAttack
     {
         public int baseSkill;
-        public int minDamage;
-        public int maxDamage;
+        public Extent damage;
         public string castOnStrike;
     }
 
@@ -360,19 +360,18 @@ namespace WasteDrudgers
     {
         public Wielding wielding;
         public int hitChance;
-        public int minDamage;
-        public int maxDamage;
+        public Extent damage;
         public int dodge;
         public int armor;
 
         [JsonIgnore]
         public int SpecialDamage => Damage + Damage;
         [JsonIgnore]
-        public int CriticalDamage => maxDamage;
+        public int CriticalDamage => damage.max;
         [JsonIgnore]
-        public int Damage => RNG.IntInclusive(minDamage, maxDamage);
+        public int Damage => RNG.IntInclusive(damage.min, damage.max);
         [JsonIgnore]
-        public float Average => (minDamage + maxDamage) / 2;
+        public float Average => (damage.min + damage.max) / 2;
     }
 
     public struct Shield
@@ -383,13 +382,12 @@ namespace WasteDrudgers
     public struct Weapon
     {
         public int chance;
-        public int min;
-        public int max;
+        public Extent damage;
         public float parry;
         public WeaponStyle style;
 
         [JsonIgnore]
-        public float Average => (min + max) / 2;
+        public float Average => (damage.min + damage.max) / 2;
     }
 
     public struct Defense

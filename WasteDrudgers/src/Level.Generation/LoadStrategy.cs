@@ -9,7 +9,8 @@ namespace WasteDrudgers.Level.Generation
 
         public void Generate(World world, string levelName, ref Map map)
         {
-            var data = world.database.GetMapData(Filename);
+            var tiles = Data.IndexedTiles;
+            var data = Data.LoadMap(Filename);
             if (map == null)
             {
                 map = new Map(levelName, data.Width, data.Height);
@@ -18,7 +19,7 @@ namespace WasteDrudgers.Level.Generation
 
             for (int i = 0; i < data.Width * data.Height; i++)
             {
-                map[i].Tile = world.database.GetTileByIndex(data.Tiles[i]);
+                map[i].Tile = tiles[data.Tiles[i]];
             }
         }
     }

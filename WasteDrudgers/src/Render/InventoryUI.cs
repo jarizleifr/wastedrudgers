@@ -89,7 +89,7 @@ namespace WasteDrudgers.Render
         {
             if (wrapper.equipped)
             {
-                layer.PutChar(inv.x - 1, inv.y + i, '•', ctx.Colors.white);
+                layer.PutChar(inv.x - 1, inv.y + i, '•', Data.Colors.white);
             }
 
             layer.PutChar(inv.x, inv.y + i, (char)('A' + i), ctx.Theme.text);
@@ -137,7 +137,7 @@ namespace WasteDrudgers.Render
 
         private static void DrawItemInfo(IContext ctx, IBlittable layer, World world, Rect info, Item item, ItemWrapper wrapper)
         {
-            var rawMaterial = world.database.GetMaterial(item.material);
+            var rawMaterial = Data.GetMaterial(item.material);
 
             layer.Rect(info.x + 1, info.y + 1, 3, 3, ' ', Color.black, Color.black);
             layer.PutChar(info.x + 2, info.y + 2, GlyphUtil.GetItemGlyph(ctx, wrapper.type), rawMaterial.Color);
@@ -153,7 +153,7 @@ namespace WasteDrudgers.Render
 
                 if (world.ecs.TryGet(wrapper.entity, out CastOnUse castOnUse))
                 {
-                    var rawSpell = world.database.GetSpell(castOnUse.spellId);
+                    var rawSpell = Data.GetSpell(castOnUse.spellId);
                     layer.Print(info.x + 1, info.y + 5, rawSpell.Name, ctx.Theme.caption);
                 }
 
@@ -167,7 +167,7 @@ namespace WasteDrudgers.Render
                         {
                             layer.Print(info.x + 1, info.y + 5, "Attack", ctx.Theme.caption);
                             layer.Print(info.x + 14, info.y + 5, $"{attack.chance}%", ctx.Theme.text, TextAlignment.Right);
-                            layer.Print(info.x + info.width - 1, info.y + 5, $"{attack.min}-{attack.max}", ctx.Theme.text, TextAlignment.Right);
+                            layer.Print(info.x + info.width - 1, info.y + 5, attack.ToString(), ctx.Theme.text, TextAlignment.Right);
                         }
                     }
                     else if (item.type.IsArmor())
