@@ -99,7 +99,10 @@ namespace WasteDrudgers.Entities
             var combat = new Combat
             {
                 hitChance = unarmed,
-                damage = new Extent(1 + Formulae.MeleeDamage(stats), 2 + Formulae.MeleeDamage(stats)),
+                damage = new Extent(
+                    Math.Max(1, 1 + Formulae.MeleeDamage(stats)),
+                    Math.Max(2, 2 + Formulae.MeleeDamage(stats))
+                ),
                 dodge = Formulae.BaseSkill(SkillType.Dodge, stats) + skills.GetRank(SkillType.Dodge) + (int)(unarmed * .33f),
                 armor = 0
             };
@@ -124,37 +127,47 @@ namespace WasteDrudgers.Entities
 
             // Check equipped shield
             bool isShieldEquipped = false;
-            world.ecs.Loop((Entity itemEntity, ref Equipped equipped, ref Shield shield) =>
+            foreach (var e in world.ecs.View<Equipped, Shield>())
             {
-                if (equipped.entity == entity)
+                ref var equipped = ref world.ecs.GetRef<Equipped>(e);
+                ref var shield = ref world.ecs.GetRef<Shield>(e);
+
+                if (equipped.entity == e)
                 {
                     combat.dodge += shield.baseBlock + skills.GetRank(SkillType.Shield);
                     isShieldEquipped = true;
                 }
-            });
+            }
 
             // Check equipped armor
-            world.ecs.Loop((Entity itemEntity, ref Equipped equipped, ref Defense defense) =>
+            foreach (var e in world.ecs.View<Equipped, Defense>())
             {
-                if (equipped.entity == entity)
+                ref var equipped = ref world.ecs.GetRef<Equipped>(e);
+                ref var defense = ref world.ecs.GetRef<Defense>(e);
+
+                if (equipped.entity == e)
                 {
                     combat.dodge += defense.dodge;
                     combat.armor += defense.armor;
                 }
-            });
+            }
 
             // Check if equipped with weapon, and set attack accordingly
-            world.ecs.Loop((Entity itemEntity, ref Equipped equipped, ref Item item, ref Weapon attack) =>
+            foreach (var e in world.ecs.View<Equipped, Item, Weapon>())
             {
-                if (equipped.entity == entity && equipped.slot == Slot.MainHand)
+                ref var equipped = ref world.ecs.GetRef<Equipped>(e);
+                ref var item = ref world.ecs.GetRef<Item>(e);
+                ref var attack = ref world.ecs.GetRef<Weapon>(e);
+
+                if (equipped.entity == e && equipped.slot == Slot.MainHand)
                 {
                     var skillType = item.type.GetWeaponSkill();
                     var skill = Formulae.BaseSkill(skillType, stats) + skills.GetRank(skillType) + attack.chance;
                     combat.wielding = Wielding.SingleWeapon;
                     combat.hitChance = skill;
                     combat.damage = new Extent(
-                        attack.damage.min + Formulae.MeleeDamage(stats),
-                        attack.damage.max + Formulae.MeleeDamage(stats)
+                        Math.Max(1, attack.damage.min + Formulae.MeleeDamage(stats)),
+                        Math.Max(2, attack.damage.max + Formulae.MeleeDamage(stats))
                     );
 
                     // If no shield, add weapon parry to dodge
@@ -169,7 +182,8 @@ namespace WasteDrudgers.Entities
                         }
                     }
                 }
-            });
+
+            }
             world.ecs.AssignOrReplace(entity, combat);
         }
 

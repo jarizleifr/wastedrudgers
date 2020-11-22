@@ -32,9 +32,9 @@ namespace WasteDrudgers.Entities
                 color = feature.Color,
             });
 
-            if (feature.EntryTrigger != EntryTriggerType.None)
+            if (feature.Trigger != EntryTriggerType.None)
             {
-                world.ecs.Assign<EntryTrigger>(entity, new EntryTrigger { type = feature.EntryTrigger });
+                world.ecs.Assign<EntryTrigger>(entity, new EntryTrigger { type = feature.Trigger });
             }
 
             world.spatial.SetFeature(pos, entity);

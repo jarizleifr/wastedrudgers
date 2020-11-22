@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using ManulECS;
 using WasteDrudgers.Entities;
 using WasteDrudgers.Level;
 
@@ -85,15 +84,18 @@ namespace WasteDrudgers.State
             var playerData = world.PlayerData;
             if (playerData.currentLevel != levelName)
             {
-                world.ecs.Loop((Entity entity, ref Position pos, ref Portal portal) =>
+                foreach (var e in world.ecs.View<Position, Portal>())
                 {
+                    ref var pos = ref world.ecs.GetRef<Position>(e);
+                    ref var portal = ref world.ecs.GetRef<Portal>(e);
+
                     if (portal.targetLevel == playerData.currentLevel)
                     {
                         world.ecs.AssignOrReplace(playerData.entity, pos);
                         playerData.coords = pos.coords;
-                        return;
+                        break;
                     }
-                });
+                }
                 playerData.currentLevel = levelName;
             }
         }

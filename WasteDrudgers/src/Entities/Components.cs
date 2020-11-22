@@ -16,7 +16,6 @@ namespace WasteDrudgers
     public struct Renderable
     {
         public char character;
-        public char glyph;
         public Color color;
         public TextureData texture;
     }

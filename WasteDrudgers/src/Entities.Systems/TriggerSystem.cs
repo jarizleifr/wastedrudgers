@@ -1,21 +1,22 @@
-using ManulECS;
-
 namespace WasteDrudgers.Entities
 {
     public static partial class Systems
     {
         public static void TriggerSystem(IContext ctx, World world)
         {
-            world.ecs.Loop<Position, EventMoved>((Entity entity, ref Position pos, ref EventMoved moved) =>
+            foreach (var e in world.ecs.View<Position, EventMoved>())
             {
+                ref var pos = ref world.ecs.GetRef<Position>(e);
+                ref var moved = ref world.ecs.GetRef<EventMoved>(e);
+
                 if (world.spatial.TryGetFeature(pos.coords, out var feature))
                 {
                     if (world.ecs.TryGet(feature, out EntryTrigger trigger))
                     {
-                        Features.Trigger(world, entity, feature, pos.coords, trigger);
+                        Features.Trigger(world, e, feature, pos.coords, trigger);
                     }
                 }
-            });
+            };
         }
     }
 }

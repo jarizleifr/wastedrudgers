@@ -1,14 +1,14 @@
-using ManulECS;
-
 namespace WasteDrudgers.Entities
 {
     public static partial class Systems
     {
         public static void DamageSystem(IContext ctx, World world)
         {
-            world.ecs.Loop((Entity entity, ref Damage damage) =>
+            foreach (var e in world.ecs.View<Damage>())
             {
-                if (world.ecs.Has<Death>(damage.target)) return;
+                ref var damage = ref world.ecs.GetRef<Damage>(e);
+
+                if (world.ecs.Has<Death>(damage.target)) continue;
 
                 // FIXME: We've ended up here without a Position component
                 var pos = world.ecs.GetRef<Position>(damage.target);
@@ -21,7 +21,7 @@ namespace WasteDrudgers.Entities
                     // If damage is greater than max vigor and max health combined, just kill the entity
                     if (damage.damage >= hlt.vigor.Max + hlt.health.Max)
                     {
-                        if (world.ecs.Has<PlayerInitiated>(entity))
+                        if (world.ecs.Has<PlayerInitiated>(e))
                         {
                             var playerData = world.PlayerData;
                             Creatures.AwardKillExperience(world, playerData.entity, damage.target);
@@ -39,7 +39,7 @@ namespace WasteDrudgers.Entities
 
                     if (hlt.health.Current <= 0)
                     {
-                        if (world.ecs.Has<PlayerInitiated>(entity))
+                        if (world.ecs.Has<PlayerInitiated>(e))
                         {
                             var playerData = world.PlayerData;
                             Creatures.AwardKillExperience(world, playerData.entity, damage.target);
@@ -58,8 +58,8 @@ namespace WasteDrudgers.Entities
                         Creatures.KillCreature(world, damage.target);
                     }
                 }
-                world.ecs.Remove(entity);
-            });
+                world.ecs.Remove(e);
+            }
         }
     }
 }

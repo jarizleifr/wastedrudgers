@@ -70,7 +70,7 @@ namespace WasteDrudgers
         public char Char { get; set; }
         public Color Color { get; set; }
         public string Description { get; set; }
-        public EntryTriggerType EntryTrigger { get; set; }
+        public EntryTriggerType Trigger { get; set; }
     }
 
     public class DBPortal

@@ -114,16 +114,18 @@ namespace WasteDrudgers.Entities
         {
             bool found = false;
             Entity tempEntity = default(Entity);
-            world.ecs.Loop((Entity entity, ref ActiveEffect active) =>
+            foreach (var e in world.ecs.View<ActiveEffect>())
             {
-                if (found) return;
+                ref var active = ref world.ecs.GetRef<ActiveEffect>(e);
+                if (found) break;
 
                 if (active.target == target)
                 {
-                    tempEntity = entity;
+                    tempEntity = e;
                     found = true;
+                    break;
                 }
-            });
+            }
 
             activeEffect = tempEntity;
             return found;

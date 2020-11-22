@@ -26,21 +26,21 @@ namespace WasteDrudgers.Level
         public void Populate(World world)
         {
             Clear();
-
-            world.ecs.Loop((Entity entity, ref Position pos, ref Portal portal) =>
+            foreach (var e in world.ecs.View<Position, Feature>())
             {
-                features[pos.coords] = entity;
-            });
-
-            world.ecs.Loop((Entity entity, ref Position pos, ref Actor actor) =>
+                ref var pos = ref world.ecs.GetRef<Position>(e);
+                features[pos.coords] = e;
+            }
+            foreach (var e in world.ecs.View<Position, Actor>())
             {
-                creatures[pos.coords] = entity;
-            });
-
-            world.ecs.Loop((Entity entity, ref Position pos, ref Item item) =>
+                ref var pos = ref world.ecs.GetRef<Position>(e);
+                creatures[pos.coords] = e;
+            }
+            foreach (var e in world.ecs.View<Position, Item>())
             {
-                PlaceItem(world, pos.coords, entity);
-            });
+                ref var pos = ref world.ecs.GetRef<Position>(e);
+                PlaceItem(world, pos.coords, e);
+            }
         }
 
         public bool TryGetFeature(Vec2 key, out Entity entity) => features.TryGetValue(key, out entity);

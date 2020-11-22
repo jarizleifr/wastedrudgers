@@ -1,4 +1,3 @@
-using ManulECS;
 using WasteDrudgers.Level;
 
 namespace WasteDrudgers.Entities
@@ -8,8 +7,11 @@ namespace WasteDrudgers.Entities
         public static void EffectSystem(IContext ctx, World world)
         {
             var map = world.Map;
-            world.ecs.Loop<Effect, Position>((Entity entity, ref Effect eff, ref Position pos) =>
+            foreach (var e in world.ecs.View<Effect, Position>())
             {
+                ref var eff = ref world.ecs.GetRef<Effect>(e);
+                ref var pos = ref world.ecs.GetRef<Position>(e);
+
                 switch (map[pos.coords].Visibility)
                 {
                     case Visibility.Visible:
@@ -17,14 +19,14 @@ namespace WasteDrudgers.Entities
                         eff.delta += ctx.DeltaTime * 20;
                         if ((int)eff.delta == eff.characters.Length)
                         {
-                            world.ecs.Remove(entity);
+                            world.ecs.Remove(e);
                         }
                         break;
                     default:
-                        world.ecs.Remove(entity);
+                        world.ecs.Remove(e);
                         break;
                 }
-            });
+            }
         }
     }
 }

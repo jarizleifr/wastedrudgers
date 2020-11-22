@@ -1,6 +1,5 @@
 using System;
 using Blaggard.Common;
-using ManulECS;
 using WasteDrudgers.Level;
 
 namespace WasteDrudgers.Entities
@@ -10,19 +9,21 @@ namespace WasteDrudgers.Entities
         public static void AISystem(IContext ctx, World world)
         {
             var playerData = world.PlayerData;
-            world.ecs.Loop((Entity entity, ref Turn turn, ref Position position, ref AI ai) =>
+            foreach (var e in world.ecs.View<Position, Turn, AI>())
             {
+                ref var pos = ref world.ecs.GetRef<Position>(e);
+
                 var move = Vec2.Zero;
-                if (LevelUtils.HasLineOfSight(world, position.coords, playerData.coords))
+                if (LevelUtils.HasLineOfSight(world, pos.coords, playerData.coords))
                 {
-                    move = GetMoveTowards(position.coords, playerData.coords);
+                    move = GetMoveTowards(pos.coords, playerData.coords);
                 }
                 else
                 {
                     move = Vec2.FromDirection(RNG.RandomDirection);
                 }
-                world.ecs.Assign(entity, new IntentionMove { transform = move });
-            });
+                world.ecs.Assign(e, new IntentionMove { transform = move });
+            }
         }
 
         private static Vec2 GetMoveTowards(Vec2 origin, Vec2 target)

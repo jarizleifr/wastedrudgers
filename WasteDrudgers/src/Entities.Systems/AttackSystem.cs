@@ -1,5 +1,3 @@
-using ManulECS;
-
 namespace WasteDrudgers.Entities
 {
     public static partial class Systems
@@ -7,8 +5,12 @@ namespace WasteDrudgers.Entities
         public static void AttackSystem(IContext ctx, World world)
         {
             var playerData = world.PlayerData;
-            world.ecs.Loop<Actor, IntentionAttack, Combat>((Entity entity, ref Actor actor, ref IntentionAttack intent, ref Combat attacker) =>
+            foreach (var e in world.ecs.View<Actor, IntentionAttack, Combat>())
             {
+                ref var actor = ref world.ecs.GetRef<Actor>(e);
+                ref var intent = ref world.ecs.GetRef<IntentionAttack>(e);
+                ref var attacker = ref world.ecs.GetRef<Combat>(e);
+
                 if (intent.attacker == playerData.entity)
                 {
                     playerData.lastTarget = intent.target;
@@ -29,11 +31,11 @@ namespace WasteDrudgers.Entities
                 var pos = world.ecs.GetRef<Position>(intent.target);
                 if (result.Item1 == Attempt.Failure || result.Item1 == Attempt.Fumble)
                 {
-                    world.WriteToLog(message, pos.coords, LogItem.Actor(entity), LogItem.Actor(intent.target));
+                    world.WriteToLog(message, pos.coords, LogItem.Actor(e), LogItem.Actor(intent.target));
                 }
                 else if (result.Item1 != Attempt.Critical && damage - defender.armor <= 0)
                 {
-                    world.WriteToLog("hit_no_damage", pos.coords, LogItem.Actor(entity), LogItem.Actor(intent.target));
+                    world.WriteToLog("hit_no_damage", pos.coords, LogItem.Actor(e), LogItem.Actor(intent.target));
                 }
                 else
                 {
@@ -41,25 +43,25 @@ namespace WasteDrudgers.Entities
                     {
                         damage -= defender.armor;
                     }
-                    world.WriteToLog(message, pos.coords, LogItem.Actor(entity), LogItem.Actor(intent.target), LogItem.Num(damage));
+                    world.WriteToLog(message, pos.coords, LogItem.Actor(e), LogItem.Actor(intent.target), LogItem.Num(damage));
                     Effects.Create(world, pos.coords);
 
                     var damageEntity = world.ecs.Create();
                     world.ecs.Assign(damageEntity, new Damage { target = intent.target, damage = damage });
 
                     // If attack was initiated by player, track it in damage entity
-                    if (entity == playerData.entity)
+                    if (e == playerData.entity)
                     {
                         world.ecs.Assign(damageEntity, new PlayerInitiated { });
                     }
 
-                    if (world.ecs.TryGet(entity, out CastOnStrike castOnStrike))
+                    if (world.ecs.TryGet(e, out CastOnStrike castOnStrike))
                     {
-                        Spells.CastSpellOn(world, entity, intent.target, castOnStrike.spellId);
+                        Spells.CastSpellOn(world, e, intent.target, castOnStrike.spellId);
                     }
                 }
-                world.ecs.Assign<EventActed>(entity, new EventActed { energyLoss = 1000, nutritionLoss = 3 });
-            });
+                world.ecs.Assign<EventActed>(e, new EventActed { energyLoss = 1000, nutritionLoss = 3 });
+            }
         }
     }
 }

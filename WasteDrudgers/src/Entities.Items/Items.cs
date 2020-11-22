@@ -1,9 +1,6 @@
-using System;
 using Blaggard.Common;
 using ManulECS;
 using WasteDrudgers.Common;
-
-using WasteDrudgers.Level;
 
 namespace WasteDrudgers.Entities
 {
@@ -171,20 +168,27 @@ namespace WasteDrudgers.Entities
         public static void IdentifyInventory(World world)
         {
             var playerData = world.PlayerData;
-            world.ecs.Loop<Item, InBackpack>((Entity entity, ref Item item, ref InBackpack inBackpack) =>
+            // TODO: Don't owned items have PlayerMarker? Potential for optimization
+            foreach (var e in world.ecs.View<Item, InBackpack>())
             {
+                ref var item = ref world.ecs.GetRef<Item>(e);
+                ref var inBackpack = ref world.ecs.GetRef<InBackpack>(e);
+
                 if (inBackpack.entity == playerData.entity)
                 {
-                    IdentifyItem(world, entity);
+                    IdentifyItem(world, e);
                 }
-            });
-            world.ecs.Loop<Item, Equipped>((Entity entity, ref Item item, ref Equipped equipped) =>
+            }
+            foreach (var e in world.ecs.View<Item, Equipped>())
             {
+                ref var item = ref world.ecs.GetRef<Item>(e);
+                ref var equipped = ref world.ecs.GetRef<Equipped>(e);
+
                 if (equipped.entity == playerData.entity)
                 {
-                    IdentifyItem(world, entity);
+                    IdentifyItem(world, e);
                 }
-            });
+            }
         }
 
         public static void EquipItem(World world, Entity equipper, Entity itemEntity)
@@ -203,14 +207,15 @@ namespace WasteDrudgers.Entities
 
         public static void UnequipItemToBackpack(World world, Entity unequipper, Slot targetSlot)
         {
-            world.ecs.Loop<Equipped>((Entity entity, ref Equipped equipped) =>
+            foreach (var e in world.ecs.View<Equipped>())
             {
+                ref var equipped = ref world.ecs.GetRef<Equipped>(e);
                 if (equipped.slot == targetSlot && equipped.entity == unequipper)
                 {
-                    world.ecs.Remove<Equipped>(entity);
-                    AddItemToInventory(world, unequipper, entity);
+                    world.ecs.Remove<Equipped>(e);
+                    AddItemToInventory(world, unequipper, e);
                 }
-            });
+            }
             world.ecs.Assign<EventStatsUpdated>(unequipper, new EventStatsUpdated { });
         }
 
@@ -261,16 +266,17 @@ namespace WasteDrudgers.Entities
         private static void AddItemToInventory(World world, Entity getter, Entity itemEntity)
         {
             var foundInBackpack = false;
-            world.ecs.Loop((Entity entity, ref InBackpack b, ref Item item) =>
+            foreach (var e in world.ecs.View<InBackpack, Item>())
             {
-                if (foundInBackpack) return;
-                if (IsSameKindOf(world, itemEntity, entity))
+                ref var item = ref world.ecs.GetRef<Item>(e);
+                if (IsSameKindOf(world, itemEntity, e))
                 {
                     foundInBackpack = true;
                     item.count++;
                     world.ecs.Remove(itemEntity);
+                    break;
                 }
-            });
+            }
 
             if (!foundInBackpack)
             {
@@ -327,15 +333,17 @@ namespace WasteDrudgers.Entities
         public static int GetRations(World world, Entity owner)
         {
             var rations = 0;
-            world.ecs.Loop((Entity entity, ref Item item, ref InBackpack backpack) =>
+            foreach (var e in world.ecs.View<Item, InBackpack>())
             {
-                if (backpack.entity != owner) return;
+                ref var item = ref world.ecs.GetRef<Item>(e);
+                ref var inBackpack = ref world.ecs.GetRef<InBackpack>(e);
+                if (inBackpack.entity != owner) break;
 
                 if (item.type == ItemType.Food)
                 {
                     rations += 800 * item.count;
                 }
-            });
+            }
             return rations;
         }
 
@@ -344,16 +352,19 @@ namespace WasteDrudgers.Entities
             int gotNutrition = 0;
             int rationsRemaining = 0;
 
-            world.ecs.Loop((Entity entity, ref Item item, ref InBackpack backpack) =>
+            foreach (var e in world.ecs.View<Item, InBackpack>())
             {
-                if (backpack.entity != consumer) return;
+                ref var item = ref world.ecs.GetRef<Item>(e);
+                ref var inBackpack = ref world.ecs.GetRef<InBackpack>(e);
+
+                if (inBackpack.entity != consumer) break;
 
                 if (item.type == ItemType.Food)
                 {
                     if (gotNutrition == 0)
                     {
                         gotNutrition = 800;
-                        var used = RemoveItemFromInventory(world, entity);
+                        var used = RemoveItemFromInventory(world, e);
                         world.ecs.Remove(used);
                         world.ecs.Assign(consumer, new EventInventoryUpdated { });
                     }
@@ -362,16 +373,17 @@ namespace WasteDrudgers.Entities
                         rationsRemaining += 800 * item.count;
                     }
                 }
-            });
+            }
             return (gotNutrition, rationsRemaining);
         }
 
         public static void UpdateFoodLeft(World world)
         {
-            world.ecs.Loop<HungerClock>((Entity entity, ref HungerClock clock) =>
+            foreach (var e in world.ecs.View<HungerClock>())
             {
-                clock.food = Items.GetRations(world, entity);
-            });
+                ref var clock = ref world.ecs.GetRef<HungerClock>(e);
+                clock.food = Items.GetRations(world, e);
+            }
         }
     }
 }

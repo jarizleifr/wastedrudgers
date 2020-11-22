@@ -1,5 +1,4 @@
 using Blaggard.Common;
-using ManulECS;
 using WasteDrudgers.Entities;
 using Xunit;
 
@@ -16,17 +15,18 @@ namespace WasteDrudgers.Tests
         public void ActiveEffect_HasPlayerInitiated_WhenPlayerInitiated()
         {
             RNG.Seed(0);
-            var e1 = Creatures.Create(world, "cr_mutorc", new Vec2(0, 2));
+            var e1 = Creatures.Create(world, "mutorc", new Vec2(0, 2));
 
             var playerData = world.PlayerData;
-            Spells.CastSpellOn(world, playerData.entity, e1, "spl_poison_weak");
+            Spells.CastSpellOn(world, playerData.entity, e1, "poison_weak");
 
             int i = 0;
-            world.ecs.Loop((Entity entity, ref ActiveEffect a, ref PlayerInitiated p) =>
+            foreach (var e in world.ecs.View<ActiveEffect, PlayerInitiated>())
             {
+                ref var a = ref world.ecs.GetRef<ActiveEffect>(e);
                 Assert.Equal(e1, a.target);
                 i++;
-            });
+            }
             Assert.Equal(1, i);
         }
 
@@ -34,13 +34,13 @@ namespace WasteDrudgers.Tests
         public void IdentifySpell_IdentifiesInventory()
         {
             RNG.Seed(0);
-            var e1 = Items.Create(world, "itm_potion_health", new Vec2(0, 2));
-            var e2 = Items.Create(world, "itm_potion_vigor", new Vec2(0, 2));
+            var e1 = Items.Create(world, "potion_health", new Vec2(0, 2));
+            var e2 = Items.Create(world, "potion_vigor", new Vec2(0, 2));
 
             var playerData = world.PlayerData;
             Items.PickUpItem(world, playerData.entity, e1);
             Items.PickUpItem(world, playerData.entity, e2);
-            Spells.CastSpellOn(world, null, playerData.entity, "spl_identify");
+            Spells.CastSpellOn(world, null, playerData.entity, "identify");
 
             var item1 = world.ecs.GetRef<Item>(e1);
             var item2 = world.ecs.GetRef<Item>(e2);

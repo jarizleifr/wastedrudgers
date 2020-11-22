@@ -4,3 +4,4 @@ starting_cave_01	0	common,cave	20-50	CaveStrategy	width:96,height:96,floor:cave_
 starting_cave_02	2	common,cave	20-50	CaveStrategy	width:96,height:96,floor:cave_floor,wall:cave_wall
 dungeon_01	0	common		DungeonStrategy	roomchance:50,minroomsize:3,maxroomsize:8,mincorridorlength:4, maxcorridorlength:10,maxfeatures:10,maxiterations:1000,width:96,height:96,floor:cave_floor,wall:cave_wall
 labyrinth_01	0	common		MazeStrategy	width:96,height:96,floor:cave_floor,wall:cave_wall
+test_arena	0			LoadStrategy	filename:testarena

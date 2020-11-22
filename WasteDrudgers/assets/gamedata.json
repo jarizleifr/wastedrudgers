@@ -743,6 +743,36 @@
       "MaterialTags": [],
       "UseSpell": null
     },
+    "potion_health": {
+      "Id": "potion_health",
+      "Type": "Potion",
+      "Name": "health potion",
+      "Char": "¿",
+      "DL": 0,
+      "LevelTags": [
+        "common"
+      ],
+      "Weight": 10,
+      "Value": 10,
+      "Material": "glass",
+      "MaterialTags": [],
+      "UseSpell": "health_heal"
+    },
+    "potion_vigor": {
+      "Id": "potion_vigor",
+      "Type": "Potion",
+      "Name": "vigor potion",
+      "Char": "¿",
+      "DL": 0,
+      "LevelTags": [
+        "common"
+      ],
+      "Weight": 10,
+      "Value": 10,
+      "Material": "glass",
+      "MaterialTags": [],
+      "UseSpell": "vigor_heal"
+    },
     "dagger": {
       "$type": "WasteDrudgers.DBWeapon, WasteDrudgers",
       "Id": "dagger",
@@ -1429,6 +1459,16 @@
           "Coords": null
         }
       ]
+    },
+    "test_arena": {
+      "Id": "test_arena",
+      "DL": 0,
+      "LevelTags": [],
+      "Spawns": null,
+      "Strategy": {
+        "$type": "WasteDrudgers.Level.Generation.LoadStrategy, WasteDrudgers",
+        "filename": "testarena"
+      }
     }
   },
   "obfuscated": {
@@ -1644,6 +1684,8 @@
       "potion_resolve",
       "potion_awareness",
       "food_insect",
+      "potion_health",
+      "potion_vigor",
       "dagger",
       "bone_dagger",
       "khopesh",

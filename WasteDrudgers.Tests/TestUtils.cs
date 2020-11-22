@@ -12,7 +12,7 @@ namespace WasteDrudgers.Tests
             RNG.Seed(0);
             world.SetState(ctx, RunState.NewGame);
             world.Tick(ctx);
-            world.SetState(ctx, RunState.LevelGeneration("lvl_test_arena", null, true));
+            world.SetState(ctx, RunState.LevelGeneration("test_arena", null, true));
             world.Tick(ctx);
             world.Tick(ctx);
 

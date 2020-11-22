@@ -7,3 +7,5 @@ potion_intellect	Potion	intellect mutagen	¿	0	common	10	10	glass		intellect_per
 potion_resolve	Potion	resolve mutagen	¿	0	common	10	10	glass		resolve_permanent
 potion_awareness	Potion	awareness mutagen	¿	0	common	10	10	glass		awareness_permanent
 food_insect	Food	insect roast	%	0	common	10	10	flesh		
+potion_health	Potion	health potion	¿	0	common	10	10	glass		health_heal
+potion_vigor	Potion	vigor potion	¿	0	common	10	10	glass		vigor_heal

@@ -2,7 +2,6 @@ using System;
 using Blaggard;
 using Blaggard.Common;
 using Blaggard.Graphics;
-using ManulECS;
 using WasteDrudgers.Entities;
 using WasteDrudgers.Level;
 
@@ -39,66 +38,21 @@ namespace WasteDrudgers.Render
             DrawItems(ctx, layer, world, viewport, map, xOffset, yOffset);
             DrawEntities<Actor>(ctx, layer, world, viewport, xOffset, yOffset, map.width, vis);
 
-            world.ecs.ThreadedLoop<Position, Effect>((Entity Entity, ref Position pos, ref Effect eff) =>
+            foreach (var e in world.ecs.View<Position, Effect>())
             {
+                ref var pos = ref world.ecs.GetRef<Position>(e);
+                ref var eff = ref world.ecs.GetRef<Effect>(e);
+
                 int x = viewport.x + pos.coords.x - xOffset;
                 int y = viewport.y + pos.coords.y - yOffset;
-                if (!viewport.IsWithinBounds(x, y)) return;
+                if (!viewport.IsWithinBounds(x, y)) continue;
 
                 var i = pos.coords.ToIndex(map.width);
-                if (vis[i] != Visibility.Visible) return;
+                if (vis[i] != Visibility.Visible) continue;
 
                 layer.PutChar(x, y, eff.characters[(int)eff.delta], eff.color);
-            });
+            };
         }
-        /*
-        public static void DrawSpriteMode(IContext ctx, IBlittable layer, World world, Vec2 origin)
-        {
-            var viewport = new Rect(0, 0, layer.Width / 2, layer.Height);
-            layer.Clear();
-
-            var map = world.Map;
-            var tiles = map.GetTiles();
-            var vis = map.GetVisibility();
-
-            CameraOffset(origin, map.width, map.height, viewport.width, viewport.height, out int xOffset, out int yOffset);
-
-            for (int y = 0; y < viewport.height; y++)
-            {
-                for (int x = 0; x < viewport.width; x++)
-                {
-                    var i = Util.IndexFromXY(x + xOffset, y + yOffset, map.width);
-                    var tile = tiles[i];
-
-                    if ((tile.flags & TileFlags.BlocksMovement) == 0)
-                    {
-                        switch (vis[i])
-                        {
-                            case Visibility.Visible:
-                                layer.DrawSprite(new Sprite(4 + x * 24, y * 16, ctx.TextureData.Get(tile.sprite), 0));
-                                break;
-                            case Visibility.Explored:
-                                layer.DrawSprite(new Sprite(4 + x * 24, y * 16, ctx.TextureData.Get("floor_dark"), 0));
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        switch (vis[i])
-                        {
-                            case Visibility.Visible:
-                                layer.DrawSprite(new Sprite(4 + x * 24, y * 16, ctx.TextureData.Get(tile.sprite), 10 + y));
-                                break;
-                            case Visibility.Explored:
-                                layer.DrawSprite(new Sprite(4 + x * 24, y * 16, ctx.TextureData.Get("wall_dark"), 10 + y));
-                                break;
-                        }
-                    }
-                }
-            }
-
-            DrawEntities<Actor>(ctx, layer, world, viewport, xOffset, yOffset, map.width, vis);
-        }*/
 
         public static void CameraOffset(Vec2 coords, int mapWidth, int mapHeight, int viewportWidth, int viewportHeight, out int xOffset, out int yOffset)
         {
@@ -154,13 +108,7 @@ namespace WasteDrudgers.Render
                 if (vis[i] == Visibility.Visible)
                 {
                     var renderable = world.spatial.GetItemsRenderable(pos, world);
-
-                    // TODO: this should probably be refactored as its own function
                     char ch = renderable.character;
-                    if (renderable.glyph != 0 && ctx.Config.Style >= GraphicsStyle.Glyphs)
-                    {
-                        ch = renderable.glyph;
-                    }
                     layer.PutChar(x, y, ch, renderable.color);
                 }
             }
@@ -188,17 +136,6 @@ namespace WasteDrudgers.Render
                     {
                         (fore, back) = (Data.Colors.shadowLight, Data.Colors.shadow);
                     }
-                    /*
-                    if (ctx.Config.Style == GraphicsStyle.Glyphs && tile.glyph != 0)
-                    {
-                        if ((tile.flags & TileFlags.BlocksMovement) > 0 && wallBelow)
-                        {
-                            layer.PutChar(x, y, '▒', fore, back);
-                            return;
-                        }
-                        layer.PutChar(x, y, tile.glyph, fore, back);
-                        return;
-                    }*/
 
                     var ch = (tile.characters.Length > 1 && !ctx.Config.SimpleTiles)
                         ? 1 + HashNoise.GetIndex(i, tile.characters.Length - 1)
@@ -211,39 +148,34 @@ namespace WasteDrudgers.Render
 
         private static void DrawEntity(IContext ctx, IBlittable layer, int x, int y, Renderable renderable, Visibility vis, bool onlyVisible)
         {
-            switch (ctx.Config.Style)
+            switch (vis)
             {
-                case GraphicsStyle.Tiles:
-                    layer.DrawSprite(new Sprite(4 + x * 24, y * 16, ctx.TextureData.Get("dude"), 10 + y));
+                case Visibility.Explored:
+                    if (onlyVisible) return;
+                    layer.PutChar(x, y, renderable.character, Data.Colors.shadowLight);
+
                     break;
-
-                default:
-                    switch (vis)
-                    {
-                        case Visibility.Explored:
-                            if (onlyVisible) return;
-                            layer.PutChar(x, y, renderable.character, Data.Colors.shadowLight);
-
-                            break;
-                        case Visibility.Visible:
-                            layer.PutChar(x, y, renderable.character, renderable.color);
-                            break;
-                    }
+                case Visibility.Visible:
+                    layer.PutChar(x, y, renderable.character, renderable.color);
                     break;
             }
         }
 
         private static void DrawEntities<T>(IContext ctx, IBlittable layer, World world, Rect viewport, int xOffset, int yOffset, int mapWidth, Visibility[] vis, bool onlyVisible = true) where T : struct
         {
-            world.ecs.Loop<Position, Renderable, T>((Entity entity, ref Position pos, ref Renderable renderable, ref T t) =>
+            foreach (var e in world.ecs.View<Position, Renderable, T>())
             {
+                ref var pos = ref world.ecs.GetRef<Position>(e);
+                ref var renderable = ref world.ecs.GetRef<Renderable>(e);
+
                 int x = viewport.x + pos.coords.x - xOffset;
                 int y = viewport.y + pos.coords.y - yOffset;
-                if (!viewport.IsWithinBounds(x, y)) return;
+                if (!viewport.IsWithinBounds(x, y))
+                    continue;
 
                 var i = pos.coords.ToIndex(mapWidth);
                 DrawEntity(ctx, layer, x, y, renderable, vis[i], onlyVisible);
-            });
+            };
         }
     }
 }

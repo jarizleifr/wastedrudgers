@@ -112,13 +112,15 @@ namespace WasteDrudgers.Render
             {
                 statusInfo.Add(new StatusInfo { text = "Fatigued", color = Data.Colors.fuchsiaLight });
             }
-            world.ecs.Loop((Entity entity, ref ActiveEffect effect, ref PlayerMarker p) =>
+
+            foreach (var e in world.ecs.View<ActiveEffect, PlayerMarker>())
             {
+                ref var effect = ref world.ecs.GetRef<ActiveEffect>(e);
                 if (effect.effect == SpellEffect.InflictPoison)
                 {
                     statusInfo.Add(new StatusInfo { text = "Poisoned", color = Data.Colors.greenLight });
                 }
-            });
+            }
             return statusInfo;
         }
 

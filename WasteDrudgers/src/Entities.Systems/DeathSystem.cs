@@ -1,18 +1,16 @@
-using ManulECS;
-
 namespace WasteDrudgers.Entities
 {
     public static partial class Systems
     {
         public static void DeathSystem(IContext ctx, World world)
         {
-            world.ecs.Loop<Death>((Entity entity, ref Death death) =>
+            foreach (var e in world.ecs.View<Death>())
             {
-                if (!world.ecs.Has<Player>(entity))
+                if (!world.ecs.Has<Player>(e))
                 {
-                    world.ecs.Remove(entity);
+                    world.ecs.Remove(e);
                 }
-            });
+            }
         }
     }
 }

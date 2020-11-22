@@ -1,5 +1,3 @@
-using ManulECS;
-
 namespace WasteDrudgers.Entities
 {
     public static partial class Systems
@@ -8,24 +6,28 @@ namespace WasteDrudgers.Entities
         {
             var playerData = world.PlayerData;
 
-            world.ecs.Loop((Entity entity, ref HungerClock clock, ref EventInventoryUpdated inventoryUpdated) =>
+            foreach (var e in world.ecs.View<HungerClock, EventInventoryUpdated>())
             {
+                ref var clock = ref world.ecs.GetRef<HungerClock>(e);
                 var state = clock.State;
-                clock.food = Items.GetRations(world, entity);
+                clock.food = Items.GetRations(world, e);
                 if (clock.State != state)
                 {
-                    world.ecs.Assign(entity, new EventStatusUpdated { });
+                    world.ecs.Assign(e, new EventStatusUpdated { });
                 }
-            });
+            }
 
-            world.ecs.Loop((Entity entity, ref HungerClock clock, ref Health health) =>
+            foreach (var e in world.ecs.View<HungerClock, Health>())
             {
+                ref var clock = ref world.ecs.GetRef<HungerClock>(e);
+                ref var health = ref world.ecs.GetRef<Health>(e);
+
                 var state = clock.State;
                 if (clock.nutrition == 0)
                 {
                     if (clock.food > 0)
                     {
-                        (var gotNutrition, var rationsRemaining) = Items.TryAutoConsume(world, entity);
+                        (var gotNutrition, var rationsRemaining) = Items.TryAutoConsume(world, e);
                         clock.nutrition = gotNutrition;
                         clock.food = rationsRemaining;
                     }
@@ -39,9 +41,9 @@ namespace WasteDrudgers.Entities
                 }
                 if (clock.State != state)
                 {
-                    world.ecs.Assign(entity, new EventStatusUpdated { });
+                    world.ecs.Assign(e, new EventStatusUpdated { });
                 }
-            });
+            }
 
             if (world.ecs.Has<EventInventoryUpdated>(playerData.entity))
             {

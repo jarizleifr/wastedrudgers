@@ -1,14 +1,15 @@
-using ManulECS;
-
 namespace WasteDrudgers.Entities
 {
     public static partial class Systems
     {
         public static void RegenSystem(IContext ctx, World world)
         {
-            world.ecs.Loop((Entity entity, ref Health health, ref Stats stats) =>
+            foreach (var e in world.ecs.View<Health, Stats>())
             {
-                if (health.fatigued) return;
+                ref var health = ref world.ecs.GetRef<Health>(e);
+                ref var stats = ref world.ecs.GetRef<Stats>(e);
+
+                if (health.fatigued) continue;
 
                 if (health.vigor.Damage > 0)
                 {
@@ -19,7 +20,7 @@ namespace WasteDrudgers.Entities
                         health.vigor.Damage--;
                     }
                 }
-            });
+            }
         }
     }
 }

@@ -46,22 +46,30 @@ namespace WasteDrudgers.Entities
         public static Inventory FromOwned(World world, Entity owner)
         {
             var items = new List<ItemWrapper>();
-            world.ecs.Loop((Entity entity, ref InBackpack inBackpack, ref Item item, ref Renderable ren) =>
+            foreach (var e in world.ecs.View<InBackpack, Item, Renderable>())
             {
+                ref var inBackpack = ref world.ecs.GetRef<InBackpack>(e);
+                ref var item = ref world.ecs.GetRef<Item>(e);
+                ref var renderable = ref world.ecs.GetRef<Renderable>(e);
+
                 if (inBackpack.entity == owner)
                 {
-                    var name = Items.GetFullName(world, entity);
-                    items.Add(new ItemWrapper(entity, name, item.type, false));
+                    var name = Items.GetFullName(world, e);
+                    items.Add(new ItemWrapper(e, name, item.type, false));
                 }
-            });
-            world.ecs.Loop((Entity entity, ref Equipped equipped, ref Item item, ref Renderable ren) =>
+            }
+            foreach (var e in world.ecs.View<Equipped, Item, Renderable>())
             {
+                ref var equipped = ref world.ecs.GetRef<Equipped>(e);
+                ref var item = ref world.ecs.GetRef<Item>(e);
+                ref var renderable = ref world.ecs.GetRef<Renderable>(e);
+
                 if (equipped.entity == owner)
                 {
-                    var name = Items.GetFullName(world, entity);
-                    items.Add(new ItemWrapper(entity, name, item.type, true));
+                    var name = Items.GetFullName(world, e);
+                    items.Add(new ItemWrapper(e, name, item.type, true));
                 }
-            });
+            };
 
             return new Inventory(items);
         }

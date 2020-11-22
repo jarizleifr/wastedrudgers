@@ -18,7 +18,7 @@ namespace WasteDrudgers.Tests
             RNG.Seed(0);
             var player = world.PlayerData.entity;
 
-            var foodItem = Items.Create(world, "itm_food_insect_roast", new Vec2(0, 2));
+            var foodItem = Items.Create(world, "food_insect", new Vec2(0, 2));
             Items.PickUpItem(world, player, foodItem);
             world.ecs.Clear<EventInventoryUpdated>();
 
@@ -46,7 +46,7 @@ namespace WasteDrudgers.Tests
             world.SetState(ctx, RunState.Ticking);
             world.Tick(ctx);
 
-            var foodItem = Items.Create(world, "itm_food_insect_roast", playerData.coords);
+            var foodItem = Items.Create(world, "food_insect", playerData.coords);
             world.ecs.Assign(player, new IntentionGetItem { });
 
             world.SetState(ctx, RunState.Ticking);

@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Blaggard.Common;
-using ManulECS;
 
 namespace WasteDrudgers.Level
 {

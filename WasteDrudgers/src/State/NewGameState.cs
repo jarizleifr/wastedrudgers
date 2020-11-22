@@ -16,7 +16,7 @@ namespace WasteDrudgers.State
 
             var player = world.ecs.Create();
             world.ecs.Assign(player, new Position { coords = new Vec2(0, 0) });
-            world.ecs.Assign(player, new Renderable { character = '@', glyph = (char)256, color = Data.Colors.white });
+            world.ecs.Assign(player, new Renderable { character = '@', color = Data.Colors.white });
             world.ecs.Assign(player, new Actor { energy = 0, speed = 100 });
             world.ecs.Assign(player, new Player { });
             world.ecs.Assign(player, new Identity { name = name, rawName = "player" });

@@ -1,5 +1,3 @@
-using ManulECS;
-
 namespace WasteDrudgers.Entities
 {
     public static partial class Systems
@@ -14,23 +12,24 @@ namespace WasteDrudgers.Entities
                 bool playerReady = false;
                 if (world.queue.Empty)
                 {
-                    world.ecs.Loop<Actor>((Entity entity, ref Actor actor) =>
+                    foreach (var e in world.ecs.View<Actor>())
                     {
+                        ref var actor = ref world.ecs.GetRef<Actor>(e);
                         actor.energy += actor.speed;
 
                         if (actor.energy >= 1000)
                         {
-                            if (entity == playerData.entity)
+                            if (e == playerData.entity)
                             {
-                                world.ecs.Assign(entity, new Turn { });
+                                world.ecs.Assign(e, new Turn { });
                                 playerReady = true;
                             }
                             else
                             {
-                                world.queue.Add(entity);
+                                world.queue.Add(e);
                             }
                         }
-                    });
+                    }
                 }
 
                 if (!playerReady)
