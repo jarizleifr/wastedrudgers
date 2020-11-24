@@ -79,7 +79,7 @@ namespace WasteDrudgers
         public void IncrementGameTicks()
         {
             GameTicks++;
-            Calendar.PassTime(0, 0, 1.5f);
+            Calendar.PassTime(0, 0, 2);
         }
 
         public void WriteToLog(string key, Vec2 position, params LogItem[] items)

@@ -19,7 +19,6 @@ namespace WasteDrudgers.State
 
             world.Map = map;
             world.spatial.Populate(world);
-            world.fov.Clear();
 
             CreatePortals(world, map, level.Portals);
             TryLevelTransition(world);
@@ -72,6 +71,8 @@ namespace WasteDrudgers.State
 
         private void CreatePortals(World world, Map map, List<DBPortal> portals)
         {
+            if (portals == null) return;
+
             foreach (var portal in portals)
             {
                 var pos = LevelUtils.GetRandomPassablePositionWithoutFeature(world);

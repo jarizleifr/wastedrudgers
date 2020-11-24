@@ -81,7 +81,7 @@ namespace WasteDrudgers.Render
             }
         }
 
-        public static void DrawFooter(IContext ctx, World world, Vec2? position = null)
+        public static void DrawFooter(IContext ctx, World world, string description)
         {
             var c = ctx.GetCanvas(RenderLayer.Root);
             var (_, sidebar, viewport) = ctx.UIData;
@@ -89,28 +89,30 @@ namespace WasteDrudgers.Render
             c.ResetColors();
             c.Rect(sidebar.width + 1, c.Height - 1, viewport.width - 1, 1, ' ');
 
-            var text = position == null
-                ? LevelUtils.GetDescription(world, world.PlayerData.coords)
-                : LevelUtils.GetLookDescription(world, position.Value);
-
-            if (text != null)
+            if (description != null)
             {
-                c.Print(sidebar.width + 1, c.Height - 1, text, Data.Colors.white);
+                c.Print(sidebar.width + 1, c.Height - 1, description, Data.Colors.white);
             }
         }
 
-        public static IEnumerable<StatusInfo> GetStatuses(World world, Entity player)
+        public static void DrawStatusBar(IContext ctx, World world)
         {
-            var statusInfo = new List<StatusInfo>();
+            var c = ctx.GetCanvas(RenderLayer.Root);
+            var viewport = ctx.UIData.viewport;
+            var player = world.PlayerData.entity;
+
+            var (x, y) = (viewport.x + 2, viewport.y);
             var hunger = world.ecs.GetRef<HungerClock>(player);
             if (hunger.State == HungerState.Hungry)
             {
-                statusInfo.Add(new StatusInfo { text = "Hungry", color = Data.Colors.skinLight });
+                c.Print(x, y, Locale.hungry, Data.Colors.skinLight);
+                x += Locale.hungry.Length;
             }
             var health = world.ecs.GetRef<Health>(player);
             if (health.fatigued)
             {
-                statusInfo.Add(new StatusInfo { text = "Fatigued", color = Data.Colors.fuchsiaLight });
+                c.Print(x, y, Locale.fatigued, Data.Colors.fuchsiaLight);
+                x += Locale.fatigued.Length;
             }
 
             foreach (var e in world.ecs.View<ActiveEffect, PlayerMarker>())
@@ -118,29 +120,13 @@ namespace WasteDrudgers.Render
                 ref var effect = ref world.ecs.GetRef<ActiveEffect>(e);
                 if (effect.effect == SpellEffect.InflictPoison)
                 {
-                    statusInfo.Add(new StatusInfo { text = "Poisoned", color = Data.Colors.greenLight });
+                    c.Print(x, y, Locale.poisoned, Data.Colors.greenLight);
+                    x += Locale.poisoned.Length;
                 }
-            }
-            return statusInfo;
-        }
-
-        public static void DrawStatusBar(IContext ctx, World world)
-        {
-            var c = ctx.GetCanvas(RenderLayer.Root);
-            var viewport = ctx.UIData.viewport;
-
-            var player = world.PlayerData.entity;
-
-            int offset = 2;
-            var statusInfo = GetStatuses(world, player);
-            foreach (var status in GetStatuses(world, player))
-            {
-                c.Print(viewport.x + offset, viewport.y, status.text, status.color);
-                offset += status.text.Length;
             }
 
             c.PutChar(viewport.x + 1, viewport.y, '╡');
-            c.PutChar(viewport.x + offset, viewport.y, '╞');
+            c.PutChar(x, viewport.y, '╞');
         }
 
         private enum AbbrStats { ST, EN, FI, IN, RE, AW }
@@ -177,7 +163,7 @@ namespace WasteDrudgers.Render
 
             var end = viewport.x + viewport.width;
             var actor = world.ecs.GetRef<Actor>(player);
-            c.Print(end - 22, y, "Action", ctx.Theme.caption, TextAlignment.Right);
+            c.Print(end - 22, y, Locale.action, ctx.Theme.caption, TextAlignment.Right);
             c.PutChar(end - 22, y, ':', ctx.Theme.text);
             c.Print(end - 17, y, $"{actor.speed}%", ctx.Theme.text, TextAlignment.Right);
             c.PutChar(end - 17, y, '─', ctx.Theme.windowFrame);
@@ -192,7 +178,7 @@ namespace WasteDrudgers.Render
                 _ => ctx.Theme.text
             };
 
-            c.Print(end - 12, y, "Food", ctx.Theme.caption, TextAlignment.Right);
+            c.Print(end - 12, y, Locale.food, ctx.Theme.caption, TextAlignment.Right);
             c.PutChar(end - 12, y, ':', ctx.Theme.text);
             c.Print(end - 2, y, $"{food.ToString("0.0", CultureInfo.InvariantCulture)} days", color, TextAlignment.Right);
         }
@@ -256,9 +242,9 @@ namespace WasteDrudgers.Render
         {
             var wieldString = combat.wielding switch
             {
-                Wielding.Unarmed => "Unarmed",
-                Wielding.SingleWeapon => "Weapon",
-                Wielding.DualWield => "Weapons"
+                Wielding.Unarmed => Locale.unarmed,
+                Wielding.SingleWeapon => Locale.weapon,
+                Wielding.DualWield => Locale.weapons,
             };
             layer.Print(x, y, wieldString, theme.caption);
             //layer.Print(x + 9, y, "(]{‼", Color.white);
@@ -268,8 +254,8 @@ namespace WasteDrudgers.Render
 
         public static void DrawExperience(IBlittable layer, Theme theme, int x, int y, Experience exp)
         {
-            DrawNumeric(layer, theme, x, y, 12, "Level", exp.level);
-            DrawNumeric(layer, theme, x, y + 1, 12, "Next", Formulae.ExperienceNeededForLevel(exp.level + 1) - exp.experience);
+            DrawNumeric(layer, theme, x, y, 12, Locale.level, exp.level);
+            DrawNumeric(layer, theme, x, y + 1, 12, Locale.next, Formulae.ExperienceNeededForLevel(exp.level + 1) - exp.experience);
         }
 
         public static void DrawClock(IContext ctx, World world, int hours)
@@ -285,7 +271,7 @@ namespace WasteDrudgers.Render
                     ch -= clock.Length;
                 }
                 var cell = clock[ch];
-                c.PutChar(x + i, viewport.y, cell.ch, cell.fore, cell.back);
+                c.SetCell(x + i, viewport.y, cell.ch, cell.fore, cell.back);
             }
         }
 
@@ -328,8 +314,8 @@ namespace WasteDrudgers.Render
 
         private static void DrawDefense(IBlittable layer, Theme theme, int x, int y, Combat combat)
         {
-            DrawPercentage(layer, theme, x, y, 13, "Dodge", combat.dodge);
-            DrawNumeric(layer, theme, x, y + 1, 12, "Armor", combat.armor);
+            DrawPercentage(layer, theme, x, y, 13, Locale.dodge, combat.dodge);
+            DrawNumeric(layer, theme, x, y + 1, 12, Locale.armor, combat.armor);
         }
 
         // TODO: Drawing colors for stat numbers.

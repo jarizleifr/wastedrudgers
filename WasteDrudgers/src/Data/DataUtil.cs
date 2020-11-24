@@ -19,7 +19,7 @@ namespace WasteDrudgers
             for (int i = 0; i < tiles.Length; i++)
             {
                 var tile = tiles[i];
-                layer.PutChar(i % 16, i / 16, tile.characters[0], tile.foreground, tile.background);
+                layer.SetCell(i % 16, i / 16, tile.characters[0], tile.foreground, tile.background);
             }
 
             layer.Render();

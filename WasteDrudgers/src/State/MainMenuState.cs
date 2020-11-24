@@ -7,6 +7,8 @@ namespace WasteDrudgers.State
     {
         public int selection;
         private string[] items = { "Start a New Quest", "Continue an Existing Adventure", "Configure", "Forfeit Your Destiny" };
+        private const string title = "WASTE DRUDGERS";
+        private const string credit = "Created by Antti Joutsi 2016-2020";
 
         public string[] InputDomains { get; set; } = { "menu" };
 
@@ -43,8 +45,8 @@ namespace WasteDrudgers.State
             root.DefaultBack = ctx.Theme.windowBackground;
             root.Clear();
 
-            root.Print(root.Width / 2, 3, "WASTE DRUDGERS", ctx.Theme.selectedColor, TextAlignment.Center);
-            root.Print(root.Width / 2, root.Height - 3, "Created by Antti Joutsi 2016-2020", ctx.Theme.selectedColor, TextAlignment.Center);
+            root.Print(root.Width / 2, 3, title, ctx.Theme.selectedColor, TextAlignment.Center);
+            root.Print(root.Width / 2, root.Height - 3, credit, ctx.Theme.selectedColor, TextAlignment.Center);
 
             HUD.DrawScreenBorders(root, ctx.Theme);
             Menu.DrawMenu(root, ctx.Theme, root.Width / 2, root.Height / 2 - items.Length + 1, selection, items);

@@ -1,9 +1,18 @@
 Id	Base	Name	Char	Color	ST	EN	FI	IN	RE	AW	NaturalAttack	DL	LevelTags	Professions
-mutorc		mutorc	o	green_light	10	10	10	10	10	10		0	common	fighter:20,shaman:30
-mutogre		mutogre	O	green_light	12	12	10	10	10	10		0	common	
-fungoid		fungoid	t	teal_light	10	10	10	10	10	10	fungoid_strike	0	cave	
-mokrug		mokrug beetle	i	red	10	10	10	10	10	10		0		
-mokrug_larva		mokrug larva	w	beige	10	10	10	10	10	10		0	cave	
+mutorc		mutorc	o	green_light	11	10	10	9	10	10		0	common	fighter:100
+mutogre		mutogre	O	green_light	11	11	9	9	10	10		0	common	fighter:150
+fungoid		fungoid	t	teal_light	8	10	8	2	10	4	fungoid_strike	0	cave	
+mokrug		mokrug beetle	i	red_light	10	10	10	3	10	10		0	cave	
+mokrug_larva		mokrug larva	w	beige	6	8	8	2	10	10		0	cave	
 grol		grol	F	blue_light	10	10	10	10	10	9		0	cave	
-skorrek		skorrek	r	brown_light	10	10	10	10	10	10		0	common	beast:50
-large_skorrek	skorrek	large skorrek			15							0	common	beast:150
+skorrek		skorrek	r	brown_light	5	10	12	4	10	10		0	common	
+large_skorrek	skorrek	large skorrek										0	common	beast:50
+shadow_beast		shadow beast	F	violet	10	10	10	10	10	10		0	cave	beast:100
+bone_warrior		bone warrior	Z	beige_light	10	10	10	10	10	10		0	common	fighter:200
+slime		slime	j	green_light	10	10	10	10	10	10		0	cave	
+troglodyte		troglodyte	h	skin_light	10	10	10	10	10	10		0	cave	fighter:50
+deep_one		deep one	h	teal_light	10	10	10	10	10	10		0	cave	fighter:50
+reptilian		reptilian	h	green_light	10	10	10	10	10	10		0	common	fighter:50
+vesp		vesp	B	brown_light	10	10	10	10	10	10		0	cave	
+large_vesp	vesp	large vesp										0	cave	beast:50
+lesser_demon		lesser demon	&	red_light	10	10	10	10	10	10		0	common	beast:200

@@ -41,10 +41,10 @@ namespace WasteDrudgers.Render
                 HUD.DrawSidebar(ctx, world);
                 HUD.DrawStatsBar(ctx, world);
                 HUD.DrawStatusBar(ctx, world);
-                HUD.DrawFooter(ctx, world);
+                HUD.DrawFooter(ctx, world, LevelUtils.GetDescription(world, playerData.coords));
                 HUD.DrawLog(ctx, world);
                 HUD.DrawClock(ctx, world, calendar.Hour);
-                Viewport.Draw(ctx, viewport, ctx.Theme, world, playerData.coords, Viewport.GetViewportRect(map.width, map.height, viewport.Width, viewport.Height), map);
+                Viewport.Draw(ctx, world, playerData.coords);
 
                 world.ShouldRedraw = false;
             }
@@ -65,13 +65,13 @@ namespace WasteDrudgers.Render
                 HUD.DrawStatusBar(ctx, world);
                 HUD.DrawLog(ctx, world);
 
+                Viewport.Draw(ctx, world, cursor);
+
+                HUD.DrawFooter(ctx, world, LevelUtils.GetLookDescription(world, cursor));
+
                 var rect = Viewport.GetViewportRect(map.width, map.height, viewport.Width, viewport.Height);
-                Viewport.Draw(ctx, viewport, ctx.Theme, world, cursor, rect, map);
-
-                HUD.DrawFooter(ctx, world, cursor);
-
-                Viewport.CameraOffset(cursor, map.width, map.height, rect.width, rect.height, out int xOffset, out int yOffset);
-                viewport.PutChar(cursor.x + rect.x - xOffset, cursor.y + rect.y - yOffset, 'X', Data.Colors.white);
+                var (ox, oy) = Viewport.CameraOffset(cursor, map.width, map.height, rect.width, rect.height);
+                viewport.PutChar(cursor.x + rect.x - ox, cursor.y + rect.y - oy, 'X', Data.Colors.white);
 
                 world.ShouldRedraw = false;
             }

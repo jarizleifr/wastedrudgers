@@ -67,32 +67,22 @@ namespace WasteDrudgers
                 (Attempt.Critical, Attempt.Critical) => HighestRollSucceeds(initiatorRoll, opposerRoll),
                 (Attempt.Critical, Attempt.Special) => (Attempt.Success, Attempt.Failure),
                 (Attempt.Critical, Attempt.Success) => (Attempt.Special, Attempt.Failure),
-                (Attempt.Critical, Attempt.Failure) => (i, o),
-                (Attempt.Critical, Attempt.Fumble) => (i, o),
 
                 (Attempt.Special, Attempt.Critical) => (Attempt.Failure, Attempt.Success),
                 (Attempt.Special, Attempt.Special) => HighestRollSucceeds(initiatorRoll, opposerRoll),
                 (Attempt.Special, Attempt.Success) => (Attempt.Success, Attempt.Failure),
-                (Attempt.Special, Attempt.Failure) => (i, o),
                 (Attempt.Special, Attempt.Fumble) => (Attempt.Critical, o),
 
                 (Attempt.Success, Attempt.Critical) => (Attempt.Failure, Attempt.Special),
                 (Attempt.Success, Attempt.Special) => (Attempt.Failure, Attempt.Success),
                 (Attempt.Success, Attempt.Success) => HighestRollSucceeds(initiatorRoll, opposerRoll),
-                (Attempt.Success, Attempt.Failure) => (i, o),
                 (Attempt.Success, Attempt.Fumble) => (Attempt.Special, Attempt.Failure),
 
-                (Attempt.Failure, Attempt.Critical) => (i, o),
-                (Attempt.Failure, Attempt.Special) => (i, o),
-                (Attempt.Failure, Attempt.Success) => (i, o),
-                (Attempt.Failure, Attempt.Failure) => (i, o),
-                (Attempt.Failure, Attempt.Fumble) => (i, o),
-
-                (Attempt.Fumble, Attempt.Critical) => (i, o),
                 (Attempt.Fumble, Attempt.Special) => (i, Attempt.Critical),
                 (Attempt.Fumble, Attempt.Success) => (i, Attempt.Special),
                 (Attempt.Fumble, Attempt.Failure) => (i, Attempt.Success),
-                (Attempt.Fumble, Attempt.Fumble) => (i, o),
+
+                _ => (i, o),
             };
         }
 

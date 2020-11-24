@@ -54,6 +54,9 @@ namespace WasteDrudgers.Entities
 
         public static int ExperienceNeededForLevel(int level) => (level * (level - 1) / 2) * BASE_EXPERIENCE;
 
+        public static int GetExperienceValue(int characterPoints) =>
+            Math.Max(10, characterPoints / 100);
+
         public static int GetStatCost(StatType type) => type switch
         {
             StatType.Strength => 10,

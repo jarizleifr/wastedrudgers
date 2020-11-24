@@ -10,7 +10,7 @@ namespace WasteDrudgers
 
         public void Add(Entity entity) => ready.Add(entity);
         public bool Empty => ready.Count == 0;
-        public IEnumerable<Entity> Entities => ready;
+        public List<Entity> Entities => ready;
         public void Clear() => ready.Clear();
     }
 }

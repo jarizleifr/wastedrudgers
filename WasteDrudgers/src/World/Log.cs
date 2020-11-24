@@ -135,7 +135,7 @@ namespace WasteDrudgers
         };
 
         public bool BufferHasMessages() => buffer.Count > 0;
-        public IEnumerable<ColoredString> GetBuffer() => buffer;
+        public List<ColoredString> GetBuffer() => buffer;
 
         public void UpdateMessageBuffer()
         {

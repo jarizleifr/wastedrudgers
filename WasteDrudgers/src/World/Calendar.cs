@@ -5,16 +5,6 @@ namespace WasteDrudgers
     [SerializationProfile("global")]
     public class Calendar
     {
-        public Calendar(int year, int month, int day, int hour, int minute, float second)
-        {
-            this.year = year;
-            this.month = month;
-            this.day = day;
-            this.hour = hour;
-            this.minute = minute;
-            this.second = second;
-        }
-
         private readonly string[] monthStrings = new string[12]
         {
             "Newmoon", "Candlemoon", "Birthmoon",
@@ -51,34 +41,39 @@ namespace WasteDrudgers
         private int day;
         private int hour;
         private int minute;
-        private float second;
-        private double previousTime;
+        private int second;
 
         private int ticks = 0;
+
+        public Calendar(int year, int month, int day, int hour, int minute, int second)
+        {
+            this.year = year;
+            this.month = month;
+            this.day = day;
+            this.hour = hour;
+            this.minute = minute;
+            this.second = second;
+        }
 
         private void RecalculateCalendar()
         {
             while (second >= 60) { second -= 60; minute++; }
             while (minute >= 60) { minute -= 60; hour++; }
             while (hour >= 24) { hour -= 24; day++; }
-            while (day > 28) { day -= 28; month++; }
-            while (month > 12) { month -= 12; year++; }
-
-            double timeDifference = CurrentTimeDouble() - previousTime;
+            while (day >= 28) { day -= 28; month++; }
+            while (month >= 12) { month -= 12; year++; }
         }
 
         public void PassDate(int year, int month, int day)
         {
-            previousTime = CurrentTimeDouble();
             this.day += day;
             this.month += month;
             this.year += year;
             RecalculateCalendar();
         }
 
-        public void PassTime(int hour, int minute, float second)
+        public void PassTime(int hour, int minute, int second)
         {
-            previousTime = CurrentTimeDouble();
             this.second += second;
             this.minute += minute;
             this.hour += hour;
@@ -87,20 +82,8 @@ namespace WasteDrudgers
 
         public int Hour => hour;
 
-        private double CurrentTimeDouble()
-        {
-            double currentTime = 0;
-            currentTime += year * 525600;
-            currentTime += month * 40320;
-            currentTime += day * 1440;
-            currentTime += hour * 60;
-            currentTime += minute;
-            currentTime += second / 60;
-            return currentTime;
-        }
-
-        public string GetDayString() => $"{GetWeekday(day)}, the {day}{GetOrdinal(day)}";
-        public string GetMonthAndYearString() => $"of {monthStrings[month - 1]}, {year}";
+        public string GetDayString() => $"{GetWeekday(day)}, the {day + 1}{GetOrdinal(day)}";
+        public string GetMonthAndYearString() => $"of {monthStrings[month]}, {year}";
         public string GetTimeString() =>
             $"{WithLeadingZero(hour)}:{WithLeadingZero(minute)}";
 
@@ -110,23 +93,11 @@ namespace WasteDrudgers
 
         public string GetOrdinal(int day) => day switch
         {
-            var _ when day > 3 && day < 21 => "th",
-            var _ when day % 10 == 1 => "st",
-            var _ when day % 10 == 2 => "nd",
-            var _ when day % 10 == 3 => "rd",
-            _ => "th",
+            var _ when day > 3 && day < 21 => ordinalStrings[0],
+            var _ when day % 10 == 1 => ordinalStrings[1],
+            var _ when day % 10 == 2 => ordinalStrings[2],
+            var _ when day % 10 == 3 => ordinalStrings[3],
+            _ => ordinalStrings[0],
         };
-
-        public string GetDateString()
-        {
-            string d;
-            if (day < 4) { d = day + ordinalStrings[day - 1]; } else { d = day + ordinalStrings[3]; }
-
-            int weekday = day;
-            while (weekday >= 8) { weekday -= 7; }
-
-            string date = dayStrings[weekday - 1] + ", " + d + " of " + monthStrings[month - 1] + ", " + year;
-            return date;
-        }
     }
 }

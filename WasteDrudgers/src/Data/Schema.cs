@@ -78,7 +78,7 @@ namespace WasteDrudgers
         public string Origin { get; set; }
         public string Target { get; set; }
         public string Feature { get; set; }
-        public Vec2? Coords { get; set; }
+        public Vec2 Coords { get; set; }
     }
 
     public class DBLogMessage : DBEntity
@@ -101,11 +101,17 @@ namespace WasteDrudgers
         public string Name { get; set; }
         public char Char { get; set; }
         public Color Color { get; set; }
+        [JsonProperty("ST")]
         public int Strength { get; set; }
+        [JsonProperty("EN")]
         public int Endurance { get; set; }
+        [JsonProperty("FI")]
         public int Finesse { get; set; }
+        [JsonProperty("IN")]
         public int Intellect { get; set; }
+        [JsonProperty("RE")]
         public int Resolve { get; set; }
+        [JsonProperty("AW")]
         public int Awareness { get; set; }
         public List<string> Professions { get; set; }
         public string NaturalAttack { get; set; }

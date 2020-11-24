@@ -1,30 +1,28 @@
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using Blaggard.Common;
 
 namespace WasteDrudgers.Level
 {
     public class FOV
     {
-        private IEnumerable<IMapCell> cells = Enumerable.Empty<IMapCell>();
-
-        public void Clear() => cells = Enumerable.Empty<IMapCell>();
+        private List<IMapCell> cells = new List<IMapCell>(128);
+        private Func<IMapCell, bool> callback = (cell) =>
+            cell.Flags(TileFlags.BlocksVision);
 
         public void Recalculate(Map map, Vec2 origin, int fovRange)
         {
-            var newCells = LightCaster.CalculateFOV(map, origin, fovRange, (cell) => cell.Flags(TileFlags.BlocksVision));
+            foreach (var pos in cells)
+            {
+                pos.Visibility = Visibility.Explored;
+            }
 
-            foreach (var cell in cells)
+            LightCaster.CalculateFOV(map, cells, origin, fovRange, callback);
+
+            foreach (var pos in cells)
             {
-                if (newCells.Contains(cell)) continue;
-                cell.Visibility = Visibility.Explored;
+                pos.Visibility = Visibility.Visible;
             }
-            foreach (var cell in newCells)
-            {
-                if (cells.Contains(cell)) continue;
-                cell.Visibility = Visibility.Visible;
-            }
-            cells = newCells;
         }
     }
 }

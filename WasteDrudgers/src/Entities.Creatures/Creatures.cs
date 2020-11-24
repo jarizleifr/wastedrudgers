@@ -197,7 +197,7 @@ namespace WasteDrudgers.Entities
 
         public static void AwardKillExperience(World world, Entity awardee, Entity killed)
         {
-            AwardExperience(world, awardee, GetSpentCharacterPoints(world, killed) / 100);
+            AwardExperience(world, awardee, Formulae.GetExperienceValue(GetSpentCharacterPoints(world, killed)));
         }
 
         public static void AwardExperience(World world, Entity entity, int experience)

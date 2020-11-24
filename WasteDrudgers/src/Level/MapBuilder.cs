@@ -108,6 +108,9 @@ namespace WasteDrudgers.Level
 
         public Map Build() => map;
 
-        private void SetCell(int x, int y, Tile tile) => map[Util.IndexFromXY(x, y, map.width)].Tile = tile;
+        private void SetCell(int x, int y, Tile tile)
+        {
+            map[Util.IndexFromXY(x, y, map.width)].Tile = tile;
+        }
     }
 }

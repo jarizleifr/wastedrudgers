@@ -50,7 +50,11 @@ namespace WasteDrudgers.Tests
         public void SetRenderPosition(int x, int y) { }
         public void ResetColors() { }
         public void Clear() { }
-        public void SetCell(int x, int y, char? ch, Color? fore, Color? back) { }
+        public void PutChar(int x, int y, char ch) { }
+        public void PutChar(int x, int y, char ch, Color fore) { }
+        public void SetCellForeground(int x, int y, Color fore) { }
+        public void SetCellBackground(int x, int y, Color back) { }
+        public void SetCell(int x, int y, char ch, Color fore, Color back) { }
         public void Render() { }
         public void Dispose() { }
     }

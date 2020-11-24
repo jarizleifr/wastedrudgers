@@ -23,6 +23,9 @@ namespace WasteDrudgers.Level
             }
         }
 
-        public static void SetCell(Map map, int x, int y, Tile tile) => map[Util.IndexFromXY(x, y, map.width)].Tile = tile;
+        public static void SetCell(Map map, int x, int y, Tile tile)
+        {
+            map[Util.IndexFromXY(x, y, map.width)].Tile = tile;
+        }
     }
 }

@@ -74,7 +74,7 @@ namespace WasteDrudgers.Entities
             return new Inventory(items);
         }
 
-        private Inventory(IEnumerable<ItemWrapper> items)
+        private Inventory(List<ItemWrapper> items)
         {
             this.items = items.ToList();
             SortByEquipped();

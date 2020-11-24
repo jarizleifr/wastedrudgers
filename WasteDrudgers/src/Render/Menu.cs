@@ -64,7 +64,7 @@ namespace WasteDrudgers.Render
             layer.PutChar(x, y, '▲');
             layer.PutChar(x, y + height - 1, '▼');
             layer.LineVert(x, y + 1, scrollArea, '▒', ctx.Theme.windowBackground, Data.Colors.shadow);
-            layer.PutChar(x, y + 1 + scrollBarPos, '■', ctx.Theme.windowFrame, Data.Colors.shadow);
+            layer.SetCell(x, y + 1 + scrollBarPos, '■', ctx.Theme.windowFrame, Data.Colors.shadow);
         }
 
         public static void DrawCompactMenu<T>(IContext ctx, IBlittable layer, Rect rect, int selected, int offset, T[] items) where T : IMenuItem

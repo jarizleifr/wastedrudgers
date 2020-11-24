@@ -26,19 +26,20 @@ namespace WasteDrudgers.Level
         public void Populate(World world)
         {
             Clear();
+            var positions = world.ecs.Pools<Position>();
             foreach (var e in world.ecs.View<Position, Feature>())
             {
-                ref var pos = ref world.ecs.GetRef<Position>(e);
+                var pos = positions[e];
                 features[pos.coords] = e;
             }
             foreach (var e in world.ecs.View<Position, Actor>())
             {
-                ref var pos = ref world.ecs.GetRef<Position>(e);
+                var pos = positions[e];
                 creatures[pos.coords] = e;
             }
             foreach (var e in world.ecs.View<Position, Item>())
             {
-                ref var pos = ref world.ecs.GetRef<Position>(e);
+                var pos = positions[e];
                 PlaceItem(world, pos.coords, e);
             }
         }
@@ -74,7 +75,7 @@ namespace WasteDrudgers.Level
 
         public void ClearCreatureAt(Vec2 pos) => creatures.Remove(pos);
 
-        public IEnumerable<Vec2> GetPositionsWithItems() => items.Keys;
+        public List<Vec2> GetPositionsWithItems() => items.Keys.ToList();
         public Renderable GetItemsRenderable(Vec2 position, World world) => world.ecs.GetRef<Renderable>
         (
             items[position].OrderByDescending((i) => world.ecs.GetRef<Item>(i).weight).First()

@@ -1,4 +1,4 @@
-using System.Linq;
+using System;
 using Blaggard.Common;
 
 using WasteDrudgers.Entities;
@@ -51,6 +51,9 @@ namespace WasteDrudgers.Level
             return pos;
         }
 
+        private static Func<IMapCell, bool> callback =
+            (c) => c.Flags(TileFlags.BlocksMovement);
+
         public static bool HasLineOfSight(World world, Vec2 origin, Vec2 target, int maxDistance = -1)
         {
             var map = world.Map;
@@ -58,8 +61,7 @@ namespace WasteDrudgers.Level
             {
                 return false;
             }
-            return Bresenham.GetPath(map, origin, target)
-                .All(node => !node.Flags(TileFlags.BlocksMovement));
+            return Bresenham.CheckPath(map, origin, target, callback);
         }
 
         // TODO: Look needs visibility checks

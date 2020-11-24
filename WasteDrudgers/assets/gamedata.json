@@ -199,10 +199,10 @@
       "Name": "mutorc",
       "Char": "o",
       "Color": 9484399,
-      "ST": 10,
+      "ST": 11,
       "EN": 10,
       "FI": 10,
-      "IN": 10,
+      "IN": 9,
       "RE": 10,
       "AW": 10,
       "NaturalAttack": null,
@@ -211,8 +211,7 @@
         "common"
       ],
       "Professions": [
-        "fighter:20",
-        "shaman:30"
+        "fighter:100"
       ]
     },
     "mutogre": {
@@ -220,10 +219,10 @@
       "Name": "mutogre",
       "Char": "O",
       "Color": 9484399,
-      "ST": 12,
-      "EN": 12,
-      "FI": 10,
-      "IN": 10,
+      "ST": 11,
+      "EN": 11,
+      "FI": 9,
+      "IN": 9,
       "RE": 10,
       "AW": 10,
       "NaturalAttack": null,
@@ -231,19 +230,21 @@
       "LevelTags": [
         "common"
       ],
-      "Professions": []
+      "Professions": [
+        "fighter:150"
+      ]
     },
     "fungoid": {
       "Id": "fungoid",
       "Name": "fungoid",
       "Char": "t",
       "Color": 6794161,
-      "ST": 10,
+      "ST": 8,
       "EN": 10,
-      "FI": 10,
-      "IN": 10,
+      "FI": 8,
+      "IN": 2,
       "RE": 10,
-      "AW": 10,
+      "AW": 4,
       "NaturalAttack": "fungoid_strike",
       "DL": 0,
       "LevelTags": [
@@ -255,16 +256,18 @@
       "Id": "mokrug",
       "Name": "mokrug beetle",
       "Char": "i",
-      "Color": 7146253,
+      "Color": 13500938,
       "ST": 10,
       "EN": 10,
       "FI": 10,
-      "IN": 10,
+      "IN": 3,
       "RE": 10,
       "AW": 10,
       "NaturalAttack": null,
       "DL": 0,
-      "LevelTags": [],
+      "LevelTags": [
+        "cave"
+      ],
       "Professions": []
     },
     "mokrug_larva": {
@@ -272,10 +275,10 @@
       "Name": "mokrug larva",
       "Char": "w",
       "Color": 14270602,
-      "ST": 10,
-      "EN": 10,
-      "FI": 10,
-      "IN": 10,
+      "ST": 6,
+      "EN": 8,
+      "FI": 8,
+      "IN": 2,
       "RE": 10,
       "AW": 10,
       "NaturalAttack": null,
@@ -308,6 +311,64 @@
       "Name": "skorrek",
       "Char": "r",
       "Color": 8087403,
+      "ST": 5,
+      "EN": 10,
+      "FI": 12,
+      "IN": 4,
+      "RE": 10,
+      "AW": 10,
+      "NaturalAttack": null,
+      "DL": 0,
+      "LevelTags": [
+        "common"
+      ],
+      "Professions": []
+    },
+    "large_skorrek": {
+      "Id": "large_skorrek",
+      "Name": "large skorrek",
+      "Char": "r",
+      "Color": 8087403,
+      "ST": 5,
+      "EN": 10,
+      "FI": 12,
+      "IN": 4,
+      "RE": 10,
+      "AW": 10,
+      "NaturalAttack": null,
+      "DL": 0,
+      "LevelTags": [
+        "common"
+      ],
+      "Professions": [
+        "beast:50"
+      ]
+    },
+    "shadow_beast": {
+      "Id": "shadow_beast",
+      "Name": "shadow beast",
+      "Char": "F",
+      "Color": 9995184,
+      "ST": 10,
+      "EN": 10,
+      "FI": 10,
+      "IN": 10,
+      "RE": 10,
+      "AW": 10,
+      "NaturalAttack": null,
+      "DL": 0,
+      "LevelTags": [
+        "cave"
+      ],
+      "Professions": [
+        "beast:100"
+      ]
+    },
+    "bone_warrior": {
+      "Id": "bone_warrior",
+      "Name": "bone warrior",
+      "Char": "Z",
+      "Color": 15525294,
       "ST": 10,
       "EN": 10,
       "FI": 10,
@@ -320,15 +381,73 @@
         "common"
       ],
       "Professions": [
-        "beast:50"
+        "fighter:200"
       ]
     },
-    "large_skorrek": {
-      "Id": "large_skorrek",
-      "Name": "large skorrek",
-      "Char": "r",
-      "Color": 8087403,
-      "ST": 15,
+    "slime": {
+      "Id": "slime",
+      "Name": "slime",
+      "Char": "j",
+      "Color": 9484399,
+      "ST": 10,
+      "EN": 10,
+      "FI": 10,
+      "IN": 10,
+      "RE": 10,
+      "AW": 10,
+      "NaturalAttack": null,
+      "DL": 0,
+      "LevelTags": [
+        "cave"
+      ],
+      "Professions": []
+    },
+    "troglodyte": {
+      "Id": "troglodyte",
+      "Name": "troglodyte",
+      "Char": "h",
+      "Color": 16693927,
+      "ST": 10,
+      "EN": 10,
+      "FI": 10,
+      "IN": 10,
+      "RE": 10,
+      "AW": 10,
+      "NaturalAttack": null,
+      "DL": 0,
+      "LevelTags": [
+        "cave"
+      ],
+      "Professions": [
+        "fighter:50"
+      ]
+    },
+    "deep_one": {
+      "Id": "deep_one",
+      "Name": "deep one",
+      "Char": "h",
+      "Color": 6794161,
+      "ST": 10,
+      "EN": 10,
+      "FI": 10,
+      "IN": 10,
+      "RE": 10,
+      "AW": 10,
+      "NaturalAttack": null,
+      "DL": 0,
+      "LevelTags": [
+        "cave"
+      ],
+      "Professions": [
+        "fighter:50"
+      ]
+    },
+    "reptilian": {
+      "Id": "reptilian",
+      "Name": "reptilian",
+      "Char": "h",
+      "Color": 9484399,
+      "ST": 10,
       "EN": 10,
       "FI": 10,
       "IN": 10,
@@ -340,7 +459,65 @@
         "common"
       ],
       "Professions": [
-        "beast:150"
+        "fighter:50"
+      ]
+    },
+    "vesp": {
+      "Id": "vesp",
+      "Name": "vesp",
+      "Char": "B",
+      "Color": 8087403,
+      "ST": 10,
+      "EN": 10,
+      "FI": 10,
+      "IN": 10,
+      "RE": 10,
+      "AW": 10,
+      "NaturalAttack": null,
+      "DL": 0,
+      "LevelTags": [
+        "cave"
+      ],
+      "Professions": []
+    },
+    "large_vesp": {
+      "Id": "large_vesp",
+      "Name": "large vesp",
+      "Char": "B",
+      "Color": 8087403,
+      "ST": 10,
+      "EN": 10,
+      "FI": 10,
+      "IN": 10,
+      "RE": 10,
+      "AW": 10,
+      "NaturalAttack": null,
+      "DL": 0,
+      "LevelTags": [
+        "cave"
+      ],
+      "Professions": [
+        "beast:50"
+      ]
+    },
+    "lesser_demon": {
+      "Id": "lesser_demon",
+      "Name": "lesser demon",
+      "Char": "&",
+      "Color": 13500938,
+      "ST": 10,
+      "EN": 10,
+      "FI": 10,
+      "IN": 10,
+      "RE": 10,
+      "AW": 10,
+      "NaturalAttack": null,
+      "DL": 0,
+      "LevelTags": [
+        "common"
+      ],
+      "Professions": [
+        "beast:200"
       ]
     }
   },
@@ -1716,12 +1893,22 @@
       "mutorc",
       "mutogre",
       "skorrek",
-      "large_skorrek"
+      "large_skorrek",
+      "bone_warrior",
+      "reptilian",
+      "lesser_demon"
     ],
     "cave": [
       "fungoid",
+      "mokrug",
       "mokrug_larva",
-      "grol"
+      "grol",
+      "shadow_beast",
+      "slime",
+      "troglodyte",
+      "deep_one",
+      "vesp",
+      "large_vesp"
     ]
   },
   "materialLists": {
