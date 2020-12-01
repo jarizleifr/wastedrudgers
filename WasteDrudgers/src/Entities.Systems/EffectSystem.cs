@@ -15,9 +15,15 @@ namespace WasteDrudgers.Entities
                 switch (map[pos.coords].Visibility)
                 {
                     case Visibility.Visible:
-                        world.ShouldRedraw = true;
+                        var oldIndex = (int)eff.delta;
                         eff.delta += ctx.DeltaTime * 20;
-                        if ((int)eff.delta == eff.characters.Length)
+                        var newIndex = (int)eff.delta;
+
+                        if (oldIndex != newIndex)
+                        {
+                            world.ShouldRedraw = true;
+                        }
+                        if (newIndex >= eff.characters.Length)
                         {
                             world.ecs.Remove(e);
                         }
