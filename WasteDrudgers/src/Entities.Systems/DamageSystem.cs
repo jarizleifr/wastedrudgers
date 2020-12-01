@@ -12,7 +12,7 @@ namespace WasteDrudgers.Entities
 
                 // FIXME: We've ended up here without a Position component
                 var pos = world.ecs.GetRef<Position>(damage.target);
-                ref var hlt = ref world.ecs.GetRef<Health>(damage.target);
+                ref var hlt = ref world.ecs.GetRef<Pools>(damage.target);
 
                 // Only physical damage targets vigor
                 if (hlt.vigor.Current > 0 && damage.damageType == DamageType.Physical)

@@ -4,9 +4,9 @@ namespace WasteDrudgers.Entities
     {
         public static void RegenSystem(IContext ctx, World world)
         {
-            foreach (var e in world.ecs.View<Health, Stats>())
+            foreach (var e in world.ecs.View<Pools, Stats>())
             {
-                ref var health = ref world.ecs.GetRef<Health>(e);
+                ref var health = ref world.ecs.GetRef<Pools>(e);
                 ref var stats = ref world.ecs.GetRef<Stats>(e);
 
                 if (health.fatigued) continue;

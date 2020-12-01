@@ -54,7 +54,7 @@ namespace WasteDrudgers.Render
             var playerData = world.PlayerData;
 
             var stats = world.ecs.GetRef<Stats>(playerData.entity);
-            var health = world.ecs.GetRef<Health>(playerData.entity);
+            var health = world.ecs.GetRef<Pools>(playerData.entity);
             var skills = world.ecs.GetRef<Skills>(playerData.entity);
 
             DrawInfo(ctx, world, rect.x + 2, rect.y + 1);
@@ -184,7 +184,7 @@ namespace WasteDrudgers.Render
             c.Print(x, y + 2, calendar.GetTimeString(), ctx.Theme.text);
         }
 
-        private static void DrawCharacter(int x, int y, int o, IBlittable layer, Theme theme, Health health)
+        private static void DrawCharacter(int x, int y, int o, IBlittable layer, Theme theme, Pools health)
         {
             layer.Print(x, y, "Age", theme.caption);
             layer.Print(x, y + 1, "Size", theme.caption);

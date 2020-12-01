@@ -74,7 +74,7 @@ namespace WasteDrudgers.Tests
             var clock = world.ecs.GetRef<HungerClock>(player);
             Assert.Equal(HungerState.Hungry, clock.State);
 
-            var health = world.ecs.GetRef<Health>(player);
+            var health = world.ecs.GetRef<Pools>(player);
             Assert.True(health.fatigued);
 
             var stats = world.ecs.GetRef<Stats>(player);

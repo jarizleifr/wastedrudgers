@@ -135,7 +135,7 @@ namespace WasteDrudgers
     [NeverSerializeEntity]
     public struct Death { }
 
-    public struct Health
+    public struct Pools
     {
         public Stat vigor;
         public Stat health;

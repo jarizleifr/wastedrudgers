@@ -39,7 +39,7 @@ namespace WasteDrudgers
             ecs.Declare<Stats>();
             ecs.Declare<Skills>();
             ecs.Declare<Combat>();
-            ecs.Declare<Health>();
+            ecs.Declare<Pools>();
             ecs.Declare<Experience>();
 
             ecs.Declare<HungerClock>();

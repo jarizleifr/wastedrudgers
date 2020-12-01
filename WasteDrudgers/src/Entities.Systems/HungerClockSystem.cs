@@ -17,10 +17,10 @@ namespace WasteDrudgers.Entities
                 }
             }
 
-            foreach (var e in world.ecs.View<HungerClock, Health>())
+            foreach (var e in world.ecs.View<HungerClock, Pools>())
             {
                 ref var clock = ref world.ecs.GetRef<HungerClock>(e);
-                ref var health = ref world.ecs.GetRef<Health>(e);
+                ref var health = ref world.ecs.GetRef<Pools>(e);
 
                 var state = clock.State;
                 if (clock.nutrition == 0)

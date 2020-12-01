@@ -57,7 +57,7 @@ namespace WasteDrudgers.Entities
         {
             var playerData = world.PlayerData;
             ref var stats = ref world.ecs.GetRef<Stats>(target);
-            ref var health = ref world.ecs.GetRef<Health>(target);
+            ref var health = ref world.ecs.GetRef<Pools>(target);
             var message = rawSpell.Message ?? "";
             var spellStrength = RNG.Extent(rawSpell.Magnitude);
             switch (rawSpell.Effect)

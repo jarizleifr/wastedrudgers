@@ -50,7 +50,7 @@ namespace WasteDrudgers.UI
             {
                 case CharacterMode.Stats:
                     ref var stats = ref world.ecs.GetRef<Stats>(playerData.entity);
-                    ref var health = ref world.ecs.GetRef<Health>(playerData.entity);
+                    ref var health = ref world.ecs.GetRef<Pools>(playerData.entity);
 
                     if (Current.Selected < 6)
                     {

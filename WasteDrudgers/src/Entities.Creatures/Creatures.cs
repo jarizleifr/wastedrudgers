@@ -44,7 +44,7 @@ namespace WasteDrudgers.Entities
                 energy = 0,
                 speed = 50 + RNG.IntInclusive(0, 50),
             });
-            world.ecs.Assign(entity, new Health
+            world.ecs.Assign(entity, new Pools
             {
                 vigor = Formulae.BaseVigor(stats),
                 health = Formulae.BaseHealth(stats)
@@ -87,7 +87,7 @@ namespace WasteDrudgers.Entities
 
             var exp = world.ecs.GetRef<Experience>(entity);
 
-            ref var health = ref world.ecs.GetRef<Health>(entity);
+            ref var health = ref world.ecs.GetRef<Pools>(entity);
             ref var actor = ref world.ecs.GetRef<Actor>(entity);
 
             health.vigor.Base = Formulae.BaseVigor(stats) + (exp.level - 1) * Formulae.VigorPerLevel(stats);

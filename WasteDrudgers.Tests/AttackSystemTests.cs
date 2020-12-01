@@ -20,7 +20,7 @@ namespace WasteDrudgers.Tests
             var e1 = Creatures.Create(world, "mutorc", new Vec2(0, 2));
             var e2 = Creatures.Create(world, "mutorc", new Vec2(0, 3));
 
-            var startVigor = world.ecs.GetRef<Health>(e2).vigor.Current;
+            var startVigor = world.ecs.GetRef<Pools>(e2).vigor.Current;
 
             world.ecs.AssignOrReplace(e1, new Combat
             {
@@ -41,7 +41,7 @@ namespace WasteDrudgers.Tests
             var e1 = Creatures.Create(world, "mutorc", new Vec2(0, 2));
             var e2 = Creatures.Create(world, "mutorc", new Vec2(0, 3));
 
-            var startVigor = world.ecs.GetRef<Health>(e2).vigor.Current;
+            var startVigor = world.ecs.GetRef<Pools>(e2).vigor.Current;
 
             world.ecs.AssignOrReplace(e1, new Combat
             {

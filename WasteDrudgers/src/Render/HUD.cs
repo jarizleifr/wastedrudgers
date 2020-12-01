@@ -108,7 +108,7 @@ namespace WasteDrudgers.Render
                 c.Print(x, y, Locale.hungry, Data.Colors.skinLight);
                 x += Locale.hungry.Length;
             }
-            var health = world.ecs.GetRef<Health>(player);
+            var health = world.ecs.GetRef<Pools>(player);
             if (health.fatigued)
             {
                 c.Print(x, y, Locale.fatigued, Data.Colors.fuchsiaLight);
@@ -200,7 +200,7 @@ namespace WasteDrudgers.Render
             c.Rect(rect.x, rect.y + 3, rect.width, rect.height - 3, ' ');
             c.Print(o, rect.y + 3, playerData.name, ctx.Theme.caption);
 
-            var health = world.ecs.GetRef<Health>(player);
+            var health = world.ecs.GetRef<Pools>(player);
             DrawPlayerPool(ctx, c, o, rect.y + 4, "VIG", health.vigor, Data.Colors.white, Data.Colors.blue, true);
             DrawPlayerPool(ctx, c, o, rect.y + 5, "HLT", health.health, Data.Colors.white, Data.Colors.redLight, true);
 
@@ -224,7 +224,7 @@ namespace WasteDrudgers.Render
                 }
 
                 var renderable = world.ecs.GetRef<Renderable>(target);
-                var health = world.ecs.GetRef<Health>(target);
+                var health = world.ecs.GetRef<Pools>(target);
 
                 var attacker = world.ecs.GetRef<Combat>(playerData.entity);
                 var defender = world.ecs.GetRef<Combat>(target);

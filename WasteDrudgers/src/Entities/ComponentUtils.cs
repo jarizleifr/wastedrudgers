@@ -9,7 +9,7 @@ namespace WasteDrudgers.Entities
         {
             var pointsLeft = 0;
             ref var stats = ref world.ecs.GetRef<Stats>(entity);
-            ref var pools = ref world.ecs.GetRef<Health>(entity);
+            ref var pools = ref world.ecs.GetRef<Pools>(entity);
             ref var skills = ref world.ecs.GetRef<Skills>(entity);
 
             foreach (var profession in raw.Professions)
@@ -104,7 +104,7 @@ namespace WasteDrudgers.Entities
             }
         }
 
-        private static void ApplyFocus(ProfessionFocus focus, ref Stats stats, ref Health pools, ref Skills skills)
+        private static void ApplyFocus(ProfessionFocus focus, ref Stats stats, ref Pools pools, ref Skills skills)
         {
             if (focus.IsStat())
             {
