@@ -29,7 +29,7 @@ namespace WasteDrudgers.Entities
                         if (world.spatial.TryGetCreature(tryPos, out var creature))
                         {
                             world.ecs.Assign(e, new IntentionAttack { attacker = e, target = creature });
-                            return;
+                            continue;
                         }
                     }
                 }
