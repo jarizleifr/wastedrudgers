@@ -13,7 +13,7 @@ death_instant	Visible	{0} died instantly!
 death_affliction	Visible	{0} painfully succumbs to an affliction.
 get_item	Visible	{0} picked up {1}.
 status_poison_damage	Visible	Poison injures {0} for {1} damage!
-status_affliction_healed	Global	You feel much better.
+status_affliction_healed	Player	You feel much better.
 use_item_strength_potion	Global	You feel stronger!
 use_item_endurance_potion	Global	You feel tougher!
 use_item_finesse_potion	Global	You feel more graceful!
@@ -23,6 +23,6 @@ use_item_awareness_potion	Global	You feel more perceptive!
 use_item_identify_scroll	Global	Suddenly you understand the function of your items!
 use_item_health_potion	Global	You feel somewhat healed.
 use_item_vigor_potion	Global	You feel rejuvenated!
-use_item_poison_potion	Global	Urgh! Poison!
+use_item_poison_potion	Player	Urgh! Poison!
 nothing_happens	Global	Nothing happened.
 stepped_on_thorns	Visible	Spiky thorns tear {0} for {1} damage!

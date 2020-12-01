@@ -23,15 +23,14 @@ namespace WasteDrudgers.State
             CreatePortals(world, map, level.Portals);
             TryLevelTransition(world);
 
-            if (level.Spawns != null)
+            if (level.Items != null || level.Monsters != null)
             {
                 var spawner = new EntitySpawner(ctx, world, level);
                 if (initial)
                 {
-                    spawner.InitialSpawning(world);
+                    spawner.InitialSpawning(world, level.Items);
                 }
-                // TODO: Implement EntitySpawner as Resource
-                //world.ecs.SetResource(spawner);
+                world.ecs.SetResource(spawner);
             }
             CreateDecorations(world, map);
 

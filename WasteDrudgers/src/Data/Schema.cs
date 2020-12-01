@@ -59,7 +59,8 @@ namespace WasteDrudgers
     {
         public ILevelGenerationStrategy Strategy { get; set; }
         public int DangerLevel { get; set; }
-        public Extent? Spawns { get; set; }
+        public Extent? Items { get; set; }
+        public Extent? Monsters { get; set; }
         public List<string> LevelTags { get; set; }
         public List<DBPortal> Portals { get; set; }
     }

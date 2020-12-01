@@ -1,19 +1,16 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Blaggard.Common;
-using Newtonsoft.Json;
+using WasteDrudgers.Common;
 
 namespace WasteDrudgers.Level.Generation
 {
     public class DungeonStrategy : ILevelGenerationStrategy
     {
         public int RoomChance { get; set; }
-        public int MinRoomSize { get; set; }
-        public int MaxRoomSize { get; set; }
-        public int MinCorridorLength { get; set; }
-        public int MaxCorridorLength { get; set; }
+        public Extent RoomSize { get; set; }
+        public Extent CorridorLength { get; set; }
         public int MaxFeatures { get; set; }
         public int MaxIterations { get; set; }
 
@@ -67,8 +64,8 @@ namespace WasteDrudgers.Level.Generation
 
             RNG.Seed(map.seed);
 
-            int initialRoomWidth = RNG.IntInclusive(MinRoomSize, MaxRoomSize);
-            int initialRoomHeight = RNG.IntInclusive(MinRoomSize, MaxRoomSize);
+            int initialRoomWidth = RNG.Extent(RoomSize);
+            int initialRoomHeight = RNG.Extent(RoomSize);
             var initialRoomRect = new Rect(map.width / 2 - initialRoomWidth / 2, map.height / 2 - initialRoomHeight / 2, initialRoomWidth, initialRoomHeight);
 
             MapUtils.Fill(map, wall);
@@ -96,7 +93,7 @@ namespace WasteDrudgers.Level.Generation
         {
             var dir = room.GetOpenDirection();
             var pos = room.PickRandomWall(dir);
-            var newRoomSize = MapUtils.RoomDimensions(MinRoomSize, MaxRoomSize);
+            var newRoomSize = MapUtils.RoomDimensions(RoomSize.min, RoomSize.max);
 
             Rect newRoomRect = dir switch
             {

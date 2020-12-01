@@ -10,7 +10,7 @@ namespace WasteDrudgers.Level
     public class EntitySpawner
     {
         private int dangerLevel;
-        private Extent spawns;
+        public Extent MonsterSpawns { get; private set; }
         private List<DBCreature> creatures;
         private List<DBItem> items;
 
@@ -20,22 +20,22 @@ namespace WasteDrudgers.Level
             items = Data.GetLevelLoot(level);
 
             dangerLevel = level.DangerLevel;
-            spawns = level.Spawns ?? new Extent(0, 0);
+            MonsterSpawns = level.Monsters ?? new Extent(0, 0);
         }
 
-        public void InitialSpawning(World world)
+        public void InitialSpawning(World world, Extent? itemSpawns)
         {
             if (creatures != null)
             {
-                for (int i = 0; i < RNG.Extent(spawns); i++)
+                for (int i = 0; i < RNG.Extent(MonsterSpawns); i++)
                 {
                     Spawn(world, LevelUtils.GetRandomPassablePositionWithoutCreature(world));
                 }
             }
 
-            if (items != null)
+            if (itemSpawns.HasValue && items != null)
             {
-                for (int i = 0; i < RNG.Extent(spawns); i++)
+                for (int i = 0; i < RNG.Extent(itemSpawns.Value); i++)
                 {
                     SpawnItem(world, LevelUtils.GetRandomPassablePosition(world));
                 }

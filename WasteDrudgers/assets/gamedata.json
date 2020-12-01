@@ -1504,7 +1504,8 @@
       "Id": "world",
       "DL": -1,
       "LevelTags": [],
-      "Spawns": null,
+      "Items": null,
+      "Monsters": null,
       "Strategy": {
         "$type": "WasteDrudgers.Level.Generation.LoadStrategy, WasteDrudgers",
         "filename": "world"
@@ -1537,7 +1538,8 @@
         "common",
         "cave"
       ],
-      "Spawns": "20-50",
+      "Items": "10-20",
+      "Monsters": "20-50",
       "Strategy": {
         "$type": "WasteDrudgers.Level.Generation.CaveStrategy, WasteDrudgers",
         "width": "96",
@@ -1567,7 +1569,8 @@
         "common",
         "cave"
       ],
-      "Spawns": "20-50",
+      "Items": "10-20",
+      "Monsters": "20-50",
       "Strategy": {
         "$type": "WasteDrudgers.Level.Generation.CaveStrategy, WasteDrudgers",
         "width": "96",
@@ -1590,14 +1593,13 @@
       "LevelTags": [
         "common"
       ],
-      "Spawns": null,
+      "Items": "10-20",
+      "Monsters": "20-50",
       "Strategy": {
         "$type": "WasteDrudgers.Level.Generation.DungeonStrategy, WasteDrudgers",
         "roomchance": "50",
-        "minroomsize": "3",
-        "maxroomsize": "8",
-        "mincorridorlength": "4",
-        " maxcorridorlength": "10",
+        "roomsize": "3-8",
+        "corridorlength": "4-10",
         "maxfeatures": "10",
         "maxiterations": "1000",
         "width": "96",
@@ -1620,7 +1622,8 @@
       "LevelTags": [
         "common"
       ],
-      "Spawns": null,
+      "Items": "10-20",
+      "Monsters": "20-50",
       "Strategy": {
         "$type": "WasteDrudgers.Level.Generation.MazeStrategy, WasteDrudgers",
         "width": "96",
@@ -1641,7 +1644,8 @@
       "Id": "test_arena",
       "DL": 0,
       "LevelTags": [],
-      "Spawns": null,
+      "Items": null,
+      "Monsters": null,
       "Strategy": {
         "$type": "WasteDrudgers.Level.Generation.LoadStrategy, WasteDrudgers",
         "filename": "testarena"
@@ -1787,7 +1791,7 @@
     },
     "status_affliction_healed": {
       "Id": "status_affliction_healed",
-      "LoggingLevel": "Global",
+      "LoggingLevel": "Player",
       "Message": "You feel much better."
     },
     "use_item_strength_potion": {
@@ -1837,7 +1841,7 @@
     },
     "use_item_poison_potion": {
       "Id": "use_item_poison_potion",
-      "LoggingLevel": "Global",
+      "LoggingLevel": "Player",
       "Message": "Urgh! Poison!"
     },
     "nothing_happens": {

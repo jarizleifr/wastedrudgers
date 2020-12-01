@@ -6,40 +6,36 @@ namespace WasteDrudgers.Entities
         {
             var playerData = world.PlayerData;
 
-            // TODO: Is this check actually needed? I don't think we ever end up here with a Turn component anyway?
-            if (!world.ecs.Has<Turn>(playerData.entity))
+            bool playerReady = false;
+            if (world.queue.Empty)
             {
-                bool playerReady = false;
-                if (world.queue.Empty)
+                foreach (var e in world.ecs.View<Actor>())
                 {
-                    foreach (var e in world.ecs.View<Actor>())
-                    {
-                        ref var actor = ref world.ecs.GetRef<Actor>(e);
-                        actor.energy += actor.speed;
+                    ref var actor = ref world.ecs.GetRef<Actor>(e);
+                    actor.energy += actor.speed;
 
-                        if (actor.energy >= 1000)
+                    if (actor.energy >= 1000)
+                    {
+                        if (e == playerData.entity)
                         {
-                            if (e == playerData.entity)
-                            {
-                                world.ecs.Assign(e, new Turn { });
-                                playerReady = true;
-                            }
-                            else
-                            {
-                                world.queue.Add(e);
-                            }
+                            world.ecs.Assign(e, new Turn { });
+                            playerReady = true;
+                        }
+                        else
+                        {
+                            world.queue.Add(e);
                         }
                     }
                 }
+            }
 
-                if (!playerReady)
+            if (!playerReady)
+            {
+                foreach (var e in world.queue.Entities)
                 {
-                    foreach (var e in world.queue.Entities)
-                    {
-                        world.ecs.Assign(e, new Turn { });
-                    }
-                    world.queue.Clear();
+                    world.ecs.Assign(e, new Turn { });
                 }
+                world.queue.Clear();
             }
         }
     }

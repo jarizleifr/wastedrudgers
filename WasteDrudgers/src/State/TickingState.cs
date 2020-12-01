@@ -17,6 +17,8 @@ namespace WasteDrudgers.State
                 // Denote that 100 energy worth of time has gone by
                 world.IncrementGameTicks();
 
+                // Tick based systems
+                Systems.SpawnSystem(ctx, world);
                 Systems.RegenSystem(ctx, world);
 
                 // Handle actions
@@ -40,6 +42,7 @@ namespace WasteDrudgers.State
 
                 // Handle late results
                 Systems.DamageSystem(ctx, world);
+                world.ecs.Clear<Damage>(); // These shouldn't linger after processing
 
                 // Clear all events
                 world.ecs.Clear<EventMoved>();
@@ -59,7 +62,6 @@ namespace WasteDrudgers.State
                 Systems.DeathSystem(ctx, world);
                 world.ecs.Clear<Death>();
 
-                // Process new entities
                 Systems.InitiativeSystem(ctx, world);
                 Systems.AISystem(ctx, world);
 
