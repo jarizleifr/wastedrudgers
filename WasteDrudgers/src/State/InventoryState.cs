@@ -103,7 +103,7 @@ namespace WasteDrudgers.State
 
         public void ItemAction(IContext ctx, World world, PlayerData playerData, int selection)
         {
-            if (inventory.Count == 0) return;
+            if (inventory.Count == 0 || selection >= inventory.Count) return;
 
             var oldLength = inventory.Count;
             var wrapper = inventory[selection];
