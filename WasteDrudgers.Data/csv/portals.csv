@@ -5,5 +5,12 @@ world	labyrinth_01	downstairs
 starting_cave_01	world	upstairs	
 starting_cave_01	starting_cave_02	downstairs	
 starting_cave_02	starting_cave_01	upstairs	
-dungeon_01	world	upstairs	
 labyrinth_01	world	upstairs	
+dungeon_01	dungeon_02	downstairs	
+dungeon_02	dungeon_01	upstairs	
+dungeon_02	dungeon_03	downstairs	
+dungeon_03	dungeon_02	upstairs	
+dungeon_03	dungeon_04	downstairs	
+dungeon_04	dungeon_03	upstairs	
+dungeon_04	dungeon_05	downstairs	
+dungeon_05	dungeon_04	upstairs	

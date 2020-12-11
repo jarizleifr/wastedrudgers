@@ -1,5 +1,5 @@
 Id	Characters	Foreground	Background	Flags	Description
-cave_floor	··.,'`	brown	brown_dark	None	dirty floor
+cave_floor	··.,'`	brown	brown_dark	None	dusty and cracked cavern floor
 cave_wall	#░▒▓	blue_dark	shadow	BlocksVision,BlocksMovement	dirty wall
 road	0	skin	brown_dark	None	a weathered road
 grass	"""""'ⁿτ"	green_light	green	None	soothing grasslands
@@ -16,3 +16,8 @@ grassy_dirt	"""""ⁿτ"	green_light	brown_dark	None	patches of grass
 sandy_dirt	≈≈~	beige	brown_dark	None	
 dunes	≈≈~	beige_light	beige	None	scorching dunes
 ocean	≈≈=~	shadow_light	shadow	BlocksMovement	
+brick_wall	#	skin	skin_dark	BlocksVision,BlocksMovement	mortar and bricks
+murky_water	≈≈=~	violet_dark	shadow_light	None	few inches of murky water lay abound
+stone_floor	·	grey	grey_dark	None	cold, hand-smoothed grey stone
+mossy_wall	#░▒▓	green	green_dark	BlocksVision,BlocksMovement	mossy wall
+mossy_floor	“”·.,'`	green	brown_dark	None	ground, covered by lichen and moss

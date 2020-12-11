@@ -31,7 +31,7 @@ namespace WasteDrudgers.State
                 health = Formulae.BaseHealth(stats)
             });
 
-            var startingLevel = "starting_cave_01";
+            var startingLevel = "dungeon_01";
             world.PlayerData = new PlayerData { entity = player, name = name, coords = Vec2.Zero, currentLevel = startingLevel, lastTarget = null };
             world.ObfuscatedNames = new ObfuscatedNames();
             world.Calendar = new Calendar(135, 1, 1, 12, 0, 0);

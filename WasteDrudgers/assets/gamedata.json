@@ -46,7 +46,7 @@
       "Foreground": 5587013,
       "Background": 2760738,
       "Flags": "None",
-      "Description": "dirty floor"
+      "Description": "dusty and cracked cavern floor"
     },
     "cave_wall": {
       "Index": 1,
@@ -191,6 +191,51 @@
       "Background": 919830,
       "Flags": "BlocksMovement",
       "Description": null
+    },
+    "brick_wall": {
+      "Index": 17,
+      "Id": "brick_wall",
+      "Characters": "#",
+      "Foreground": 9463125,
+      "Background": 4731434,
+      "Flags": "BlocksVision,BlocksMovement",
+      "Description": "mortar and bricks"
+    },
+    "murky_water": {
+      "Index": 18,
+      "Id": "murky_water",
+      "Characters": "≈≈=~",
+      "Foreground": 5323625,
+      "Background": 1774123,
+      "Flags": "None",
+      "Description": "few inches of murky water lay abound"
+    },
+    "stone_floor": {
+      "Index": 19,
+      "Id": "stone_floor",
+      "Characters": "·",
+      "Foreground": 5065027,
+      "Background": 2038550,
+      "Flags": "None",
+      "Description": "cold, hand-smoothed grey stone"
+    },
+    "mossy_wall": {
+      "Index": 20,
+      "Id": "mossy_wall",
+      "Characters": "#░▒▓",
+      "Foreground": 4742199,
+      "Background": 2175774,
+      "Flags": "BlocksVision,BlocksMovement",
+      "Description": "mossy wall"
+    },
+    "mossy_floor": {
+      "Index": 21,
+      "Id": "mossy_floor",
+      "Characters": "“”·.,'`",
+      "Foreground": 4742199,
+      "Background": 2760738,
+      "Flags": "None",
+      "Description": "ground, covered by lichen and moss"
     }
   },
   "creatures": {
@@ -1587,35 +1632,6 @@
         }
       ]
     },
-    "dungeon_01": {
-      "Id": "dungeon_01",
-      "DL": 0,
-      "LevelTags": [
-        "common"
-      ],
-      "Items": "10-20",
-      "Monsters": "20-50",
-      "Strategy": {
-        "$type": "WasteDrudgers.Level.Generation.DungeonStrategy, WasteDrudgers",
-        "roomchance": "50",
-        "roomsize": "3-8",
-        "corridorlength": "4-10",
-        "maxfeatures": "10",
-        "maxiterations": "1000",
-        "width": "96",
-        "height": "96",
-        "floor": "cave_floor",
-        "wall": "cave_wall"
-      },
-      "Portals": [
-        {
-          "Origin": "dungeon_01",
-          "Target": "world",
-          "Feature": "upstairs",
-          "Coords": null
-        }
-      ]
-    },
     "labyrinth_01": {
       "Id": "labyrinth_01",
       "DL": 0,
@@ -1650,6 +1666,169 @@
         "$type": "WasteDrudgers.Level.Generation.LoadStrategy, WasteDrudgers",
         "filename": "testarena"
       }
+    },
+    "dungeon_01": {
+      "Id": "dungeon_01",
+      "DL": 0,
+      "LevelTags": [
+        "common",
+        "cave"
+      ],
+      "Items": "10-20",
+      "Monsters": "20-50",
+      "Strategy": {
+        "$type": "WasteDrudgers.Level.Generation.DungeonStrategy, WasteDrudgers",
+        "roomsize": "3-7",
+        "corridorlength": "5-12",
+        "maxrooms": "20",
+        "maxcorridors": "50",
+        "width": "70",
+        "height": "45",
+        "floor": "cave_floor",
+        "wall": "cave_wall"
+      },
+      "Portals": [
+        {
+          "Origin": "dungeon_01",
+          "Target": "dungeon_02",
+          "Feature": "downstairs",
+          "Coords": null
+        }
+      ]
+    },
+    "dungeon_02": {
+      "Id": "dungeon_02",
+      "DL": 2,
+      "LevelTags": [
+        "common",
+        "cave"
+      ],
+      "Items": "10-20",
+      "Monsters": "20-50",
+      "Strategy": {
+        "$type": "WasteDrudgers.Level.Generation.DungeonStrategy, WasteDrudgers",
+        "roomsize": "3-7",
+        "corridorlength": "5-12",
+        "maxrooms": "20",
+        "maxcorridors": "50",
+        "width": "70",
+        "height": "45",
+        "floor": "cave_floor",
+        "wall": "cave_wall"
+      },
+      "Portals": [
+        {
+          "Origin": "dungeon_02",
+          "Target": "dungeon_01",
+          "Feature": "upstairs",
+          "Coords": null
+        },
+        {
+          "Origin": "dungeon_02",
+          "Target": "dungeon_03",
+          "Feature": "downstairs",
+          "Coords": null
+        }
+      ]
+    },
+    "dungeon_03": {
+      "Id": "dungeon_03",
+      "DL": 4,
+      "LevelTags": [
+        "common",
+        "cave"
+      ],
+      "Items": "10-20",
+      "Monsters": "20-50",
+      "Strategy": {
+        "$type": "WasteDrudgers.Level.Generation.DungeonStrategy, WasteDrudgers",
+        "roomsize": "3-7",
+        "corridorlength": "5-12",
+        "maxrooms": "20",
+        "maxcorridors": "50",
+        "width": "70",
+        "height": "45",
+        "floor": "cave_floor",
+        "wall": "cave_wall"
+      },
+      "Portals": [
+        {
+          "Origin": "dungeon_03",
+          "Target": "dungeon_02",
+          "Feature": "upstairs",
+          "Coords": null
+        },
+        {
+          "Origin": "dungeon_03",
+          "Target": "dungeon_04",
+          "Feature": "downstairs",
+          "Coords": null
+        }
+      ]
+    },
+    "dungeon_04": {
+      "Id": "dungeon_04",
+      "DL": 6,
+      "LevelTags": [
+        "common",
+        "cave"
+      ],
+      "Items": "10-20",
+      "Monsters": "20-50",
+      "Strategy": {
+        "$type": "WasteDrudgers.Level.Generation.DungeonStrategy, WasteDrudgers",
+        "roomsize": "3-7",
+        "corridorlength": "5-12",
+        "maxrooms": "20",
+        "maxcorridors": "50",
+        "width": "70",
+        "height": "45",
+        "floor": "cave_floor",
+        "wall": "cave_wall"
+      },
+      "Portals": [
+        {
+          "Origin": "dungeon_04",
+          "Target": "dungeon_03",
+          "Feature": "upstairs",
+          "Coords": null
+        },
+        {
+          "Origin": "dungeon_04",
+          "Target": "dungeon_05",
+          "Feature": "downstairs",
+          "Coords": null
+        }
+      ]
+    },
+    "dungeon_05": {
+      "Id": "dungeon_05",
+      "DL": 8,
+      "LevelTags": [
+        "common",
+        "cave"
+      ],
+      "Items": "10-20",
+      "Monsters": "20-50",
+      "Strategy": {
+        "$type": "WasteDrudgers.Level.Generation.DungeonStrategy, WasteDrudgers",
+        "roomsize": "3-7",
+        "corridorlength": "5-12",
+        "maxrooms": "20",
+        "maxcorridors": "50",
+        "width": "70",
+        "height": "45",
+        "floor": "cave_floor",
+        "wall": "cave_wall"
+      },
+      "Portals": [
+        {
+          "Origin": "dungeon_05",
+          "Target": "dungeon_04",
+          "Feature": "upstairs",
+          "Coords": null
+        }
+      ]
     }
   },
   "obfuscated": {

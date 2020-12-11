@@ -33,6 +33,8 @@ namespace WasteDrudgers
         public static int Int(int max) => random.Next(max);
         public static int Int(int min, int max) => random.Next(min, max);
 
+        public static int Odd(int times) => 1 + IntInclusive(0, times) * 2;
+
         public static int Extent(Extent extent) => IntInclusive(extent.min, extent.max);
 
         public static int IntInclusive(int min, int max) => random.Next(min, max + 1);
