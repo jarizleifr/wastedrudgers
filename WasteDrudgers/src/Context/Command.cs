@@ -13,6 +13,15 @@ namespace WasteDrudgers
         MoveNorth,
         MoveNorthEast,
 
+        MoveSouthWestRepeat,
+        MoveSouthRepeat,
+        MoveSouthEastRepeat,
+        MoveWestRepeat,
+        MoveEastRepeat,
+        MoveNorthWestRepeat,
+        MoveNorthRepeat,
+        MoveNorthEastRepeat,
+
         GetItem,
         Look,
 
@@ -20,6 +29,7 @@ namespace WasteDrudgers
         CharacterSheet,
 
         Wait,
+        WaitExtended,
         Operate,
         CastMagic,
 

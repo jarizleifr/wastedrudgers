@@ -11,6 +11,17 @@
     { "cmd": "MoveNorth",     "key": "SDLK_KP_8"   },
     { "cmd": "MoveNorthEast", "key": "SDLK_KP_9"   },
 
+    { "cmd": "MoveSouthWestRepeat", "key": "SDLK_KP_1", "ctrl": true },
+    { "cmd": "MoveSouthRepeat",     "key": "SDLK_KP_2", "ctrl": true },
+    { "cmd": "MoveSouthEastRepeat", "key": "SDLK_KP_3", "ctrl": true },
+    { "cmd": "MoveWestRepeat",      "key": "SDLK_KP_4", "ctrl": true },
+    { "cmd": "MoveEastRepeat",      "key": "SDLK_KP_6", "ctrl": true },
+    { "cmd": "MoveNorthWestRepeat", "key": "SDLK_KP_7", "ctrl": true },
+    { "cmd": "MoveNorthRepeat",     "key": "SDLK_KP_8", "ctrl": true },
+    { "cmd": "MoveNorthEastRepeat", "key": "SDLK_KP_9", "ctrl": true },
+
+    { "cmd": "WaitExtended",  "key": "SDLK_KP_5", "ctrl": true },
+
     { "cmd": "GetItem",       "key": "SDLK_G"   },
     { "cmd": "Look",          "key": "SDLK_Z"   },
 

@@ -65,6 +65,9 @@ namespace WasteDrudgers.State
                 Systems.InitiativeSystem(ctx, world);
                 Systems.AISystem(ctx, world);
 
+                // Check for repeat interrupts
+                Systems.RepeatActionSystem(ctx, world);
+
                 if (world.ecs.Has<Turn>(playerData.entity))
                 {
                     Systems.FOVSystem(ctx, world);

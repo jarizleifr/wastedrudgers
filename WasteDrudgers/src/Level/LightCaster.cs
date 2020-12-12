@@ -24,17 +24,17 @@ namespace WasteDrudgers.Level
             new Octant( 0, 1,-1, 0), new Octant( 1, 0, 0,-1),
         };
 
-        public static void CalculateFOV(Map map, List<IMapCell> cells, Vec2 origin, int radius, Func<IMapCell, bool> isBlocking)
+        public static void CalculateFOV(Map map, List<Vec2> cells, Vec2 origin, int radius, Func<IMapCell, bool> isBlocking)
         {
             cells.Clear();
-            cells.Add(map[origin]);
+            cells.Add(origin);
             foreach (var octant in octants)
             {
                 CastLight(map, cells, origin, radius, 1, 1.0f, 0.0f, octant, isBlocking);
             }
         }
 
-        private static void CastLight(Map map, List<IMapCell> cells, Vec2 origin, int radius, int startRow, float startSlope, float endSlope, Octant octant, Func<IMapCell, bool> isBlocking)
+        private static void CastLight(Map map, List<Vec2> cells, Vec2 origin, int radius, int startRow, float startSlope, float endSlope, Octant octant, Func<IMapCell, bool> isBlocking)
         {
             if (startSlope < endSlope) return;
 
@@ -59,14 +59,13 @@ namespace WasteDrudgers.Level
 
                     int x = origin.x + deltaX * octant.xx + deltaY * octant.xy;
                     int y = origin.y + deltaX * octant.yx + deltaY * octant.yy;
-                    var pos = map[x + y * map.Width];
-
+                    var pos = new Vec2(x, y);
                     if (deltaX * deltaX + deltaY * deltaY <= radius * radius)
                     {
                         cells.Add(pos);
                     }
 
-                    bool currentBlocked = isBlocking(pos);
+                    bool currentBlocked = isBlocking(map[pos]);
                     if (previousBlocked)
                     {
                         if (currentBlocked)

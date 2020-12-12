@@ -54,6 +54,17 @@ namespace WasteDrudgers.Level
             }
         }
 
+        public bool HasCreatures(List<Vec2> positions, Vec2 playerPosition)
+        {
+            foreach (var pos in positions)
+            {
+                if (pos == playerPosition) continue;
+
+                if (creatures.ContainsKey(pos)) return true;
+            }
+            return false;
+        }
+
         public bool TryGetCreature(Vec2 key, out Entity entity) => creatures.TryGetValue(key, out entity);
 
         public void SetCreature(Vec2 key, Entity entity)

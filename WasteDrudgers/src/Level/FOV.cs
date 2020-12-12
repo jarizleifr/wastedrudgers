@@ -6,7 +6,7 @@ namespace WasteDrudgers.Level
 {
     public class FOV
     {
-        private List<IMapCell> cells = new List<IMapCell>(128);
+        private List<Vec2> cells = new List<Vec2>(128);
         private Func<IMapCell, bool> callback = (cell) =>
             cell.Flags(TileFlags.BlocksVision);
 
@@ -14,15 +14,20 @@ namespace WasteDrudgers.Level
         {
             foreach (var pos in cells)
             {
-                pos.Visibility = Visibility.Explored;
+                var cell = map[pos];
+                cell.Visibility = Visibility.Explored;
             }
 
             LightCaster.CalculateFOV(map, cells, origin, fovRange, callback);
 
             foreach (var pos in cells)
             {
-                pos.Visibility = Visibility.Visible;
+                var cell = map[pos];
+                cell.Visibility = Visibility.Visible;
             }
         }
+
+        public bool CreaturesInSight(World world) =>
+            world.spatial.HasCreatures(cells, world.PlayerData.coords);
     }
 }

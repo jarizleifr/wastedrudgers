@@ -33,7 +33,12 @@ namespace WasteDrudgers
                     break;
                 }
 
-                engine.ctx.HandleInput(state.InputDomains);
+                // TODO: Queue probably should be a part of the Context, 
+                // as it's really not part of the game content, but inputs 
+                if (engine.world.repeatActionQueue.Count == 0)
+                {
+                    engine.ctx.HandleInput(state.InputDomains);
+                }
                 engine.world.Tick(engine.ctx);
                 engine.ctx.Render();
 

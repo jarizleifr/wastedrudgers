@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Blaggard.Common;
 using WasteDrudgers.Entities;
 using WasteDrudgers.Level;
@@ -14,6 +15,8 @@ namespace WasteDrudgers
         public readonly FOV fov;
         public readonly EntityTable spatial;
         public readonly TurnQueue queue;
+
+        public readonly Queue<Command> repeatActionQueue;
 
         public int GameTicks { get; private set; }
         public bool ShouldRedraw { get; set; }
@@ -57,6 +60,8 @@ namespace WasteDrudgers
             fov = new FOV();
             spatial = new EntityTable();
             queue = new TurnQueue();
+
+            repeatActionQueue = new Queue<Command>();
         }
 
         public void SetState(IContext ctx, IRunState nextState)

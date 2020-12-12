@@ -51,6 +51,15 @@ namespace WasteDrudgers.Level
             return pos;
         }
 
+        public static bool IsPassable(World world, Vec2 position)
+        {
+            var map = world.Map;
+            if (map[position].Flags(TileFlags.BlocksMovement)) return false;
+
+            // TODO: Create HasCreature in spatial
+            return !world.spatial.TryGetCreature(position, out var e);
+        }
+
         private static Func<IMapCell, bool> callback =
             (c) => c.Flags(TileFlags.BlocksMovement);
 
