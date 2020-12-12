@@ -40,10 +40,10 @@ namespace WasteDrudgers.State
                 var pos = LevelUtils.GetRandomPassableEmptyPosition(world);
                 Features.CreateFeature(world, pos, "start_portal");
                 world.ecs.AssignOrReplace(playerData.entity, new Position { coords = pos });
+                world.spatial.SetCreature(pos, playerData.entity);
             }
 
             RNG.Seed();
-
             world.SetState(ctx, RunState.Ticking);
         }
 
