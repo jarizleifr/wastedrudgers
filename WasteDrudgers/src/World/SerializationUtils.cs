@@ -20,19 +20,28 @@ namespace WasteDrudgers
 
         public static string GetSaveFolderPath()
         {
-            string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            return Path.Combine(path, "My Games", "WasteDrudgers", "Save");
+            var localAppData = Environment.GetFolderPath
+            (
+                Environment.SpecialFolder.LocalApplicationData,
+                Environment.SpecialFolderOption.Create
+            );
+            var path = Path.Combine
+            (
+                localAppData,
+                "WasteDrudgers",
+                "Save"
+            );
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            return path;
         }
 
-        public static string GetSavePath(string playerName)
-        {
-            string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            return Path.Combine(path, "My Games", "WasteDrudgers", "Save", playerName + ".sav");
-        }
+        public static string GetSavePath(string playerName) =>
+            Path.Combine(GetSaveFolderPath(), playerName + ".sav");
 
-        public static void DeleteSave(string playerName)
-        {
+        public static void DeleteSave(string playerName) =>
             File.Delete(GetSavePath(playerName));
-        }
     }
 }
