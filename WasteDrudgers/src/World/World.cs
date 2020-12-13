@@ -100,6 +100,7 @@ namespace WasteDrudgers
         {
             playerData.Clear(ecs);
             map.Clear(ecs);
+            queue.Clear();
             calendar.Clear(ecs);
             obfuscatedNames.Clear(ecs);
             ecs.Clear();
