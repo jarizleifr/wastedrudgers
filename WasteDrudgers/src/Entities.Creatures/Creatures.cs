@@ -132,7 +132,7 @@ namespace WasteDrudgers.Entities
                 ref var equipped = ref world.ecs.GetRef<Equipped>(e);
                 ref var shield = ref world.ecs.GetRef<Shield>(e);
 
-                if (equipped.entity == e)
+                if (equipped.entity == entity)
                 {
                     combat.dodge += shield.baseBlock + skills.GetRank(SkillType.Shield);
                     isShieldEquipped = true;
@@ -145,7 +145,7 @@ namespace WasteDrudgers.Entities
                 ref var equipped = ref world.ecs.GetRef<Equipped>(e);
                 ref var defense = ref world.ecs.GetRef<Defense>(e);
 
-                if (equipped.entity == e)
+                if (equipped.entity == entity)
                 {
                     combat.dodge += defense.dodge;
                     combat.armor += defense.armor;
@@ -159,7 +159,7 @@ namespace WasteDrudgers.Entities
                 ref var item = ref world.ecs.GetRef<Item>(e);
                 ref var attack = ref world.ecs.GetRef<Weapon>(e);
 
-                if (equipped.entity == e && equipped.slot == Slot.MainHand)
+                if (equipped.entity == entity && equipped.slot == Slot.MainHand)
                 {
                     var skillType = item.type.GetWeaponSkill();
                     var skill = Formulae.BaseSkill(skillType, stats) + skills.GetRank(skillType) + attack.chance;
