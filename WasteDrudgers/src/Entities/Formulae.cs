@@ -33,29 +33,76 @@ namespace WasteDrudgers.Entities
         public static int Fortitude(Stats stats) => (stats.endurance * 5 + stats.strength * 5) / 2;
 
         // Skill base
-        public static int BaseSkill(SkillType type, Stats stats) => type switch
+        public static int BaseSkill(SkillType type, Stats stats)
         {
-            SkillType.MartialArts => Easy(stats.strength),
-            SkillType.ShortBlade => Easy(stats.finesse),
-            SkillType.LongBlade => Average(stats.strength),
-            SkillType.AxeMace => Easy(stats.strength),
-            SkillType.Polearm => Average(stats.strength),
-            SkillType.Fencing => Hard(stats.finesse),
-            SkillType.Whip => Hard(stats.finesse),
+            var stat = stats[GetGoverningStat(type)];
+            switch (type)
+            {
+                // Easy skills
+                case SkillType.MartialArts:
+                case SkillType.ShortBlade:
+                case SkillType.AxeMace:
+                    return BaseSkill(SkillDifficulty.Easy, stat);
 
-            SkillType.Shield => Average(stats.endurance),
-            SkillType.Observation => Average(stats.awareness),
+                // Average skills
+                case SkillType.LongBlade:
+                case SkillType.Polearm:
+                case SkillType.Shield:
+                case SkillType.Observation:
+                    return BaseSkill(SkillDifficulty.Hard, stat);
+
+                // Hard skills
+                case SkillType.Fencing:
+                case SkillType.Whip:
+                    return BaseSkill(SkillDifficulty.Hard, stat);
+            }
+            return 0;
+        }
+
+        private static int BaseSkill(SkillDifficulty diff, int stat) => diff switch
+        {
+            SkillDifficulty.Easy => stat * 3,
+            SkillDifficulty.Average => stat * 2,
+            SkillDifficulty.Hard => stat * 1,
             _ => 0
         };
-
-        private static int Easy(int governingStat) => governingStat * 3;
-        private static int Average(int governingStat) => governingStat * 2;
-        private static int Hard(int governingStat) => governingStat * 1;
 
         public static int ExperienceNeededForLevel(int level) => (level * (level - 1) / 2) * BASE_EXPERIENCE;
 
         public static int GetExperienceValue(int characterPoints) =>
             Math.Max(10, characterPoints / 100);
+
+        public static SkillDifficulty GetSkillDifficulty(SkillType type) => type switch
+        {
+            SkillType.MartialArts => SkillDifficulty.Easy,
+            SkillType.ShortBlade => SkillDifficulty.Easy,
+            SkillType.LongBlade => SkillDifficulty.Average,
+            SkillType.AxeMace => SkillDifficulty.Easy,
+            SkillType.Polearm => SkillDifficulty.Average,
+            SkillType.Fencing => SkillDifficulty.Hard,
+            SkillType.Whip => SkillDifficulty.Hard,
+
+            SkillType.Shield => SkillDifficulty.Average,
+            SkillType.Observation => SkillDifficulty.Average,
+
+            _ => SkillDifficulty.VeryHard
+        };
+
+        public static StatType GetGoverningStat(SkillType type) => type switch
+        {
+            SkillType.MartialArts => StatType.Strength,
+            SkillType.ShortBlade => StatType.Finesse,
+            SkillType.LongBlade => StatType.Strength,
+            SkillType.AxeMace => StatType.Strength,
+            SkillType.Polearm => StatType.Strength,
+            SkillType.Fencing => StatType.Finesse,
+            SkillType.Whip => StatType.Finesse,
+
+            SkillType.Shield => StatType.Endurance,
+            SkillType.Observation => StatType.Awareness,
+
+            _ => StatType.Finesse
+        };
 
         public static int GetStatCost(StatType type) => type switch
         {

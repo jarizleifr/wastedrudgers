@@ -4,30 +4,44 @@ namespace WasteDrudgers.Entities
 {
     public static class Spells
     {
+        // Get rid of spell specific stuff from effect application
+        // caster is only needed for spells
+        // for potions, talents, have separate function
+
+        // for potions thrown on others, wands etc. use cast spell, since they have "caster" or "source"
+
         public static void CastSpellOn(World world, Entity? caster, Entity target, string spellId)
         {
             var rawSpell = Data.GetSpell(spellId);
-            if (Spells.IsIncremental(rawSpell.Effect))
+            foreach (var effect in rawSpell.Effects)
             {
-                ApplyIncrementalEffect(world, caster, target, rawSpell);
+                if (effect.type.IsIncremental())
+                {
+                    ApplyIncrementalEffect(world, caster, target, effect);
+                }
+                else if (effect.type.IsFireAndForget())
+                {
+                    ApplySpellEffect(world, target, effect);
+                }
+                else
+                {
+                    ApplyDurationSpellEffect(world, caster, target, spellId, effect);
+                }
             }
-            else
-            {
-                ApplySpellEffect(world, target, rawSpell);
-            }
-        }
-
-        // Incremental effects like poison, disease, stun
-        public static void ApplyIncrementalEffect(World world, Entity? caster, Entity target, DBSpell rawSpell)
-        {
             var pos = world.ecs.GetRef<Position>(target);
             world.WriteToLog(rawSpell.Message, pos.coords);
 
-            var level = RNG.Extent(rawSpell.Magnitude);
-            if (TryGetActiveEffect(world, target, rawSpell.Effect, out Entity activeEffect))
+            world.ecs.Assign<EventStatsUpdated>(target);
+        }
+
+        // Incremental effects like poison, disease, stun
+        public static void ApplyIncrementalEffect(World world, Entity? caster, Entity target, DBEffect effect)
+        {
+            var level = RNG.Extent(effect.Magnitude);
+            if (TryGetActiveEffect(world, target, effect.type, out Entity e))
             {
-                ref var effect = ref world.ecs.GetRef<ActiveEffect>(activeEffect);
-                effect.magnitude += level;
+                ref var a = ref world.ecs.GetRef<ActiveEffect>(e);
+                a.effect.Power += level;
             }
             else
             {
@@ -35,128 +49,109 @@ namespace WasteDrudgers.Entities
                 world.ecs.Assign(effectEntity, new ActiveEffect
                 {
                     target = target,
-                    effect = rawSpell.Effect,
-                    duration = -1,
-                    magnitude = level
+                    effect = new Effect
+                    {
+                        Type = effect.type,
+                        Power = RNG.Extent(effect.Magnitude)
+                    },
                 });
 
                 if (caster.HasValue && world.ecs.Has<Player>(caster.Value))
                 {
-                    world.ecs.Assign(effectEntity, new PlayerInitiated { });
+                    world.ecs.Assign<PlayerInitiated>(effectEntity);
                 }
 
                 if (world.ecs.Has<Player>(target))
                 {
-                    world.ecs.Assign(effectEntity, new PlayerMarker { });
+                    world.ecs.Assign<PlayerMarker>(effectEntity);
                 }
             }
         }
 
         // Fire-and-forget spell effects
-        public static void ApplySpellEffect(World world, Entity target, DBSpell rawSpell)
+        public static void ApplySpellEffect(World world, Entity target, DBEffect effect)
         {
             var playerData = world.PlayerData;
             ref var stats = ref world.ecs.GetRef<Stats>(target);
             ref var health = ref world.ecs.GetRef<Pools>(target);
-            var message = rawSpell.Message ?? "";
-            var spellStrength = RNG.Extent(rawSpell.Magnitude);
-            switch (rawSpell.Effect)
+
+            var spellStrength = RNG.Extent(effect.Magnitude);
+            switch (effect.type)
             {
-                case SpellEffect.StrengthPermanent:
+                case EffectType.PermanentStrength:
                     stats.strength.Base += spellStrength;
                     break;
-                case SpellEffect.EndurancePermanent:
+                case EffectType.PermanentEndurance:
                     stats.endurance.Base += spellStrength;
                     break;
-                case SpellEffect.FinessePermanent:
+                case EffectType.PermanentFinesse:
                     stats.finesse.Base += spellStrength;
                     break;
-                case SpellEffect.IntellectPermanent:
+                case EffectType.PermanentIntellect:
                     stats.intellect.Base += spellStrength;
                     break;
-                case SpellEffect.ResolvePermanent:
+                case EffectType.PermanentResolve:
                     stats.resolve.Base += spellStrength;
                     break;
-                case SpellEffect.AwarenessPermanent:
+                case EffectType.PermanentAwareness:
                     stats.awareness.Base += spellStrength;
                     break;
-                case SpellEffect.Identify:
+                case EffectType.Identify:
                     Items.IdentifyInventory(world);
                     break;
-                case SpellEffect.HealthHeal:
-                    if (health.health.Damage > 0)
-                    {
-                        health.health.Damage -= spellStrength;
-                    }
-                    else
-                    {
-                        message = "nothing_happens";
-                    }
+                case EffectType.HealHealth:
+                    health.health.Damage -= spellStrength;
                     break;
-                case SpellEffect.VigorHeal:
-                    if (health.vigor.Damage > 0)
-                    {
-                        health.vigor.Damage -= spellStrength;
-                    }
-                    else
-                    {
-                        message = "nothing_happens";
-                    }
+                case EffectType.HealVigor:
+                    health.vigor.Damage -= spellStrength;
                     break;
-            }
-            if (message != "")
-            {
-                world.WriteToLog(message, playerData.coords);
             }
         }
 
-        public static bool TryGetActiveEffect(World world, Entity target, SpellEffect spellEffect, out Entity activeEffect)
+        private static void ApplyDurationSpellEffect(World world, Entity? caster, Entity target, string spellId, DBEffect effect)
         {
-            bool found = false;
-            Entity tempEntity = default(Entity);
+            var level = RNG.Extent(effect.Magnitude);
+            var spellEntity = world.ecs.Create();
+            world.ecs.Assign(spellEntity, new ActiveEffect
+            {
+                target = target,
+                effect = new Effect
+                {
+                    Type = effect.type,
+                    Power = RNG.Extent(effect.Magnitude)
+                },
+            });
+            world.ecs.Assign(spellEntity, new Duration
+            {
+                duration = effect.Duration,
+            });
+
+            if (caster.HasValue && world.ecs.Has<Player>(caster.Value))
+            {
+                world.ecs.Assign<PlayerInitiated>(spellEntity);
+            }
+
+            if (world.ecs.Has<Player>(target))
+            {
+                world.ecs.Assign<PlayerMarker>(spellEntity);
+            }
+        }
+
+        public static bool TryGetActiveEffect(World world, Entity target, EffectType spellEffect, out Entity activeEffect)
+        {
             foreach (var e in world.ecs.View<ActiveEffect>())
             {
                 ref var active = ref world.ecs.GetRef<ActiveEffect>(e);
-                if (found) break;
 
                 if (active.target == target)
                 {
-                    tempEntity = e;
-                    found = true;
-                    break;
+                    activeEffect = e;
+                    return true;
                 }
             }
 
-            activeEffect = tempEntity;
-            return found;
-        }
-
-        public static bool IsFireAndForget(SpellEffect spellEffect)
-        {
-            switch (spellEffect)
-            {
-                case SpellEffect.StrengthPermanent:
-                case SpellEffect.EndurancePermanent:
-                case SpellEffect.FinessePermanent:
-                case SpellEffect.IntellectPermanent:
-                case SpellEffect.ResolvePermanent:
-                case SpellEffect.AwarenessPermanent:
-                case SpellEffect.Identify:
-                case SpellEffect.HealthHeal:
-                case SpellEffect.VigorHeal:
-                    return true;
-                default: return false;
-            }
-        }
-
-        public static bool IsIncremental(SpellEffect spellEffect)
-        {
-            switch (spellEffect)
-            {
-                case SpellEffect.InflictPoison:
-                    return true;
-                default: return false;
-            }
+            activeEffect = default(Entity);
+            return false;
         }
     }
 }

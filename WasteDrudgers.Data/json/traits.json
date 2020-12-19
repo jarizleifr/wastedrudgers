@@ -1,0 +1,24 @@
+{
+  "dwarfism": {
+    "Name": "Dwarfism",
+    "Cost": 0,
+    "BlockedBy": [ "gigantism" ],
+    "Effects": [
+      {
+        "Type": "SizeMod",
+        "Magnitude": -1
+      }
+    ]
+  },
+  "gigantism": {
+    "Name": "Gigantism",
+    "Cost": 0,
+    "BlockedBy": [ "dwarfism" ],
+    "Effects": [
+      {
+        "Type": "SizeMod",
+        "Magnitude": 1
+      }
+    ]
+  }
+}

@@ -32,7 +32,7 @@ namespace WasteDrudgers.Tests
             var e = Creatures.Create(world, "mutorc", new Vec2(0, 2));
 
             world.ecs.AssignOrReplace(e, new Actor { energy = 1000 });
-            world.ecs.Assign(e, new Turn { });
+            world.ecs.Assign<Turn>(e);
             world.ecs.Assign(e, new IntentionMove { transform = new Vec2(1, 1) });
             Systems.MovementSystem(ctx, world);
 
@@ -46,7 +46,7 @@ namespace WasteDrudgers.Tests
             var e1 = Creatures.Create(world, "mutorc", new Vec2(0, 2));
             var e2 = Creatures.Create(world, "mutorc", new Vec2(1, 3));
 
-            world.ecs.Assign(e1, new Turn { });
+            world.ecs.Assign<Turn>(e1);
             world.ecs.Assign(e1, new IntentionMove { transform = new Vec2(1, 1) });
             Systems.MovementSystem(ctx, world);
 

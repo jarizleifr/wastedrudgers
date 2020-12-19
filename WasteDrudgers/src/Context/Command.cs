@@ -27,6 +27,8 @@ namespace WasteDrudgers
 
         Inventory,
         CharacterSheet,
+        Manual,
+        GameMenu,
 
         Wait,
         WaitExtended,
@@ -52,6 +54,7 @@ namespace WasteDrudgers
         MenuRight,
         MenuUp,
         MenuAccept,
+        MenuBack,
         MenuSwitch,
 
         DropItem,

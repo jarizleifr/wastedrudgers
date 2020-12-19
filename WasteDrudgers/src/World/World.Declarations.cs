@@ -65,10 +65,18 @@ namespace WasteDrudgers
             ecs.Declare<Portal>();
 
             // Effect components
-            ecs.Declare<Effect>();
+            ecs.Declare<VisualEffect>();
             ecs.Declare<Damage>();
 
+            // TODO: Are these REALLY necessary? We could just include type in ActiveEffect
+            // Is it worth having these filters or is going through all ActiveEffects fast enough?
+            // I mean iterating through all ActiveEffects is just a span operation...
+            ecs.Declare<IsTalent>();
+            ecs.Declare<IsTrait>();
+
             ecs.Declare<ActiveEffect>();
+
+            ecs.Declare<Duration>();
         }
     }
 }

@@ -1,6 +1,7 @@
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using Blaggard.Common;
+using Blaggard.Graphics;
 using WasteDrudgers.Entities;
 using WasteDrudgers.Level;
 using WasteDrudgers.State;
@@ -78,7 +79,7 @@ namespace WasteDrudgers
         public void Tick(IEngineContext ctx)
         {
             State.Run(ctx, this);
-            //System.Console.WriteLine(GC.GetTotalMemory(false) / 1024);
+            //System.Console.WriteLine(System.GC.GetTotalMemory(false) / 1024);
         }
 
         public void IncrementGameTicks()
@@ -87,13 +88,27 @@ namespace WasteDrudgers
             Calendar.PassTime(0, 0, 2);
         }
 
-        public void WriteToLog(string key, Vec2 position, params LogItem[] items)
+        public void WriteToLog(string messageId, Vec2 position, params ILogArg[] items)
         {
-            // Trigger redraw if log was updated
-            if (log.Add(this, new LogMessage(Data.GetMessage(key), position, items)))
+            var raw = Data.GetMessage(messageId);
+            if (raw.LoggingLevel == LoggingLevel.Visible)
             {
-                ShouldRedraw = true;
+                if (Map[position].Visibility != Visibility.Visible)
+                {
+                    return;
+                }
             }
+
+            if (raw.LoggingLevel == LoggingLevel.Player)
+            {
+                if (items.All(i => !i.PlayerInvolved(PlayerData.entity)))
+                {
+                    return;
+                }
+            }
+
+            log.Add(new ColoredTextSpan(raw.Message, Data.Colors.white, items.Select(i => i.ToColoredString(this)).ToArray()));
+            ShouldRedraw = true;
         }
 
         public void Clear()
@@ -103,6 +118,7 @@ namespace WasteDrudgers
             queue.Clear();
             calendar.Clear(ecs);
             obfuscatedNames.Clear(ecs);
+            fov.Clear();
             ecs.Clear();
         }
     }

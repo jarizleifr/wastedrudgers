@@ -81,7 +81,7 @@ namespace WasteDrudgers.Entities
                 var obfuscated = world.ObfuscatedNames;
                 if (!obfuscated.IsKnown(raw.Id))
                 {
-                    world.ecs.Assign(entity, new Obfuscated { });
+                    world.ecs.Assign<Obfuscated>(entity);
                 }
             }
 
@@ -202,7 +202,7 @@ namespace WasteDrudgers.Entities
             ExamineItem(world, equipping);
             world.ecs.Assign<Equipped>(equipping, new Equipped { entity = equipper, slot = targetSlot });
 
-            world.ecs.Assign<EventStatsUpdated>(equipper, new EventStatsUpdated { });
+            world.ecs.Assign<EventStatsUpdated>(equipper);
         }
 
         public static void UnequipItemToBackpack(World world, Entity unequipper, Slot targetSlot)
@@ -216,7 +216,7 @@ namespace WasteDrudgers.Entities
                     AddItemToInventory(world, unequipper, e);
                 }
             }
-            world.ecs.Assign<EventStatsUpdated>(unequipper, new EventStatsUpdated { });
+            world.ecs.Assign<EventStatsUpdated>(unequipper);
         }
 
         public static void UseItem(World world, Entity user, Entity itemEntity)
@@ -234,8 +234,7 @@ namespace WasteDrudgers.Entities
             var used = RemoveItemFromInventory(world, itemEntity);
             world.ecs.Remove(used);
 
-            world.ecs.Assign<EventStatsUpdated>(user, new EventStatsUpdated { });
-            world.ecs.Assign<EventInventoryUpdated>(user, new EventInventoryUpdated { });
+            world.ecs.Assign<EventInventoryUpdated>(user);
         }
 
         public static void PickUpItem(World world, Entity getter, Entity itemEntity)
@@ -246,8 +245,8 @@ namespace WasteDrudgers.Entities
             world.spatial.ClearItemAt(pos.coords, itemEntity);
             AddItemToInventory(world, getter, itemEntity);
 
-            world.ecs.Assign<EventStatsUpdated>(getter, new EventStatsUpdated { });
-            world.ecs.Assign<EventInventoryUpdated>(getter, new EventInventoryUpdated { });
+            world.ecs.Assign<EventStatsUpdated>(getter);
+            world.ecs.Assign<EventInventoryUpdated>(getter);
         }
 
         public static void DropItem(World world, Entity dropper, Entity itemEntity)
@@ -259,8 +258,8 @@ namespace WasteDrudgers.Entities
             world.ecs.Remove<PlayerMarker>(itemEntity);
             world.spatial.PlaceItem(world, pos.coords, itemEntity);
 
-            world.ecs.Assign<EventStatsUpdated>(dropper, new EventStatsUpdated { });
-            world.ecs.Assign<EventInventoryUpdated>(dropper, new EventInventoryUpdated { });
+            world.ecs.Assign<EventStatsUpdated>(dropper);
+            world.ecs.Assign<EventInventoryUpdated>(dropper);
         }
 
         private static void AddItemToInventory(World world, Entity getter, Entity itemEntity)
@@ -284,7 +283,7 @@ namespace WasteDrudgers.Entities
                 world.ecs.Assign<InBackpack>(itemEntity, new InBackpack { entity = getter });
                 if (getter == playerData.entity)
                 {
-                    world.ecs.Assign<PlayerMarker>(itemEntity, new PlayerMarker { });
+                    world.ecs.Assign<PlayerMarker>(itemEntity);
                 }
             }
         }
@@ -366,7 +365,7 @@ namespace WasteDrudgers.Entities
                         gotNutrition = 800;
                         var used = RemoveItemFromInventory(world, e);
                         world.ecs.Remove(used);
-                        world.ecs.Assign(consumer, new EventInventoryUpdated { });
+                        world.ecs.Assign<EventInventoryUpdated>(consumer);
                     }
                     else
                     {

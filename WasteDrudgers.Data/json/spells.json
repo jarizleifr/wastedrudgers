@@ -1,0 +1,123 @@
+{
+  "vigor_heal": {
+    "Name": "Heal Vigor",
+    "Effects": [
+      {
+        "Type": "HealVigor",
+        "Magnitude": "1-6",
+        "Duration": 0
+      }
+    ],
+    "Message": "use_item_vigor_potion"
+  },
+  "health_heal": {
+    "Name": "Heal Health",
+    "Effects": [
+      {
+        "Type": "HealHealth",
+        "Magnitude": "1-6",
+        "Duration": 0
+      }
+    ],
+    "Message": "use_item_health_potion"
+  },
+  "identify": {
+    "Name": "Identify",
+    "Effects": [
+      {
+        "Type": "Identify",
+        "Magnitude": "25-50",
+        "Duration": 0
+      }
+    ],
+    "Message": "use_item_identify_scroll"
+  },
+  "shield": {
+    "Name": "Shield",
+    "Effects": [
+      {
+        "Type": "ModArmor",
+        "Magnitude": "5-10",
+        "Duration": 30
+      }
+    ],
+    "Message": "use_item_identify_scroll"
+  },
+  "strength_permanent": {
+    "Name": "Strength Permanent",
+    "Effects": [
+      {
+        "Type": "PermanentStrength",
+        "Magnitude": "1-2",
+        "Duration": 0
+      }
+    ],
+    "Message": "use_item_strength_potion"
+  },
+  "endurance_permanent": {
+    "Name": "Endurance Permanent",
+    "Effects": [
+      {
+        "Type": "PermanentEndurance",
+        "Magnitude": "1-2",
+        "Duration": 0
+      }
+    ],
+    "Message": "use_item_endurance_potion"
+  },
+  "finesse_permanent": {
+    "Name": "Finesse Permanent",
+    "Effects": [
+      {
+        "Type": "PermanentFinesse",
+        "Magnitude": "1-2",
+        "Duration": 0
+      }
+    ],
+    "Message": "use_item_finesse_potion"
+  },
+  "intellect_permanent": {
+    "Name": "Intellect Permanent",
+    "Effects": [
+      {
+        "Type": "PermanentIntellect",
+        "Magnitude": "1-2",
+        "Duration": 0
+      }
+    ],
+    "Message": "use_item_intellect_potion"
+  },
+  "resolve_permanent": {
+    "Name": "Resolve Permanent",
+    "Effects": [
+      {
+        "Type": "PermanentResolve",
+        "Magnitude": "1-2",
+        "Duration": 0
+      }
+    ],
+    "Message": "use_item_resolve_potion"
+  },
+  "awareness_permanent": {
+    "Name": "Awareness Permanent",
+    "Effects": [
+      {
+        "Type": "PermanentAwareness",
+        "Magnitude": "1-2",
+        "Duration": 0
+      }
+    ],
+    "Message": "use_item_awareness_potion"
+  },
+  "poison_weak": {
+    "Name": "Weak Poison",
+    "Effects": [
+      {
+        "Type": "InflictPoison",
+        "Magnitude": "4-16",
+        "Duration": 0
+      }
+    ],
+    "Message": "use_item_poison_potion"
+  }
+}

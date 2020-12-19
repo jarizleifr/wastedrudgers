@@ -15,7 +15,7 @@ namespace WasteDrudgers.State
 
         public void Run(IContext ctx, World world)
         {
-            Systems.EffectSystem(ctx, world);
+            Systems.VisualEffectSystem(ctx, world);
             Views.DrawGameView(ctx, world);
 
             Command command = Command.None;
@@ -54,8 +54,10 @@ namespace WasteDrudgers.State
                 Command.Operate => Operate(world),
                 Command.Inventory => RunState.Inventory(0, 0),
                 Command.CharacterSheet => RunState.CharacterSheet(),
+                Command.Manual => RunState.Manual,
                 Command.GetItem => GetItem(world),
                 Command.Look => RunState.Look(playerData.coords),
+                Command.GameMenu => RunState.RestMenu,
                 Command.Exit => RunState.EscapeMenu(0),
                 _ => this
             };
@@ -120,7 +122,7 @@ namespace WasteDrudgers.State
         {
             if (world.spatial.ItemsCountAt(playerData.coords) == 1)
             {
-                world.ecs.Assign<IntentionGetItem>(playerData.entity, new IntentionGetItem { });
+                world.ecs.Assign<IntentionGetItem>(playerData.entity);
                 return RunState.Ticking;
             }
             else if (world.spatial.ItemsCountAt(playerData.coords) > 1)

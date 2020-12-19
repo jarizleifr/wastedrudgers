@@ -17,40 +17,39 @@ namespace WasteDrudgers.Entities
                 {
                     stats.SetMods(0);
                 }
-                world.ecs.Assign(e, new EventStatsUpdated { });
+                world.ecs.Assign<EventStatsUpdated>(e);
             }
 
             if (world.GameTicks % 10 == 0)
             {
                 foreach (var e in world.ecs.View<ActiveEffect>())
                 {
-                    ref var activeEffect = ref world.ecs.GetRef<ActiveEffect>(e);
+                    ref var a = ref world.ecs.GetRef<ActiveEffect>(e);
 
-                    if (!world.ecs.IsAlive(activeEffect.target) || world.ecs.Has<Death>(activeEffect.target))
+                    if (!world.ecs.IsAlive(a.target) || world.ecs.Has<Death>(a.target))
                     {
                         world.ecs.Remove(e);
                         continue;
                     }
 
-                    var pos = world.ecs.GetRef<Position>(activeEffect.target);
-                    if (Spells.IsIncremental(activeEffect.effect))
+                    if (a.effect.Type.IsIncremental())
                     {
-                        var stats = world.ecs.GetRef<Stats>(activeEffect.target);
+                        var pos = world.ecs.GetRef<Position>(a.target);
+                        var stats = world.ecs.GetRef<Stats>(a.target);
                         var fortitude = Formulae.Fortitude(stats);
-                        if (RNG.ResistanceCheck(fortitude, activeEffect.magnitude) < Attempt.Success)
+                        if (RNG.ResistanceCheck(fortitude, a.effect.Power) < Attempt.Success)
                         {
                             var damage = RNG.IntInclusive(1, 3);
                             var damageEntity = world.ecs.Create();
-                            world.WriteToLog("status_poison_damage", pos.coords, LogItem.Actor(activeEffect.target), LogItem.Num(damage));
-                            world.ecs.Assign(damageEntity, new Damage { target = activeEffect.target, damage = damage, damageType = DamageType.Poison });
-                            if (world.ecs.TryGet(e, out PlayerInitiated p))
+                            world.WriteToLog("status_poison_damage", pos.coords, LogArgs.Actor(a.target), LogArgs.Num(damage));
+                            world.ecs.Assign(damageEntity, new Damage { target = a.target, damage = damage, damageType = DamageType.Poison });
+                            if (world.ecs.Has<PlayerInitiated>(e))
                             {
-                                world.ecs.Assign(damageEntity, p);
+                                world.ecs.Assign<PlayerInitiated>(damageEntity);
                             }
                         }
-                        activeEffect.magnitude--;
 
-                        if (activeEffect.magnitude == 0)
+                        if (--a.effect.Power == 0)
                         {
                             world.WriteToLog("status_affliction_healed", pos.coords);
                             world.ecs.Remove(e);

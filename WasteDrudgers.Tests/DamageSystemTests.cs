@@ -22,7 +22,7 @@ namespace WasteDrudgers.Tests
 
             var damageEntity = world.ecs.Create();
             world.ecs.Assign(damageEntity, new Damage { damage = 1000, target = e1 });
-            world.ecs.Assign(damageEntity, new PlayerInitiated { });
+            world.ecs.Assign<PlayerInitiated>(damageEntity);
 
             Systems.DamageSystem(ctx, world);
             var newExp = world.ecs.GetRef<Experience>(player);

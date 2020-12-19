@@ -9,9 +9,10 @@ namespace WasteDrudgers.Entities
         public static void AISystem(IContext ctx, World world)
         {
             var playerData = world.PlayerData;
+            var positions = world.ecs.Pools<Position>();
             foreach (var e in world.ecs.View<Position, Turn, AI>())
             {
-                ref var pos = ref world.ecs.GetRef<Position>(e);
+                ref var pos = ref positions[e];
 
                 var move = Vec2.Zero;
                 if (LevelUtils.HasLineOfSight(world, pos.coords, playerData.coords))

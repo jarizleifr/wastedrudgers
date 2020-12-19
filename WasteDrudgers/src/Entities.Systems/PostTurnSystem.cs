@@ -4,17 +4,19 @@ namespace WasteDrudgers.Entities
     {
         public static void PostTurnSystem(IContext ctx, World world)
         {
+            var (actors, actedEvents) = world.ecs.Pools<Actor, EventActed>();
             foreach (var e in world.ecs.View<Actor, EventActed>())
             {
-                ref var actor = ref world.ecs.GetRef<Actor>(e);
-                ref var ev = ref world.ecs.GetRef<EventActed>(e);
+                ref var actor = ref actors[e];
+                ref var ev = ref actedEvents[e];
                 actor.energy -= ev.energyLoss;
             }
 
+            var clocks = world.ecs.Pools<HungerClock>();
             foreach (var e in world.ecs.View<HungerClock, EventActed>())
             {
-                ref var clock = ref world.ecs.GetRef<HungerClock>(e);
-                ref var ev = ref world.ecs.GetRef<EventActed>(e);
+                ref var clock = ref clocks[e];
+                ref var ev = ref actedEvents[e];
 
                 var state = clock.State;
                 clock.nutrition -= ev.nutritionLoss;
@@ -25,7 +27,7 @@ namespace WasteDrudgers.Entities
 
                 if (state != clock.State)
                 {
-                    world.ecs.Assign(e, new EventStatusUpdated { });
+                    world.ecs.Assign<EventStatusUpdated>(e);
                 }
             }
         }

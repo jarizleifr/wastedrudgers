@@ -76,7 +76,12 @@ namespace WasteDrudgers.Render
             int index = 0;
             foreach (var line in world.log.GetBuffer())
             {
-                c.PrintColoredString(0, index, line);
+                int offset = 0;
+                foreach (var str in line)
+                {
+                    c.PrintColoredTextSpan(0 + offset, index, str);
+                    offset += str.Length + 1;
+                }
                 index++;
             }
         }
@@ -117,8 +122,8 @@ namespace WasteDrudgers.Render
 
             foreach (var e in world.ecs.View<ActiveEffect, PlayerMarker>())
             {
-                ref var effect = ref world.ecs.GetRef<ActiveEffect>(e);
-                if (effect.effect == SpellEffect.InflictPoison)
+                ref var a = ref world.ecs.GetRef<ActiveEffect>(e);
+                if (a.effect.Type == EffectType.InflictPoison)
                 {
                     c.Print(x, y, Locale.poisoned, Data.Colors.greenLight);
                     x += Locale.poisoned.Length;
@@ -163,10 +168,10 @@ namespace WasteDrudgers.Render
 
             var end = viewport.x + viewport.width;
             var actor = world.ecs.GetRef<Actor>(player);
-            c.Print(end - 22, y, Locale.action, ctx.Theme.caption, TextAlignment.Right);
-            c.PutChar(end - 22, y, ':', ctx.Theme.text);
-            c.Print(end - 17, y, $"{actor.speed}%", ctx.Theme.text, TextAlignment.Right);
-            c.PutChar(end - 17, y, '─', ctx.Theme.windowFrame);
+            c.Print(end - 18, y, Locale.initiative, ctx.Theme.caption, TextAlignment.Right);
+            c.PutChar(end - 18, y, ':', ctx.Theme.text);
+            c.Print(end - 13, y, $"{actor.speed}%", ctx.Theme.text, TextAlignment.Right);
+            c.PutChar(end - 13, y, '─', ctx.Theme.windowFrame);
 
             var clock = world.ecs.GetRef<HungerClock>(player);
             float food = ((float)clock.Total) / 1600f;
@@ -178,9 +183,9 @@ namespace WasteDrudgers.Render
                 _ => ctx.Theme.text
             };
 
-            c.Print(end - 12, y, Locale.food, ctx.Theme.caption, TextAlignment.Right);
-            c.PutChar(end - 12, y, ':', ctx.Theme.text);
-            c.Print(end - 2, y, $"{food.ToString("0.0", CultureInfo.InvariantCulture)} days", color, TextAlignment.Right);
+            c.Print(end - 8, y, Locale.food, ctx.Theme.caption, TextAlignment.Right);
+            c.PutChar(end - 8, y, ':', ctx.Theme.text);
+            c.Print(end - 2, y, $"{food.ToString("0.0", CultureInfo.InvariantCulture)}d", color, TextAlignment.Right);
         }
 
         public static void DrawSidebar(IContext ctx, World world)

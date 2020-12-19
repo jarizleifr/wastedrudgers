@@ -1,23 +1,29 @@
 using Blaggard.Graphics;
 using WasteDrudgers.Render;
+using WasteDrudgers.UI;
 
 namespace WasteDrudgers.State
 {
     internal class MainMenuState : IRunState
     {
         public int selection;
-        private string[] items = { "Start a New Quest", "Continue an Existing Adventure", "Configure", "Forfeit Your Destiny" };
-        private const string title = "WASTE DRUDGERS";
-        private const string credit = "Created by Antti Joutsi 2016-2020";
+        private string[] items = { "New Game", "Load Game", "Configure", "Quit Game" };
 
         public string[] InputDomains { get; set; } = { "menu" };
+
+        private SimpleMenu menu;
+
+        public void Initialize(IContext ctx, World world)
+        {
+            menu = new SimpleMenu(2, TextAlignment.Left, items);
+        }
 
         public void Run(IContext ctx, World world)
         {
             switch (ctx.Command)
             {
                 case Command.MenuAccept:
-                    world.SetState(ctx, selection switch
+                    world.SetState(ctx, menu.Selected switch
                     {
                         0 => RunState.NewGame,
                         1 => RunState.LoadGame(0),
@@ -27,10 +33,10 @@ namespace WasteDrudgers.State
                     break;
 
                 case Command.MenuUp:
-                    selection = Menu.Prev(selection, items.Length);
+                    menu.Prev();
                     break;
                 case Command.MenuDown:
-                    selection = Menu.Next(selection, items.Length);
+                    menu.Next();
                     break;
 
                 case Command.Exit:
@@ -41,15 +47,17 @@ namespace WasteDrudgers.State
             var root = ctx.QueueCanvas(RenderLayer.Root);
             root.SetRenderPosition(0, 0);
 
-            root.DefaultFore = ctx.Theme.windowFrame;
+            RenderUtils.DrawTitleScreen(root);
+
             root.DefaultBack = ctx.Theme.windowBackground;
-            root.Clear();
+            root.DefaultFore = ctx.Theme.windowFrame;
+            root.PrintFrame(7, -1, 16, root.Height + 2, true);
+            menu.Draw(root, 10, 4, ctx.Theme.text, ctx.Theme.selectedColor);
 
-            root.Print(root.Width / 2, 3, title, ctx.Theme.selectedColor, TextAlignment.Center);
-            root.Print(root.Width / 2, root.Height - 3, credit, ctx.Theme.selectedColor, TextAlignment.Center);
-
-            HUD.DrawScreenBorders(root, ctx.Theme);
-            Menu.DrawMenu(root, ctx.Theme, root.Width / 2, root.Height / 2 - items.Length + 1, selection, items);
+            root.DefaultFore = ctx.Theme.caption;
+            root.Print(9, 22, "Created by");
+            root.Print(9, 23, "Antti Joutsi");
+            root.Print(9, 24, "2016-2020");
         }
     }
 }

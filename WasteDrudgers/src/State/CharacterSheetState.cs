@@ -1,3 +1,4 @@
+using System;
 using WasteDrudgers.Render;
 using WasteDrudgers.UI;
 
@@ -7,40 +8,40 @@ namespace WasteDrudgers.State
     {
         public string[] InputDomains { get; set; } = { "menu" };
 
-        private CharacterScreen screen;
-        private PlayerData playerData;
+        private Tabs tabs;
+        private IUIComponent current;
+        private Func<CharacterSheetData, IUIComponent>[] stateFactories = new Func<CharacterSheetData, IUIComponent>[]
+        {
+            (_) => new CharacterSheetSkills(),
+            (data) => new CharacterSheetTalents(data)
+        };
+
+        private string[] captions = { "Skills", "Talents" };
+        private CharacterSheetData data;
 
         public void Initialize(IContext ctx, World world)
         {
-            playerData = world.PlayerData;
-
-            screen = new CharacterScreen()
-            {
-                CharacterPoints = world.ecs.GetRef<Experience>(playerData.entity).characterPoints
-            };
+            tabs = new Tabs(captions);
+            data = new CharacterSheetData(world);
+            current = stateFactories[tabs.Selected](data);
         }
 
         public void Run(IContext ctx, World world)
         {
-            var menu = ctx.QueueCanvas(RenderLayer.MenuOverlay);
-            var rect = RenderUtils.TerminalWindow(ctx);
+            var layer = ctx.QueueCanvas(RenderLayer.MenuOverlay);
+            var rect = RenderUtils.OffsetTerminalWindow(ctx);
+            layer.SetRenderPosition(rect.x, rect.y);
 
-            switch (ctx.Command)
+            var command = ctx.Command;
+            switch (command)
             {
                 case Command.MenuLeft:
-                    screen.Prev();
+                    tabs.Prev();
+                    current = stateFactories[tabs.Selected](data);
                     break;
                 case Command.MenuRight:
-                    screen.Next();
-                    break;
-                case Command.MenuAccept:
-                    screen.Buy(world, playerData);
-                    break;
-                case Command.MenuUp:
-                    screen.Current.Prev();
-                    break;
-                case Command.MenuDown:
-                    screen.Current.Next();
+                    tabs.Next();
+                    current = stateFactories[tabs.Selected](data);
                     break;
                 case Command.Exit:
                     world.SetState(ctx, RunState.AwaitingInput);
@@ -48,7 +49,10 @@ namespace WasteDrudgers.State
             }
 
             Views.DrawGameView(ctx, world);
-            CharacterUI.DrawCharacterSheet(ctx, world, screen);
+
+            tabs.Draw(0, 0, layer);
+            current.Run(ctx, world, command);
+            current.Draw(ctx, world, layer, 0, 0);
         }
     }
 }

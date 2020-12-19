@@ -23,6 +23,10 @@ namespace WasteDrudgers
             internal Dictionary<string, DBItem> items;
             [JsonProperty("spells")]
             internal Dictionary<string, DBSpell> spells;
+            [JsonProperty("talents")]
+            internal Dictionary<string, DBTalent> talents;
+            [JsonProperty("traits")]
+            internal Dictionary<string, DBTrait> traits;
             [JsonProperty("naturalAttacks")]
             internal Dictionary<string, DBNaturalAttack> naturalAttacks;
             [JsonProperty("tiles")]
@@ -60,6 +64,8 @@ namespace WasteDrudgers
         public static DBFeature GetFeature(string id) => d.features[id];
         public static DBItem GetItem(string id) => d.items[id];
         public static DBSpell GetSpell(string id) => d.spells[id];
+        public static DBTalent GetTalent(string id) => d.talents[id];
+        public static DBTrait GetTrait(string id) => d.traits[id];
         public static DBNaturalAttack GetNaturalAttack(string id) =>
             d.naturalAttacks[id];
         public static Tile GetTile(string id) => d.tiles[id];
@@ -106,6 +112,9 @@ namespace WasteDrudgers
                 .Distinct()
                 .Select(id => d.items[id])
                 .ToList();
+
+        public static List<DBTalent> GetAllTalents() => d.talents.Values.ToList();
+        public static List<DBTrait> GetAllTraits() => d.traits.Values.ToList();
 
         public static DBMapData LoadMap(string id) =>
             JsonConvert.DeserializeObject<DBMapData>(File.ReadAllText($"./assets/maps/{id}.map"));

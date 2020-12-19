@@ -18,6 +18,7 @@ namespace WasteDrudgers.State
                 world.IncrementGameTicks();
 
                 // Tick based systems
+                Systems.DurationSystem(ctx, world);
                 Systems.SpawnSystem(ctx, world);
                 Systems.RegenSystem(ctx, world);
 
@@ -80,7 +81,7 @@ namespace WasteDrudgers.State
             {
                 exp.level++;
                 exp.characterPoints += 15;
-                world.WriteToLog("character_points_earned", playerData.coords, LogItem.Num(15));
+                world.WriteToLog("character_points_earned", playerData.coords, LogArgs.Num(15));
             }
 
             world.log.UpdateMessageBuffer();

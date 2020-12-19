@@ -8,12 +8,12 @@ using WasteDrudgers.Entities;
 
 namespace WasteDrudgers
 {
-    public struct Position
+    public struct Position : IComponent
     {
         public Vec2 coords;
     }
 
-    public struct Renderable
+    public struct Renderable : IComponent
     {
         public char character;
         public Color color;
@@ -21,37 +21,37 @@ namespace WasteDrudgers
     }
 
     [NeverSerializeComponent]
-    public struct IntentionMove
+    public struct IntentionMove : IComponent
     {
         public Vec2 transform;
     }
 
     [NeverSerializeComponent]
-    public struct IntentionOperate { }
+    public struct IntentionOperate : ITag { }
 
     [NeverSerializeComponent]
-    public struct IntentionGetItem { }
+    public struct IntentionGetItem : ITag { }
 
     [NeverSerializeComponent]
-    public struct IntentionAttack
+    public struct IntentionAttack : IComponent
     {
         public Entity attacker;
         public Entity target;
     }
 
     [NeverSerializeComponent]
-    public struct IntentionUseItem
+    public struct IntentionUseItem : IComponent
     {
         public Entity item;
     }
 
-    public struct Actor
+    public struct Actor : IComponent
     {
         public int energy;
         public int speed;
     }
 
-    public struct Feature
+    public struct Feature : IComponent
     {
         public string description;
     }
@@ -63,52 +63,49 @@ namespace WasteDrudgers
         Thorns,
     }
 
-    public struct EntryTrigger
+    public struct EntryTrigger : IComponent
     {
         public EntryTriggerType type;
     }
 
-    public struct EventMoved { }
-    public struct EventActed
+    public struct EventMoved : ITag { }
+    public struct EventActed : IComponent
     {
         public int energyLoss;
         public int nutritionLoss;
     }
 
-    public struct EventStatsUpdated { }
-    public struct EventInventoryUpdated { }
-    public struct EventEffectsUpdated { }
+    public struct EventStatsUpdated : ITag { }
+    public struct EventInventoryUpdated : ITag { }
+    public struct EventEffectsUpdated : ITag { }
+    public struct EventStatusUpdated : ITag { }
+    public struct Turn : ITag { }
+    public struct AI : ITag { }
 
-    public struct EventStatusUpdated { }
-
-    public struct Turn { }
-
-    public struct AI { }
-
-    public struct Faction
+    public struct Faction : IComponent
     {
         FactionType type;
     }
 
     [SerializationProfile("global")]
-    public struct Player { }
+    public struct Player : ITag { }
 
-    public struct InBackpack
+    public struct InBackpack : IComponent
     {
         public Entity entity;
     }
 
-    public struct Equipped
+    public struct Equipped : IComponent
     {
         public Entity entity;
         public Slot slot;
     }
 
     [SerializationProfile("global")]
-    public struct PlayerMarker { }
+    public struct PlayerMarker : ITag { }
 
     [NeverSerializeEntity]
-    public struct Effect
+    public struct VisualEffect : IComponent
     {
         public string characters;
         public Color color;
@@ -116,16 +113,16 @@ namespace WasteDrudgers
     }
 
     [NeverSerializeEntity]
-    public struct Damage
+    public struct Damage : IComponent
     {
         public Entity target;
         public DamageType damageType;
         public int damage;
     }
 
-    public struct PlayerInitiated { }
+    public struct PlayerInitiated : ITag { }
 
-    public struct Identity
+    public struct Identity : IComponent
     {
         public string name;
         public string rawName;
@@ -133,9 +130,9 @@ namespace WasteDrudgers
     }
 
     [NeverSerializeEntity]
-    public struct Death { }
+    public struct Death : ITag { }
 
-    public struct Pools
+    public struct Pools : IComponent
     {
         public Stat vigor;
         public Stat health;
@@ -144,7 +141,7 @@ namespace WasteDrudgers
         public bool fatigued;
     }
 
-    public struct Experience
+    public struct Experience : IComponent
     {
         public int level;
         public int experience;
@@ -158,7 +155,7 @@ namespace WasteDrudgers
         Hungry,
     }
 
-    public struct HungerClock
+    public struct HungerClock : IComponent
     {
         public int nutrition;
         public int food;
@@ -175,7 +172,7 @@ namespace WasteDrudgers
         };
     }
 
-    public struct Stats
+    public struct Stats : IComponent
     {
         public Stat strength;
         public Stat endurance;
@@ -259,7 +256,7 @@ namespace WasteDrudgers
         }
     }
 
-    public struct Item
+    public struct Item : IComponent
     {
         public ItemType type;
         public IdentificationStatus status;
@@ -268,28 +265,34 @@ namespace WasteDrudgers
         public int count;
     }
 
-    public struct Obfuscated { }
+    public struct Obfuscated : ITag { }
 
     [NeverSerializeEntity]
-    public struct Portal
+    public struct Portal : IComponent
     {
         public string targetLevel;
     }
 
-    public struct ActiveEffect
+    public struct IsTalent : ITag { }
+    public struct IsTrait : ITag { }
+
+    public struct ActiveEffect : IComponent
     {
         public Entity target;
-        public SpellEffect effect;
-        public int duration;
-        public int magnitude;
+        public Effect effect;
     }
 
-    public struct CastOnUse
+    public struct Duration : IComponent
+    {
+        public int duration;
+    }
+
+    public struct CastOnUse : IComponent
     {
         public string spellId;
     }
 
-    public struct Skills
+    public struct Skills : IComponent
     {
         public List<Skill> set;
 
@@ -343,19 +346,19 @@ namespace WasteDrudgers
         DualWield,
     }
 
-    public struct NaturalAttack
+    public struct NaturalAttack : IComponent
     {
         public int baseSkill;
         public Extent damage;
         public string castOnStrike;
     }
 
-    public struct CastOnStrike
+    public struct CastOnStrike : IComponent
     {
         public string spellId;
     }
 
-    public struct Combat
+    public struct Combat : IComponent
     {
         public Wielding wielding;
         public int hitChance;
@@ -373,12 +376,12 @@ namespace WasteDrudgers
         public float Average => (damage.min + damage.max) / 2;
     }
 
-    public struct Shield
+    public struct Shield : IComponent
     {
         public int baseBlock;
     }
 
-    public struct Weapon
+    public struct Weapon : IComponent
     {
         public int chance;
         public Extent damage;
@@ -389,7 +392,7 @@ namespace WasteDrudgers
         public float Average => (damage.min + damage.max) / 2;
     }
 
-    public struct Defense
+    public struct Defense : IComponent
     {
         public int dodge;
         public int armor;

@@ -4,12 +4,12 @@ namespace WasteDrudgers.Entities
 {
     public static partial class Systems
     {
-        public static void EffectSystem(IContext ctx, World world)
+        public static void VisualEffectSystem(IContext ctx, World world)
         {
             var map = world.Map;
-            foreach (var e in world.ecs.View<Effect, Position>())
+            foreach (var e in world.ecs.View<VisualEffect, Position>())
             {
-                ref var eff = ref world.ecs.GetRef<Effect>(e);
+                ref var eff = ref world.ecs.GetRef<VisualEffect>(e);
                 ref var pos = ref world.ecs.GetRef<Position>(e);
 
                 switch (map[pos.coords].Visibility)

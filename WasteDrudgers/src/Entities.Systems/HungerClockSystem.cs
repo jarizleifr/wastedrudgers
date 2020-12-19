@@ -6,21 +6,23 @@ namespace WasteDrudgers.Entities
         {
             var playerData = world.PlayerData;
 
+            // TODO: Still wondering if HungerClock should be a Resource instead of component
+            var (clocks, pools) = world.ecs.Pools<HungerClock, Pools>();
             foreach (var e in world.ecs.View<HungerClock, EventInventoryUpdated>())
             {
-                ref var clock = ref world.ecs.GetRef<HungerClock>(e);
+                ref var clock = ref clocks[e];
                 var state = clock.State;
                 clock.food = Items.GetRations(world, e);
                 if (clock.State != state)
                 {
-                    world.ecs.Assign(e, new EventStatusUpdated { });
+                    world.ecs.Assign<EventStatusUpdated>(e);
                 }
             }
 
             foreach (var e in world.ecs.View<HungerClock, Pools>())
             {
-                ref var clock = ref world.ecs.GetRef<HungerClock>(e);
-                ref var health = ref world.ecs.GetRef<Pools>(e);
+                ref var clock = ref clocks[e];
+                ref var health = ref pools[e];
 
                 var state = clock.State;
                 if (clock.nutrition == 0)
@@ -41,7 +43,7 @@ namespace WasteDrudgers.Entities
                 }
                 if (clock.State != state)
                 {
-                    world.ecs.Assign(e, new EventStatusUpdated { });
+                    world.ecs.Assign<EventStatusUpdated>(e);
                 }
             }
 

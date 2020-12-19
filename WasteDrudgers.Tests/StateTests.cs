@@ -14,7 +14,7 @@ namespace WasteDrudgers.Tests
         public void SetsGameOverState_WhenPlayerIsDead()
         {
             var player = world.PlayerData.entity;
-            world.ecs.Assign(player, new Death { });
+            world.ecs.Assign<Death>(player);
             world.SetState(ctx, RunState.Ticking);
             world.Tick(ctx);
 

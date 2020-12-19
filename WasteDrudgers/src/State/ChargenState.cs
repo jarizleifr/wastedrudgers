@@ -1,3 +1,5 @@
+using System;
+using WasteDrudgers.Entities;
 using WasteDrudgers.Render;
 using WasteDrudgers.UI;
 
@@ -7,47 +9,71 @@ namespace WasteDrudgers.State
     {
         public string[] InputDomains { get; set; } = { "menu" };
 
-        private CharacterScreen screen;
-        private PlayerData playerData;
+        private Tabs tabs;
+        private IUIComponent current;
+        private Func<ChargenData, IUIComponent>[] stateFactories = new Func<ChargenData, IUIComponent>[]
+        {
+            (data) => new ChargenTraits(data),
+            (data) => new ChargenStats(data),
+            (data) => new ChargenSkills(data),
+            (data) => new ChargenTalents(data),
+            (data) => new ChargenOverview(data)
+        };
+
+        private string[] captions = { "Character", "Stats", "Skills", "Talents", "Overview" };
+        private ChargenData data;
 
         public void Initialize(IContext ctx, World world)
         {
-            playerData = world.PlayerData;
-
-            screen = new CharacterScreen()
-            {
-                CharacterPoints = world.ecs.GetRef<Experience>(playerData.entity).characterPoints
-            };
+            tabs = new Tabs(captions);
+            data = new ChargenData();
+            current = stateFactories[tabs.Selected](data);
         }
 
         public void Run(IContext ctx, World world)
         {
-            var menu = ctx.QueueCanvas(RenderLayer.MenuOverlay);
-            var rect = RenderUtils.TerminalWindow(ctx);
+            var root = ctx.QueueCanvas(RenderLayer.Root);
+            var rect = RenderUtils.OffsetTerminalWindow(ctx);
+            root.SetRenderPosition(0, 0);
 
-            switch (ctx.Command)
+            var command = ctx.Command;
+            switch (command)
             {
                 case Command.MenuLeft:
-                    screen.Prev();
+                    tabs.Prev();
+                    current = stateFactories[tabs.Selected](data);
                     break;
                 case Command.MenuRight:
-                    screen.Next();
-                    break;
-                case Command.MenuAccept:
-                    screen.Buy(world, playerData);
-                    break;
-                case Command.MenuUp:
-                    screen.Current.Prev();
-                    break;
-                case Command.MenuDown:
-                    screen.Current.Next();
+                    tabs.Next();
+                    current = stateFactories[tabs.Selected](data);
                     break;
                 case Command.Exit:
-                    world.SetState(ctx, RunState.LevelGeneration(playerData.currentLevel, null, true));
+                    world.SetState(ctx, RunState.MainMenu(0));
                     break;
             }
 
-            CharacterUI.DrawCharacterSheet(ctx, world, screen);
+            RenderUtils.DrawTitleScreen(root);
+            tabs.Draw(rect.x, rect.y, root);
+            current.Run(ctx, world, command);
+            current.Draw(ctx, world, root, rect.x, rect.y);
+
+            if (command == Command.MenuAccept || command == Command.MenuBack)
+            {
+                UpdateCaptions();
+                Creatures.UpdateCreature(world, world.PlayerData.entity);
+            }
+        }
+
+        private void UpdateCaptions()
+        {
+            tabs.Captions = new string[]
+            {
+                "Character",
+                $"Stats ({data.statsSpent})",
+                $"Skills ({data.skillsSpent})",
+                "Talents",
+                "Overview"
+            };
         }
     }
 }

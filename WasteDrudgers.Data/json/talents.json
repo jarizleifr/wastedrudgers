@@ -1,0 +1,32 @@
+{
+  "tough_skin": {
+    "Name": "Tough Skin",
+    "Cost": 15,
+    "Effects": [
+      {
+        "Type": "ModArmor",
+        "Magnitude": 1
+      }
+    ]
+  },
+  "aggressive": {
+    "Name": "Aggressive",
+    "Cost": 10,
+    "Effects": [
+      {
+        "Type": "MeleeHitChanceMod",
+        "Magnitude": 5
+      }
+    ]
+  },
+  "shortblade_proficiency": {
+    "Name": "Proficient with Short Blade",
+    "Cost": 10,
+    "Effects": [
+      {
+        "Type": "MeleeHitChanceModShortBlade",
+        "Magnitude": 10
+      }
+    ]
+  }
+}

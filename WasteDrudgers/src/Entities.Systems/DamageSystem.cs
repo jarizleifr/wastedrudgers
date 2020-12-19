@@ -4,6 +4,7 @@ namespace WasteDrudgers.Entities
     {
         public static void DamageSystem(IContext ctx, World world)
         {
+            var (positions, pools) = world.ecs.Pools<Position, Pools>();
             foreach (var e in world.ecs.View<Damage>())
             {
                 ref var damage = ref world.ecs.GetRef<Damage>(e);
@@ -11,8 +12,8 @@ namespace WasteDrudgers.Entities
                 if (world.ecs.Has<Death>(damage.target)) continue;
 
                 // FIXME: We've ended up here without a Position component
-                var pos = world.ecs.GetRef<Position>(damage.target);
-                ref var hlt = ref world.ecs.GetRef<Pools>(damage.target);
+                var pos = positions[damage.target];
+                ref var hlt = ref pools[damage.target];
 
                 // Only physical damage targets vigor
                 if (hlt.vigor.Current > 0 && damage.damageType == DamageType.Physical)
@@ -27,7 +28,7 @@ namespace WasteDrudgers.Entities
                             Creatures.AwardKillExperience(world, playerData.entity, damage.target);
                         }
 
-                        world.WriteToLog("death_instant", pos.coords, LogItem.Actor(damage.target));
+                        world.WriteToLog("death_instant", pos.coords, LogArgs.Actor(damage.target));
                         Creatures.KillCreature(world, damage.target);
                     }
                 }
@@ -48,10 +49,10 @@ namespace WasteDrudgers.Entities
                         switch (damage.damageType)
                         {
                             case DamageType.Poison:
-                                world.WriteToLog("death_affliction", pos.coords, LogItem.Actor(damage.target));
+                                world.WriteToLog("death_affliction", pos.coords, LogArgs.Actor(damage.target));
                                 break;
                             case DamageType.Physical:
-                                world.WriteToLog("death", pos.coords, LogItem.Actor(damage.target));
+                                world.WriteToLog("death", pos.coords, LogArgs.Actor(damage.target));
                                 break;
                         }
 

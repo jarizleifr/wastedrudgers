@@ -88,13 +88,37 @@ namespace WasteDrudgers
         public string Message { get; set; }
     }
 
+    public struct DBEffect
+    {
+        public EffectType type { get; set; }
+        public Extent Magnitude { get; set; }
+        public int Duration { get; set; }
+    }
+
     public class DBSpell : DBEntity
     {
         public string Name { get; set; }
-        public Extent Magnitude { get; set; }
-        public int Duration { get; set; }
-        public SpellEffect Effect { get; set; }
+        public List<DBEffect> Effects { get; set; }
         public string Message { get; set; }
+    }
+
+    // Base class so we can deal with Talents and Traits similarily
+    public class DBPermanentAbility : DBEntity
+    {
+        public List<DBEffect> Effects { get; set; }
+    }
+
+    public class DBTalent : DBPermanentAbility
+    {
+        public string Name { get; set; }
+        public int Cost { get; set; }
+    }
+
+    public class DBTrait : DBPermanentAbility
+    {
+        public string Name { get; set; }
+        public int Cost { get; set; }
+        public List<string> BlockedBy { get; set; }
     }
 
     public class DBCreature : DBEntity

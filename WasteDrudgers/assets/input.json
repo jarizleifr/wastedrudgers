@@ -27,7 +27,10 @@
 
     { "cmd": "Inventory",      "key": "SDLK_I" },
     { "cmd": "CharacterSheet", "key": "SDLK_C" },
-    { "cmd": "Operate",        "key": "SDLK_RETURN" }
+    { "cmd": "Manual",         "key": "SDLK_F1" },
+    { "cmd": "Operate",        "key": "SDLK_RETURN" },
+
+    { "cmd": "GameMenu",       "key": "SDLK_TAB" }
   ],
   "selection": [
     { "cmd": "SelectA", "key": "SDLK_A" },
@@ -46,6 +49,7 @@
     { "cmd": "MenuRight",  "key": "SDLK_RIGHT"  },
     { "cmd": "MenuUp",     "key": "SDLK_UP"     },
     { "cmd": "MenuAccept", "key": "SDLK_RETURN" },
+    { "cmd": "MenuBack",   "key": "SDLK_BACKSPACE" },
     { "cmd": "MenuSwitch", "key": "SDLK_TAB"    }
   ],
   "inventory": [

@@ -1,5 +1,6 @@
 Id	Type	Name	Char	DL	LevelTags	Weight	Value	Material	MaterialTags	UseSpell
 scroll_identify	Scroll	scroll of identify	?	0	common	10	10	paper		identify
+scroll_shield	Scroll	scroll of shield	?	0	common	10	10	paper		shield
 potion_strength	Potion	strength mutagen	¿	0	common	10	10	glass		strength_permanent
 potion_endurance	Potion	endurance mutagen	¿	0	common	10	10	glass		endurance_permanent
 potion_finesse	Potion	finesse mutagen	¿	0	common	10	10	glass		finesse_permanent

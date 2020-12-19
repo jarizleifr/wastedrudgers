@@ -860,6 +860,21 @@
       "MaterialTags": [],
       "UseSpell": "identify"
     },
+    "scroll_shield": {
+      "Id": "scroll_shield",
+      "Type": "Scroll",
+      "Name": "scroll of shield",
+      "Char": "?",
+      "DL": 0,
+      "LevelTags": [
+        "common"
+      ],
+      "Weight": 10,
+      "Value": 10,
+      "Material": "paper",
+      "MaterialTags": [],
+      "UseSpell": "shield"
+    },
     "potion_strength": {
       "Id": "potion_strength",
       "Type": "Potion",
@@ -1458,82 +1473,199 @@
     "vigor_heal": {
       "Id": "vigor_heal",
       "Name": "Heal Vigor",
-      "Magnitude": "1-6",
-      "Duration": 0,
-      "Effect": "VigorHeal",
+      "Effects": [
+        {
+          "Type": "HealVigor",
+          "Magnitude": "1-6",
+          "Duration": 0
+        }
+      ],
       "Message": "use_item_vigor_potion"
     },
     "health_heal": {
       "Id": "health_heal",
       "Name": "Heal Health",
-      "Magnitude": "1-6",
-      "Duration": 0,
-      "Effect": "HealthHeal",
+      "Effects": [
+        {
+          "Type": "HealHealth",
+          "Magnitude": "1-6",
+          "Duration": 0
+        }
+      ],
       "Message": "use_item_health_potion"
     },
     "identify": {
       "Id": "identify",
       "Name": "Identify",
-      "Magnitude": "25-50",
-      "Duration": 0,
-      "Effect": "Identify",
+      "Effects": [
+        {
+          "Type": "Identify",
+          "Magnitude": "25-50",
+          "Duration": 0
+        }
+      ],
+      "Message": "use_item_identify_scroll"
+    },
+    "shield": {
+      "Id": "shield",
+      "Name": "Shield",
+      "Effects": [
+        {
+          "Type": "ModArmor",
+          "Magnitude": "5-10",
+          "Duration": 30
+        }
+      ],
       "Message": "use_item_identify_scroll"
     },
     "strength_permanent": {
       "Id": "strength_permanent",
       "Name": "Strength Permanent",
-      "Magnitude": "1-2",
-      "Duration": 0,
-      "Effect": "StrengthPermanent",
+      "Effects": [
+        {
+          "Type": "PermanentStrength",
+          "Magnitude": "1-2",
+          "Duration": 0
+        }
+      ],
       "Message": "use_item_strength_potion"
     },
     "endurance_permanent": {
       "Id": "endurance_permanent",
       "Name": "Endurance Permanent",
-      "Magnitude": "1-2",
-      "Duration": 0,
-      "Effect": "EndurancePermanent",
+      "Effects": [
+        {
+          "Type": "PermanentEndurance",
+          "Magnitude": "1-2",
+          "Duration": 0
+        }
+      ],
       "Message": "use_item_endurance_potion"
     },
     "finesse_permanent": {
       "Id": "finesse_permanent",
       "Name": "Finesse Permanent",
-      "Magnitude": "1-2",
-      "Duration": 0,
-      "Effect": "FinessePermanent",
+      "Effects": [
+        {
+          "Type": "PermanentFinesse",
+          "Magnitude": "1-2",
+          "Duration": 0
+        }
+      ],
       "Message": "use_item_finesse_potion"
     },
     "intellect_permanent": {
       "Id": "intellect_permanent",
       "Name": "Intellect Permanent",
-      "Magnitude": "1-2",
-      "Duration": 0,
-      "Effect": "IntellectPermanent",
+      "Effects": [
+        {
+          "Type": "PermanentIntellect",
+          "Magnitude": "1-2",
+          "Duration": 0
+        }
+      ],
       "Message": "use_item_intellect_potion"
     },
     "resolve_permanent": {
       "Id": "resolve_permanent",
       "Name": "Resolve Permanent",
-      "Magnitude": "1-2",
-      "Duration": 0,
-      "Effect": "ResolvePermanent",
+      "Effects": [
+        {
+          "Type": "PermanentResolve",
+          "Magnitude": "1-2",
+          "Duration": 0
+        }
+      ],
       "Message": "use_item_resolve_potion"
     },
     "awareness_permanent": {
       "Id": "awareness_permanent",
       "Name": "Awareness Permanent",
-      "Magnitude": "1-2",
-      "Duration": 0,
-      "Effect": "AwarenessPermanent",
+      "Effects": [
+        {
+          "Type": "PermanentAwareness",
+          "Magnitude": "1-2",
+          "Duration": 0
+        }
+      ],
       "Message": "use_item_awareness_potion"
     },
     "poison_weak": {
       "Id": "poison_weak",
       "Name": "Weak Poison",
-      "Magnitude": "4-16",
-      "Duration": 0,
-      "Effect": "InflictPoison",
+      "Effects": [
+        {
+          "Type": "InflictPoison",
+          "Magnitude": "4-16",
+          "Duration": 0
+        }
+      ],
       "Message": "use_item_poison_potion"
+    }
+  },
+  "talents": {
+    "tough_skin": {
+      "Id": "tough_skin",
+      "Name": "Tough Skin",
+      "Cost": 15,
+      "Effects": [
+        {
+          "Type": "ModArmor",
+          "Magnitude": 1
+        }
+      ]
+    },
+    "aggressive": {
+      "Id": "aggressive",
+      "Name": "Aggressive",
+      "Cost": 10,
+      "Effects": [
+        {
+          "Type": "MeleeHitChanceMod",
+          "Magnitude": 5
+        }
+      ]
+    },
+    "shortblade_proficiency": {
+      "Id": "shortblade_proficiency",
+      "Name": "Proficient with Short Blade",
+      "Cost": 10,
+      "Effects": [
+        {
+          "Type": "MeleeHitChanceModShortBlade",
+          "Magnitude": 10
+        }
+      ]
+    }
+  },
+  "traits": {
+    "dwarfism": {
+      "Id": "dwarfism",
+      "Name": "Dwarfism",
+      "Cost": 0,
+      "BlockedBy": [
+        "gigantism"
+      ],
+      "Effects": [
+        {
+          "Type": "SizeMod",
+          "Magnitude": -1
+        }
+      ]
+    },
+    "gigantism": {
+      "Id": "gigantism",
+      "Name": "Gigantism",
+      "Cost": 0,
+      "BlockedBy": [
+        "dwarfism"
+      ],
+      "Effects": [
+        {
+          "Type": "SizeMod",
+          "Magnitude": 1
+        }
+      ]
     }
   },
   "naturalAttacks": {
@@ -2037,6 +2169,7 @@
   "lootLists": {
     "common": [
       "scroll_identify",
+      "scroll_shield",
       "potion_strength",
       "potion_endurance",
       "potion_finesse",

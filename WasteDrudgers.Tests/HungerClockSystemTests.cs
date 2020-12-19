@@ -47,7 +47,7 @@ namespace WasteDrudgers.Tests
             world.Tick(ctx);
 
             var foodItem = Items.Create(world, "food_insect", playerData.coords);
-            world.ecs.Assign(player, new IntentionGetItem { });
+            world.ecs.Assign<IntentionGetItem>(player);
 
             world.SetState(ctx, RunState.Ticking);
             world.Tick(ctx);

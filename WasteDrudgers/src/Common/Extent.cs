@@ -14,9 +14,16 @@ namespace WasteDrudgers.Common
 
         public override Extent ReadJson(JsonReader reader, Type objectType, Extent existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
-            var str = JToken.Load(reader).ToString();
-            var split = str.Split("-");
-            return new Extent(int.Parse(split[0]), int.Parse(split[1]));
+            var token = JToken.Load(reader);
+            switch (token.Type)
+            {
+                case JTokenType.String:
+                    var split = token.ToString().Split("-");
+                    return new Extent(int.Parse(split[0]), int.Parse(split[1]));
+                case JTokenType.Integer:
+                    return new Extent(token.ToObject<int>());
+            }
+            throw new Exception("Cannot convert to Extent");
         }
     }
 
@@ -28,6 +35,9 @@ namespace WasteDrudgers.Common
 
         public Extent(int min, int max) =>
             (this.min, this.max) = (min, max);
+
+        public Extent(int value) =>
+            (this.min, this.max) = (value, value);
 
         public override string ToString() =>
             $"{min}─{max}";

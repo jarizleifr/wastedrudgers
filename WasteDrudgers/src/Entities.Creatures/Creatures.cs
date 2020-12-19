@@ -26,7 +26,7 @@ namespace WasteDrudgers.Entities
                 character = creature.Char,
                 color = creature.Color,
             });
-            world.ecs.Assign(entity, new AI { });
+            world.ecs.Assign<AI>(entity);
 
             var stats = new Stats
             {
@@ -153,6 +153,7 @@ namespace WasteDrudgers.Entities
             }
 
             // Check if equipped with weapon, and set attack accordingly
+            var weaponType = ItemType.Misc;
             foreach (var e in world.ecs.View<Equipped, Item, Weapon>())
             {
                 ref var equipped = ref world.ecs.GetRef<Equipped>(e);
@@ -169,6 +170,7 @@ namespace WasteDrudgers.Entities
                         Math.Max(1, attack.damage.min + Formulae.MeleeDamage(stats)),
                         Math.Max(2, attack.damage.max + Formulae.MeleeDamage(stats))
                     );
+                    weaponType = item.type;
 
                     // If no shield, add weapon parry to dodge
                     if (!isShieldEquipped)
@@ -182,7 +184,32 @@ namespace WasteDrudgers.Entities
                         }
                     }
                 }
+            }
 
+            // Apply buff/debuff effects
+            var activeEffects = world.ecs.Pools<ActiveEffect>();
+            foreach (var e in world.ecs.View<ActiveEffect>())
+            {
+                var a = activeEffects[e];
+                if (a.target == entity)
+                {
+                    var eff = a.effect;
+                    switch (eff.Type)
+                    {
+                        case EffectType.ModArmor:
+                            combat.armor += eff.Power;
+                            break;
+                        case EffectType.MeleeHitChanceMod:
+                            combat.hitChance += eff.Power;
+                            break;
+                        case EffectType.MeleeHitChanceModShortBlade:
+                            if (weaponType == ItemType.ShortBlade)
+                            {
+                                combat.hitChance += eff.Power;
+                            }
+                            break;
+                    }
+                }
             }
             world.ecs.AssignOrReplace(entity, combat);
         }
@@ -192,7 +219,7 @@ namespace WasteDrudgers.Entities
             var pos = world.ecs.GetRef<Position>(entity);
             world.spatial.ClearCreatureAt(pos.coords);
             world.ecs.Remove<Position>(entity);
-            world.ecs.Assign<Death>(entity, new Death { });
+            world.ecs.Assign<Death>(entity);
         }
 
         public static void AwardKillExperience(World world, Entity awardee, Entity killed)

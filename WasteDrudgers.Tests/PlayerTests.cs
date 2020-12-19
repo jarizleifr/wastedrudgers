@@ -14,7 +14,7 @@ namespace WasteDrudgers.Tests
         public void PlayerGains15CharacterPoints_UponHittingExperienceThreshold()
         {
             var player = world.PlayerData.entity;
-            world.ecs.Assign(player, new Turn { });
+            world.ecs.Assign<Turn>(player);
             world.ecs.AssignOrReplace(player, new Experience { level = 1, experience = 1000 });
             world.SetState(ctx, RunState.Ticking);
             world.Tick(ctx);

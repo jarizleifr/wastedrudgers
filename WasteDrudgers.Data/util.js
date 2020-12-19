@@ -27,6 +27,10 @@ const parseKeyValuePair = (str) => {
   };
 };
 
+const populateIdFields = (id, entity) => {
+  return { Id: id, ...entity };
+};
+
 const isApparel = (type) => {
   switch (type) {
     case "Helmet":
@@ -65,6 +69,7 @@ module.exports = {
   createTagLists,
   parseKeyValuePairList,
   parseKeyValuePair,
+  populateIdFields,
   isApparel,
   isWeapon,
 };

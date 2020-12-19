@@ -8,11 +8,11 @@ namespace WasteDrudgers.Entities
         public static void MovementSystem(IContext ctx, World world)
         {
             var map = world.Map;
+            var (positions, moves) = world.ecs.Pools<Position, IntentionMove>();
             foreach (var e in world.ecs.View<Position, Actor, IntentionMove>())
             {
-                ref var pos = ref world.ecs.GetRef<Position>(e);
-                ref var actor = ref world.ecs.GetRef<Actor>(e);
-                ref var move = ref world.ecs.GetRef<IntentionMove>(e);
+                ref var pos = ref positions[e];
+                ref var move = ref moves[e];
 
                 var tryPos = pos.coords + move.transform;
 
@@ -21,7 +21,7 @@ namespace WasteDrudgers.Entities
                     if (world.spatial.TryMoveCreature(e, pos.coords, tryPos))
                     {
                         pos.coords = tryPos;
-                        world.ecs.Assign(e, new EventMoved { });
+                        world.ecs.Assign<EventMoved>(e);
                     }
                     else
                     {

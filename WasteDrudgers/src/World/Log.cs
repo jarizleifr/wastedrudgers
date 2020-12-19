@@ -1,14 +1,10 @@
 using System.Collections.Generic;
-using System.Linq;
-using Blaggard.Common;
 using Blaggard.Graphics;
 using ManulECS;
 using WasteDrudgers.Entities;
-using WasteDrudgers.Level;
 
 namespace WasteDrudgers
 {
-    // TODO: Log might cause some garbage due to allocations
     public enum LoggingLevel
     {
         Never,
@@ -17,43 +13,29 @@ namespace WasteDrudgers
         Global,
     }
 
-    public struct LogMessage
+    public static class LogArgs
     {
-        public readonly string text;
-        public readonly LoggingLevel level;
-        public readonly Vec2 position;
-        public readonly LogItem[] items;
-
-        public LogMessage(DBLogMessage raw, Vec2 position, LogItem[] items)
-        {
-            text = raw.Message;
-            level = raw.LoggingLevel;
-            this.position = position;
-            this.items = items;
-        }
+        public static ILogArg Actor(Entity entity) => new LogActor { Entity = entity };
+        public static ILogArg Item(Entity entity) => new LogItem { Entity = entity };
+        public static ILogArg Num(int num) => new LogNumber { Number = num };
     }
 
-    public abstract class LogItem
+    public interface ILogArg
     {
-        public static LogItem Actor(Entity entity) => new LogActor(entity);
-        public static LogItem Item(Entity entity) => new LogThing(entity);
-        public static LogItem Num(int num) => new LogNumber(num);
-        public virtual bool PlayerInvolved(Entity playerEntity) => false;
-        public abstract ColoredString Fetch(World world);
+        bool PlayerInvolved(Entity player) => false;
+        ColoredString ToColoredString(World world);
     }
 
-    public class LogActor : LogItem
+    public class LogActor : ILogArg
     {
-        private Entity entity;
+        public Entity Entity { get; init; }
 
-        public LogActor(Entity entity) => this.entity = entity;
+        public bool PlayerInvolved(Entity playerEntity) => Entity == playerEntity;
 
-        public override bool PlayerInvolved(Entity playerEntity) => entity == playerEntity;
-
-        public override ColoredString Fetch(World world)
+        public ColoredString ToColoredString(World world)
         {
-            var renderable = world.ecs.GetRef<Renderable>(entity);
-            var identity = world.ecs.GetRef<Identity>(entity);
+            var renderable = world.ecs.GetRef<Renderable>(Entity);
+            var identity = world.ecs.GetRef<Identity>(Entity);
 
             var arr = identity.name.ToCharArray();
             arr[0] = char.ToUpperInvariant(arr[0]);
@@ -62,27 +44,22 @@ namespace WasteDrudgers
         }
     }
 
-    public class LogNumber : LogItem
+    public class LogNumber : ILogArg
     {
-        private int num;
-        public LogNumber(int num) => this.num = num;
-        public override bool PlayerInvolved(Entity playerEntity) => false;
+        public int Number { get; init; }
 
-        public override ColoredString Fetch(World world) => new ColoredString(num.ToString(), Data.Colors.white);
+        public ColoredString ToColoredString(World _) =>
+            new ColoredString(Number.ToString(), Data.Colors.white);
     }
 
-    public class LogThing : LogItem
+    public class LogItem : ILogArg
     {
-        private Entity entity;
+        public Entity Entity { get; init; }
 
-        public LogThing(Entity entity) => this.entity = entity;
-
-        public override bool PlayerInvolved(Entity playerEntity) => false;
-
-        public override ColoredString Fetch(World world)
+        public ColoredString ToColoredString(World world)
         {
-            var renderable = world.ecs.GetRef<Renderable>(entity);
-            return new ColoredString(Items.GetFullName(world, entity), renderable.color);
+            var renderable = world.ecs.GetRef<Renderable>(Entity);
+            return new ColoredString(Items.GetFullName(world, Entity), renderable.color);
         }
     }
 
@@ -90,13 +67,13 @@ namespace WasteDrudgers
     {
         public string Description { get; set; }
 
-        private Queue<ColoredString> messageQueue;
-        private List<ColoredString> buffer;
+        private Queue<ColoredTextSpan> messageQueue;
+        private List<ColoredTextSpan[]> buffer;
 
         public Log()
         {
-            messageQueue = new Queue<ColoredString>();
-            buffer = new List<ColoredString>();
+            messageQueue = new Queue<ColoredTextSpan>();
+            buffer = new List<ColoredTextSpan[]>();
         }
 
         public void Clear()
@@ -106,36 +83,13 @@ namespace WasteDrudgers
             buffer.Clear();
         }
 
-        public bool Add(World world, LogMessage message)
-        {
-            var map = world.Map;
-            var playerData = world.PlayerData;
-
-            if (ShouldLogMessage(message, map, playerData.entity))
-            {
-                messageQueue.Enqueue(ProcessLogMessage(world, message));
-                return true;
-            }
-            return false;
-        }
+        public void Add(ColoredTextSpan message) =>
+            messageQueue.Enqueue(message);
 
         public bool HasMessages() => messageQueue.Count > 0;
-
-        private ColoredString ProcessLogMessage(World world, LogMessage msg) =>
-            new ColoredStringBuilder(msg.text)
-                    .WithParams(msg.items.Select(i => i.Fetch(world)))
-                    .Build();
-
-        private bool ShouldLogMessage(LogMessage msg, Map map, Entity player) => msg.level switch
-        {
-            LoggingLevel.Global => true,
-            LoggingLevel.Visible => map[msg.position].Visibility == Visibility.Visible,
-            LoggingLevel.Player => msg.items.Any(i => i.PlayerInvolved(player)),
-            _ => false
-        };
-
         public bool BufferHasMessages() => buffer.Count > 0;
-        public List<ColoredString> GetBuffer() => buffer;
+
+        public List<ColoredTextSpan[]> GetBuffer() => buffer;
 
         public void UpdateMessageBuffer()
         {
@@ -153,25 +107,28 @@ namespace WasteDrudgers
             }
         }
 
-        private ColoredString GetMessage()
+        private ColoredTextSpan[] GetMessage()
         {
             if (messageQueue.Count > 0)
             {
                 // TODO: Get max from Config
                 int max = 80;
-                ColoredString line = ColoredString.Empty;
-                ColoredString next = messageQueue.Peek();
 
-                while (line.Length + next.Length + 1 < max && messageQueue.Count != 0)
+                int lineLength = 0;
+                List<ColoredTextSpan> line = new List<ColoredTextSpan>();
+                ColoredTextSpan next = messageQueue.Peek();
+
+                while (lineLength + next.Length + 1 < max && messageQueue.Count != 0)
                 {
-                    line += line.Length == 0 ? messageQueue.Dequeue() : " " + messageQueue.Dequeue();
+                    lineLength += next.Length;
+                    line.Add(messageQueue.Dequeue());
 
                     if (messageQueue.Count != 0)
                     {
                         next = messageQueue.Peek();
                     }
                 }
-                return line;
+                return line.ToArray();
             }
             return null;
         }

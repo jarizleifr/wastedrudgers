@@ -29,5 +29,7 @@ namespace WasteDrudgers.Level
 
         public bool CreaturesInSight(World world) =>
             world.spatial.HasCreatures(cells, world.PlayerData.coords);
+
+        public void Clear() => cells.Clear();
     }
 }

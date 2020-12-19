@@ -18,7 +18,7 @@ namespace WasteDrudgers.State
             world.ecs.Assign(player, new Position { coords = new Vec2(0, 0) });
             world.ecs.Assign(player, new Renderable { character = '@', color = Data.Colors.white });
             world.ecs.Assign(player, new Actor { energy = 0, speed = 100 });
-            world.ecs.Assign(player, new Player { });
+            world.ecs.Assign<Player>(player);
             world.ecs.Assign(player, new Identity { name = name, rawName = "player" });
             world.ecs.Assign(player, new Experience { level = 1, experience = 0, characterPoints = 100 });
             world.ecs.Assign(player, new Skills { set = new List<Skill>() });
@@ -37,17 +37,23 @@ namespace WasteDrudgers.State
             world.Calendar = new Calendar(135, 1, 1, 12, 0, 0);
 
 #if DEBUG
+            // TODO: Once we implement cheat console, and scripts for it, 
+            // we can get rid of this
+
+            // testing code, doesn't run on Release,
             var startingItems = new List<string>
             {
                 "food_insect",
                 "food_insect",
                 "food_insect",
                 "food_insect",
+                "scroll_shield",
             };
             foreach (var i in startingItems)
             {
                 Items.PickUpItem(world, player, Items.Create(world, i, Vec2.Zero));
             }
+            Talents.AddTalent(world, "tough_skin", player);
 #endif
 
             world.ecs.Assign(player, new HungerClock { nutrition = 1000 });

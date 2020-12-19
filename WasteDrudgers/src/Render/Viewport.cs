@@ -50,7 +50,7 @@ namespace WasteDrudgers.Render
                 }
             }
 
-            var (positions, renderables, effects) = world.ecs.Pools<Position, Renderable, Effect>();
+            var (positions, renderables, effects) = world.ecs.Pools<Position, Renderable, VisualEffect>();
 
             // Draw map features
             foreach (var e in world.ecs.View<Position, Renderable, Feature>())
@@ -102,7 +102,7 @@ namespace WasteDrudgers.Render
             };
 
             // Draw effects
-            foreach (var e in world.ecs.View<Position, Effect>())
+            foreach (var e in world.ecs.View<Position, VisualEffect>())
             {
                 ref var pos = ref positions[e];
                 ref var eff = ref effects[e];

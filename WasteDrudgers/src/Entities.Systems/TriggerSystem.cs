@@ -7,7 +7,6 @@ namespace WasteDrudgers.Entities
             foreach (var e in world.ecs.View<Position, EventMoved>())
             {
                 ref var pos = ref world.ecs.GetRef<Position>(e);
-                ref var moved = ref world.ecs.GetRef<EventMoved>(e);
 
                 if (world.spatial.TryGetFeature(pos.coords, out var feature))
                 {

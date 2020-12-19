@@ -9,16 +9,17 @@ namespace WasteDrudgers.Entities
             bool playerReady = false;
             if (world.queue.Empty)
             {
+                var actors = world.ecs.Pools<Actor>();
                 foreach (var e in world.ecs.View<Actor>())
                 {
-                    ref var actor = ref world.ecs.GetRef<Actor>(e);
+                    ref var actor = ref actors[e];
                     actor.energy += actor.speed;
 
                     if (actor.energy >= 1000)
                     {
                         if (e == playerData.entity)
                         {
-                            world.ecs.Assign(e, new Turn { });
+                            world.ecs.Assign<Turn>(e);
                             playerReady = true;
                         }
                         else
@@ -33,7 +34,7 @@ namespace WasteDrudgers.Entities
             {
                 foreach (var e in world.queue.Entities)
                 {
-                    world.ecs.Assign(e, new Turn { });
+                    world.ecs.Assign<Turn>(e);
                 }
                 world.queue.Clear();
             }

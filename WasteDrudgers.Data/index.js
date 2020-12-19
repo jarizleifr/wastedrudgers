@@ -18,6 +18,18 @@ const buildGameData = () => {
     fs.readFileSync(path.join(__dirname, "json", "professions.json"))
   );
 
+  const spells = JSON.parse(
+    fs.readFileSync(path.join(__dirname, "json", "spells.json"))
+  );
+
+  const talents = JSON.parse(
+    fs.readFileSync(path.join(__dirname, "json", "talents.json"))
+  );
+
+  const traits = JSON.parse(
+    fs.readFileSync(path.join(__dirname, "json", "traits.json"))
+  );
+
   const createData = (csvPath) => {
     var rawData = gameDataParser.parseCSV(csvPath);
     return gameDataParser.processData(rawData, colors);
@@ -28,6 +40,13 @@ const buildGameData = () => {
     const dataWithIndices = rawData.map((tile, i) => ({ Index: i, ...tile }));
     return gameDataParser.processData(dataWithIndices, colors);
   };
+
+  const decorateEntriesWithIds = (entries) =>
+    Object.entries(entries).reduce((acc, cur) => {
+      const id = cur[0];
+      const entry = util.populateIdFields(id, cur[1]);
+      return { ...acc, [id]: entry };
+    }, {});
 
   const decorateLevelsWithPortals = (levels) => {
     const portals = gameDataParser.parseCSV("/csv/portals.csv");
@@ -54,7 +73,9 @@ const buildGameData = () => {
       ...createData("/csv/items-weapons.csv"),
       ...createData("/csv/items-apparel.csv"),
     },
-    spells: createData("/csv/spells.csv"),
+    spells: decorateEntriesWithIds(spells),
+    talents: decorateEntriesWithIds(talents),
+    traits: decorateEntriesWithIds(traits),
     naturalAttacks: createData("/csv/naturalAttacks.csv"),
     levels: decorateLevelsWithPortals(createData("/csv/levels.csv")),
     obfuscated,

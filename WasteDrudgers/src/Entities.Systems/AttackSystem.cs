@@ -5,18 +5,19 @@ namespace WasteDrudgers.Entities
         public static void AttackSystem(IContext ctx, World world)
         {
             var playerData = world.PlayerData;
+            var (intents, combats, positions) = world.ecs.Pools<IntentionAttack, Combat, Position>();
+
             foreach (var e in world.ecs.View<Actor, IntentionAttack, Combat>())
             {
-                ref var actor = ref world.ecs.GetRef<Actor>(e);
-                ref var intent = ref world.ecs.GetRef<IntentionAttack>(e);
-                ref var attacker = ref world.ecs.GetRef<Combat>(e);
+                ref var intent = ref intents[e];
 
                 if (intent.attacker == playerData.entity)
                 {
                     playerData.lastTarget = intent.target;
                 }
 
-                var defender = world.ecs.GetRef<Combat>(intent.target);
+                ref var attacker = ref combats[e];
+                var defender = combats[intent.target];
 
                 var result = RNG.OpposingCheck(attacker.hitChance, defender.dodge);
                 (var damage, var message) = result.Item1 switch
@@ -28,14 +29,14 @@ namespace WasteDrudgers.Entities
                     Attempt.Failure => (0, "miss")
                 };
 
-                var pos = world.ecs.GetRef<Position>(intent.target);
+                var pos = positions[intent.target];
                 if (result.Item1 == Attempt.Failure || result.Item1 == Attempt.Fumble)
                 {
-                    world.WriteToLog(message, pos.coords, LogItem.Actor(e), LogItem.Actor(intent.target));
+                    world.WriteToLog(message, pos.coords, LogArgs.Actor(e), LogArgs.Actor(intent.target));
                 }
                 else if (result.Item1 != Attempt.Critical && damage - defender.armor <= 0)
                 {
-                    world.WriteToLog("hit_no_damage", pos.coords, LogItem.Actor(e), LogItem.Actor(intent.target));
+                    world.WriteToLog("hit_no_damage", pos.coords, LogArgs.Actor(e), LogArgs.Actor(intent.target));
                 }
                 else
                 {
@@ -43,8 +44,8 @@ namespace WasteDrudgers.Entities
                     {
                         damage -= defender.armor;
                     }
-                    world.WriteToLog(message, pos.coords, LogItem.Actor(e), LogItem.Actor(intent.target), LogItem.Num(damage));
-                    Effects.Create(world, pos.coords);
+                    world.WriteToLog(message, pos.coords, LogArgs.Actor(e), LogArgs.Actor(intent.target), LogArgs.Num(damage));
+                    VisualEffects.Create(world, pos.coords);
 
                     var damageEntity = world.ecs.Create();
                     world.ecs.Assign(damageEntity, new Damage { target = intent.target, damage = damage });
@@ -52,7 +53,7 @@ namespace WasteDrudgers.Entities
                     // If attack was initiated by player, track it in damage entity
                     if (e == playerData.entity)
                     {
-                        world.ecs.Assign(damageEntity, new PlayerInitiated { });
+                        world.ecs.Assign<PlayerInitiated>(damageEntity);
                     }
 
                     if (world.ecs.TryGet(e, out CastOnStrike castOnStrike))
