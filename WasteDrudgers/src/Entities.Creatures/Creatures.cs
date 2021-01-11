@@ -153,7 +153,6 @@ namespace WasteDrudgers.Entities
             }
 
             // Check if equipped with weapon, and set attack accordingly
-            var weaponType = ItemType.Misc;
             foreach (var e in world.ecs.View<Equipped, Item, Weapon>())
             {
                 ref var equipped = ref world.ecs.GetRef<Equipped>(e);
@@ -170,7 +169,6 @@ namespace WasteDrudgers.Entities
                         Math.Max(1, attack.damage.min + Formulae.MeleeDamage(stats)),
                         Math.Max(2, attack.damage.max + Formulae.MeleeDamage(stats))
                     );
-                    weaponType = item.type;
 
                     // If no shield, add weapon parry to dodge
                     if (!isShieldEquipped)
@@ -185,6 +183,7 @@ namespace WasteDrudgers.Entities
                     }
                 }
             }
+            world.ecs.AssignOrReplace(entity, combat);
 
             // Apply buff/debuff effects
             var activeEffects = world.ecs.Pools<ActiveEffect>();
@@ -193,25 +192,9 @@ namespace WasteDrudgers.Entities
                 var a = activeEffects[e];
                 if (a.target == entity)
                 {
-                    var eff = a.effect;
-                    switch (eff.Type)
-                    {
-                        case EffectType.ModArmor:
-                            combat.armor += eff.Power;
-                            break;
-                        case EffectType.MeleeHitChanceMod:
-                            combat.hitChance += eff.Power;
-                            break;
-                        case EffectType.MeleeHitChanceModShortBlade:
-                            if (weaponType == ItemType.ShortBlade)
-                            {
-                                combat.hitChance += eff.Power;
-                            }
-                            break;
-                    }
+                    EffectRules.ApplyEffect(world, entity, a.effect.Type, a.effect.Power);
                 }
             }
-            world.ecs.AssignOrReplace(entity, combat);
         }
 
         public static void KillCreature(World world, Entity entity)

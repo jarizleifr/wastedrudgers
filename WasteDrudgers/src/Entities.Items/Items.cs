@@ -225,7 +225,7 @@ namespace WasteDrudgers.Entities
 
             if (world.ecs.TryGet(itemEntity, out CastOnUse castOnUse))
             {
-                Spells.CastSpellOn(world, null, user, castOnUse.spellId);
+                Effects.CastSpell(world, user, castOnUse.spellId, null);
             }
 
             var obfuscated = world.ObfuscatedNames;

@@ -48,7 +48,7 @@ namespace WasteDrudgers.UI
 
             RenderUtils.DrawCharacterSheetInfo(ctx, world, layer, x + 61, y + 2);
 
-            var currentTalents = Talents.GetOwnedTalentIds(world, entity);
+            var currentTalents = Effects.GetOwnedTalentIds(world, entity);
 
             menu.Draw((i) =>
             {

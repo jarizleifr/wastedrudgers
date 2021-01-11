@@ -38,6 +38,7 @@ namespace WasteDrudgers.State
                 // Handle results
                 Systems.HungerClockSystem(ctx, world);
                 Systems.StatusSystem(ctx, world);
+                Systems.AfflictionsSystem(ctx, world);
                 Systems.TriggerSystem(ctx, world);
                 Systems.CreatureUpdateSystem(ctx, world);
 

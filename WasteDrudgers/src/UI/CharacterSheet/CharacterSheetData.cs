@@ -11,7 +11,7 @@ namespace WasteDrudgers.UI
         public CharacterSheetData(World world)
         {
             var player = world.PlayerData.entity;
-            var talents = Talents.GetOwnedTalentIds(world, player);
+            var talents = Effects.GetOwnedTalentIds(world, player);
 
             PickedTalents = talents
                 .Select((id) => Data.GetTalent(id))

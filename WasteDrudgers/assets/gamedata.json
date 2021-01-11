@@ -1010,6 +1010,21 @@
       "MaterialTags": [],
       "UseSpell": "vigor_heal"
     },
+    "potion_poison": {
+      "Id": "potion_poison",
+      "Type": "Potion",
+      "Name": "poison flask",
+      "Char": "¿",
+      "DL": 0,
+      "LevelTags": [
+        "common"
+      ],
+      "Weight": 10,
+      "Value": 10,
+      "Material": "glass",
+      "MaterialTags": [],
+      "UseSpell": "poison_weak"
+    },
     "dagger": {
       "$type": "WasteDrudgers.DBWeapon, WasteDrudgers",
       "Id": "dagger",
@@ -2179,6 +2194,7 @@
       "food_insect",
       "potion_health",
       "potion_vigor",
+      "potion_poison",
       "dagger",
       "bone_dagger",
       "khopesh",

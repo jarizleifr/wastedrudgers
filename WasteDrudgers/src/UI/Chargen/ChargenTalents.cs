@@ -23,7 +23,7 @@ namespace WasteDrudgers.UI
         public void Run(IContext ctx, World world, Command command)
         {
             var player = world.PlayerData.entity;
-            var currentTalents = Talents.GetOwnedTalentIds(world, player);
+            var currentTalents = Effects.GetOwnedTalentIds(world, player);
             var current = talents[menu.Selected];
             ref var exp = ref world.ecs.GetRef<Experience>(player);
             switch (command)
@@ -39,20 +39,20 @@ namespace WasteDrudgers.UI
                     {
                         if (exp.characterPoints >= current.Cost)
                         {
-                            Talents.AddTalent(world, current.Id, player);
+                            Effects.AddTalent(world, current.Id, player);
                             exp.characterPoints -= current.Cost;
                         }
                     }
                     else
                     {
-                        Talents.RemoveTalent(world, current.Id, player);
+                        Effects.RemoveTalent(world, current.Id, player);
                         exp.characterPoints += current.Cost;
                     }
                     break;
                 case Command.MenuBack:
                     if (currentTalents.Contains(current.Id))
                     {
-                        Talents.RemoveTalent(world, current.Id, player);
+                        Effects.RemoveTalent(world, current.Id, player);
                         exp.characterPoints += current.Cost;
                     }
                     break;
@@ -78,7 +78,7 @@ namespace WasteDrudgers.UI
             RenderUtils.DrawCharacterSheetInfo(ctx, world, layer, x + 61, y + 2);
             RenderUtils.DrawCharacterPoints(ctx, world, layer, x + 2, y + 23);
 
-            var currentTalents = Talents.GetOwnedTalentIds(world, entity);
+            var currentTalents = Effects.GetOwnedTalentIds(world, entity);
 
             menu.Draw((i) =>
             {

@@ -58,7 +58,7 @@ namespace WasteDrudgers.Entities
 
                     if (world.ecs.TryGet(e, out CastOnStrike castOnStrike))
                     {
-                        Spells.CastSpellOn(world, e, intent.target, castOnStrike.spellId);
+                        Effects.CastSpell(world, intent.target, castOnStrike.spellId, e);
                     }
                 }
                 world.ecs.Assign<EventActed>(e, new EventActed { energyLoss = 1000, nutritionLoss = 3 });

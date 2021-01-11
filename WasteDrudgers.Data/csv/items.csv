@@ -10,3 +10,4 @@ potion_awareness	Potion	awareness mutagen	¿	0	common	10	10	glass		awareness_per
 food_insect	Food	insect roast	%	0	common	10	10	flesh		
 potion_health	Potion	health potion	¿	0	common	10	10	glass		health_heal
 potion_vigor	Potion	vigor potion	¿	0	common	10	10	glass		vigor_heal
+potion_poison	Potion	poison flask	¿	0	common	10	10	glass		poison_weak

@@ -120,13 +120,12 @@ namespace WasteDrudgers.Render
                 x += Locale.fatigued.Length;
             }
 
-            foreach (var e in world.ecs.View<ActiveEffect, PlayerMarker>())
+            if (world.ecs.TryGet<Afflictions>(player, out var afflictions))
             {
-                ref var a = ref world.ecs.GetRef<ActiveEffect>(e);
-                if (a.effect.Type == EffectType.InflictPoison)
+                if (afflictions.poison > 0)
                 {
                     c.Print(x, y, Locale.poisoned, Data.Colors.greenLight);
-                    x += Locale.poisoned.Length;
+                    x += Locale.fatigued.Length;
                 }
             }
 

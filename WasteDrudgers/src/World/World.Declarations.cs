@@ -77,6 +77,8 @@ namespace WasteDrudgers
             ecs.Declare<ActiveEffect>();
 
             ecs.Declare<Duration>();
+
+            ecs.Declare<Afflictions>();
         }
     }
 }

@@ -172,6 +172,11 @@ namespace WasteDrudgers
         };
     }
 
+    public struct Afflictions : IComponent
+    {
+        public byte poison;
+    }
+
     public struct Stats : IComponent
     {
         public Stat strength;

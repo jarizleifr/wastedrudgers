@@ -4,7 +4,7 @@ using ManulECS;
 
 namespace WasteDrudgers.Entities
 {
-    public static class Talents
+    public static partial class Effects
     {
         private enum AbilityType
         {

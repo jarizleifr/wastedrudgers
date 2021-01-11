@@ -48,12 +48,13 @@ namespace WasteDrudgers.State
                 "food_insect",
                 "food_insect",
                 "scroll_shield",
+                "potion_poison",
             };
             foreach (var i in startingItems)
             {
                 Items.PickUpItem(world, player, Items.Create(world, i, Vec2.Zero));
             }
-            Talents.AddTalent(world, "tough_skin", player);
+            Effects.AddTalent(world, "tough_skin", player);
 #endif
 
             world.ecs.Assign(player, new HungerClock { nutrition = 1000 });
