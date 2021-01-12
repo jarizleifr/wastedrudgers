@@ -22,10 +22,11 @@ namespace WasteDrudgers.Tests
 
             var startVigor = world.ecs.GetRef<Pools>(e2).vigor.Current;
 
-            world.ecs.AssignOrReplace(e1, new Combat
+            world.ecs.AssignOrReplace(e1, new Attack
             {
                 hitChance = 0,
-                damage = new Extent(5, 5),
+                minDamage = 5,
+                maxDamage = 5,
             });
             world.ecs.Assign(e1, new IntentionAttack { target = e2 });
 
@@ -43,10 +44,11 @@ namespace WasteDrudgers.Tests
 
             var startVigor = world.ecs.GetRef<Pools>(e2).vigor.Current;
 
-            world.ecs.AssignOrReplace(e1, new Combat
+            world.ecs.AssignOrReplace(e1, new Attack
             {
                 hitChance = 100,
-                damage = new Extent(5, 5)
+                minDamage = 5,
+                maxDamage = 5,
             });
             world.ecs.Assign(e1, new IntentionAttack { target = e2 });
 
@@ -63,23 +65,51 @@ namespace WasteDrudgers.Tests
         }
 
         [Fact]
-        public void Target_ReceivesActiveEffect_FromPoisonedAttack()
+        public void DefendersParryDecreases_WhenAttacked()
+        {
+            RNG.Seed(0);
+            var e1 = Creatures.Create(world, "mutorc", new Vec2(0, 2));
+            var e2 = Creatures.Create(world, "mutorc", new Vec2(0, 3));
+
+            var startVigor = world.ecs.GetRef<Pools>(e2).vigor.Current;
+
+            world.ecs.AssignOrReplace(e1, new Attack
+            {
+                hitChance = 100,
+                minDamage = 5,
+                maxDamage = 5,
+            });
+            world.ecs.AssignOrReplace(e2, new Defense
+            {
+                parry = 80,
+            });
+            world.ecs.Assign(e1, new IntentionAttack { target = e2 });
+
+            Systems.AttackSystem(ctx, world);
+
+            var def = world.ecs.GetRef<Defense>(e2);
+            Assert.Equal(80, def.parry);
+        }
+
+        [Fact]
+        public void Target_ReceivesAffliction_FromPoisonedAttack()
         {
             RNG.Seed(0);
             var e1 = Creatures.Create(world, "fungoid", new Vec2(0, 2));
             var e2 = Creatures.Create(world, "mutorc", new Vec2(0, 3));
 
-            world.ecs.AssignOrReplace(e1, new Combat
+            world.ecs.AssignOrReplace(e1, new Attack
             {
                 hitChance = 100,
-                damage = new Extent(1, 1)
+                minDamage = 1,
+                maxDamage = 1,
             });
             world.ecs.Assign(e1, new IntentionAttack { target = e2 });
 
             Systems.AttackSystem(ctx, world);
 
             int i = 0;
-            foreach (var e in world.ecs.View<ActiveEffect>())
+            foreach (var e in world.ecs.View<Afflictions>())
             {
                 i++;
             }
@@ -93,10 +123,11 @@ namespace WasteDrudgers.Tests
             var e1 = Creatures.Create(world, "mutorc", new Vec2(0, 2));
 
             var player = world.PlayerData.entity;
-            world.ecs.AssignOrReplace(player, new Combat
+            world.ecs.AssignOrReplace(e1, new Attack
             {
                 hitChance = 100,
-                damage = new Extent(1, 1)
+                minDamage = 1,
+                maxDamage = 1,
             });
             world.ecs.Assign(player, new IntentionAttack { target = e1 });
             Systems.AttackSystem(ctx, world);

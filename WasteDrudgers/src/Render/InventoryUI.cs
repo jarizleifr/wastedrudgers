@@ -108,10 +108,10 @@ namespace WasteDrudgers.Render
                 switch (category)
                 {
                     case InventoryCategory.Weapons:
-                        if (world.ecs.TryGet<Weapon>(wrapper.entity, out var attack))
+                        if (world.ecs.TryGet<Attack>(wrapper.entity, out var attack))
                         {
                             layer.Print(inv.x + inv.width - 6, inv.y + i, StringUtils.AverageDamageToString(attack.Average), color, TextAlignment.Right);
-                            layer.Print(inv.x + inv.width - 11, inv.y + i, $"{attack.chance}%", color, TextAlignment.Right);
+                            layer.Print(inv.x + inv.width - 11, inv.y + i, $"{attack.hitChance}%", color, TextAlignment.Right);
                         }
                         // TODO: If we implement shield bashes, we can probably just make shields into regular weapons
                         else if (world.ecs.TryGet<Shield>(wrapper.entity, out var shield))
@@ -123,7 +123,7 @@ namespace WasteDrudgers.Render
                         if (world.ecs.TryGet<Defense>(wrapper.entity, out var defense))
                         {
                             layer.Print(inv.x + inv.width - 6, inv.y + i, defense.armor.ToString(), color, TextAlignment.Right);
-                            layer.Print(inv.x + inv.width - 11, inv.y + i, $"{defense.dodge}%", color, TextAlignment.Right);
+                            layer.Print(inv.x + inv.width - 11, inv.y + i, $"{defense.parry}%", color, TextAlignment.Right);
                         }
                         break;
                 }
@@ -163,10 +163,10 @@ namespace WasteDrudgers.Render
 
                     if (item.type.IsWeapon())
                     {
-                        if (world.ecs.TryGet<Weapon>(wrapper.entity, out var attack))
+                        if (world.ecs.TryGet<Attack>(wrapper.entity, out var attack))
                         {
                             layer.Print(info.x + 1, info.y + 5, "Attack", ctx.Theme.caption);
-                            layer.Print(info.x + 14, info.y + 5, $"{attack.chance}%", ctx.Theme.text, TextAlignment.Right);
+                            layer.Print(info.x + 14, info.y + 5, $"{attack.hitChance}%", ctx.Theme.text, TextAlignment.Right);
                             layer.Print(info.x + info.width - 1, info.y + 5, attack.ToString(), ctx.Theme.text, TextAlignment.Right);
                         }
                     }
@@ -175,7 +175,7 @@ namespace WasteDrudgers.Render
                         if (world.ecs.TryGet<Defense>(wrapper.entity, out var defense))
                         {
                             layer.Print(info.x + 1, info.y + 5, "Defense", ctx.Theme.caption);
-                            layer.Print(info.x + 14, info.y + 5, $"{defense.dodge}%", ctx.Theme.text, TextAlignment.Right);
+                            layer.Print(info.x + 14, info.y + 5, $"{defense.parry}%", ctx.Theme.text, TextAlignment.Right);
                             layer.Print(info.x + info.width - 1, info.y + 5, $"{defense.armor}", ctx.Theme.text, TextAlignment.Right);
                         }
                     }

@@ -11,7 +11,6 @@ namespace WasteDrudgers.Entities
         Polearm,
         Fencing,
         Whip,
-        Dodge,
         Shield,
         Observation,
 

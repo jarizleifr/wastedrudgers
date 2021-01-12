@@ -94,6 +94,15 @@ namespace WasteDrudgers.Render
             layer.Print(x, y + 19, "Reaction");
         }
 
+        public static void DrawPool(IBlittable layer, int x, int y, int length, Stat stat, Color fore, Color back)
+        {
+            int amount = (int)(length * ((float)stat.Current / (float)stat.Base));
+            for (int i = 0; i < length; i++)
+            {
+                layer.SetCellBackground(x + i, y, i < amount ? fore : back);
+            }
+        }
+
         private static void DrawPools(IContext ctx, IBlittable layer, int x, int y, Pools pools)
         {
             layer.DefaultFore = ctx.Theme.caption;

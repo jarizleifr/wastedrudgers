@@ -69,24 +69,22 @@ namespace WasteDrudgers.Entities
 
             actions.Add(EffectType.ModArmor, (w, e, i) =>
             {
-                ref var combat = ref w.ecs.GetRef<Combat>(e);
-                combat.armor += i;
+                ref var defense = ref w.ecs.GetRef<Defense>(e);
+                defense.armor += i;
             });
 
             actions.Add(EffectType.MeleeHitChanceMod, (w, e, i) =>
             {
-                ref var combat = ref w.ecs.GetRef<Combat>(e);
+                ref var combat = ref w.ecs.GetRef<Attack>(e);
                 combat.hitChance += i;
             });
 
             actions.Add(EffectType.SizeMod, (w, e, i) =>
             {
-                ref var combat = ref w.ecs.GetRef<Combat>(e);
-                combat.damage = new Extent(
-                    Math.Max(1, combat.damage.min + i),
-                    Math.Max(2, combat.damage.max + i)
-                );
-                combat.dodge -= i * 5;
+                ref var attack = ref w.ecs.GetRef<Attack>(e);
+                attack.minDamage = Math.Max(1, attack.minDamage + i);
+                attack.maxDamage = Math.Max(2, attack.maxDamage + i);
+                attack.parry -= i * 5;
             });
 
             actions.Add(EffectType.InflictPoison, (w, e, i) =>

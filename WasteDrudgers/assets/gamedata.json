@@ -1044,7 +1044,7 @@
       "BaseSkill": 5,
       "Damage": "1-4",
       "Traits": "Light,Finesse",
-      "Parry": 0,
+      "Parry": 5,
       "UseSpell": null
     },
     "bone_dagger": {
@@ -1064,7 +1064,7 @@
       "BaseSkill": 5,
       "Damage": "1-5",
       "Traits": "Light,Finesse",
-      "Parry": 0,
+      "Parry": 5,
       "UseSpell": null
     },
     "khopesh": {
@@ -1086,7 +1086,7 @@
       "BaseSkill": 5,
       "Damage": "1-8",
       "Traits": null,
-      "Parry": 0,
+      "Parry": 10,
       "UseSpell": null
     },
     "morningstar": {
@@ -1108,7 +1108,7 @@
       "BaseSkill": 5,
       "Damage": "1-8",
       "Traits": null,
-      "Parry": 0,
+      "Parry": 5,
       "UseSpell": null
     },
     "quarterstaff": {
@@ -1128,7 +1128,7 @@
       "BaseSkill": 0,
       "Damage": "1-8",
       "Traits": "Versatile",
-      "Parry": 0,
+      "Parry": 20,
       "UseSpell": null
     },
     "rapier": {
@@ -1150,7 +1150,7 @@
       "BaseSkill": 0,
       "Damage": "2-8",
       "Traits": "Finesse",
-      "Parry": 0,
+      "Parry": 20,
       "UseSpell": null
     },
     "whip": {
@@ -1170,7 +1170,7 @@
       "BaseSkill": -5,
       "Damage": "3-6",
       "Traits": "Light,Finesse",
-      "Parry": 0,
+      "Parry": 5,
       "UseSpell": null
     },
     "buckler": {
@@ -1233,7 +1233,7 @@
       "MaterialTags": [
         "fabric"
       ],
-      "Evasion": 0,
+      "Penalty": 0,
       "Armor": 1,
       "UseSpell": null
     },
@@ -1253,7 +1253,7 @@
       "MaterialTags": [
         "fabric"
       ],
-      "Evasion": 0,
+      "Penalty": 0,
       "Armor": 0,
       "UseSpell": null
     },
@@ -1273,7 +1273,7 @@
       "MaterialTags": [
         "metal"
       ],
-      "Evasion": 0,
+      "Penalty": -5,
       "Armor": 2,
       "UseSpell": null
     },
@@ -1293,7 +1293,7 @@
       "MaterialTags": [
         "metal"
       ],
-      "Evasion": 0,
+      "Penalty": -5,
       "Armor": 3,
       "UseSpell": null
     },
@@ -1311,7 +1311,7 @@
       "Value": 10,
       "Material": "cloth",
       "MaterialTags": [],
-      "Evasion": 0,
+      "Penalty": 0,
       "Armor": 1,
       "UseSpell": null
     },
@@ -1331,7 +1331,7 @@
       "MaterialTags": [
         "metal"
       ],
-      "Evasion": 0,
+      "Penalty": -5,
       "Armor": 2,
       "UseSpell": null
     },
@@ -1349,7 +1349,7 @@
       "Value": 10,
       "Material": "leather",
       "MaterialTags": [],
-      "Evasion": 0,
+      "Penalty": 0,
       "Armor": 0,
       "UseSpell": null
     },
@@ -1367,7 +1367,7 @@
       "Value": 10,
       "Material": "leather",
       "MaterialTags": [],
-      "Evasion": 0,
+      "Penalty": 0,
       "Armor": 0,
       "UseSpell": null
     },
@@ -1387,7 +1387,7 @@
       "MaterialTags": [
         "metal"
       ],
-      "Evasion": 0,
+      "Penalty": 0,
       "Armor": 1,
       "UseSpell": null
     },
@@ -1405,7 +1405,7 @@
       "Value": 10,
       "Material": "leather",
       "MaterialTags": [],
-      "Evasion": 0,
+      "Penalty": 0,
       "Armor": 1,
       "UseSpell": null
     },
@@ -1425,7 +1425,7 @@
       "MaterialTags": [
         "metal"
       ],
-      "Evasion": 0,
+      "Penalty": 0,
       "Armor": 2,
       "UseSpell": null
     },
@@ -1443,7 +1443,7 @@
       "Value": 10,
       "Material": "gold",
       "MaterialTags": [],
-      "Evasion": 0,
+      "Penalty": 0,
       "Armor": 0,
       "UseSpell": null
     },
@@ -1461,7 +1461,7 @@
       "Value": 10,
       "Material": "gold",
       "MaterialTags": [],
-      "Evasion": 0,
+      "Penalty": 0,
       "Armor": 0,
       "UseSpell": null
     },
@@ -1479,7 +1479,7 @@
       "Value": 10,
       "Material": "gold",
       "MaterialTags": [],
-      "Evasion": 0,
+      "Penalty": 0,
       "Armor": 0,
       "UseSpell": null
     }
@@ -2019,7 +2019,6 @@
   "professions": {
     "fighter": [
       "MartialArts",
-      "Dodge",
       "Vigor",
       "Health",
       "Strength",

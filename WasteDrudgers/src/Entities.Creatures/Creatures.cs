@@ -96,26 +96,28 @@ namespace WasteDrudgers.Entities
 
             // Default combat stats for any creature
             var unarmed = Formulae.BaseSkill(SkillType.MartialArts, stats) + skills.GetRank(SkillType.MartialArts);
-            var combat = new Combat
+            var attack = new Attack
             {
                 hitChance = unarmed,
-                damage = new Extent(
-                    Math.Max(1, 1 + Formulae.MeleeDamage(stats)),
-                    Math.Max(2, 2 + Formulae.MeleeDamage(stats))
-                ),
-                dodge = Formulae.BaseSkill(SkillType.Dodge, stats) + skills.GetRank(SkillType.Dodge) + (int)(unarmed * .33f),
-                armor = 0
+                minDamage = Math.Max(1, 1 + Formulae.MeleeDamage(stats)),
+                maxDamage = Math.Max(2, 2 + Formulae.MeleeDamage(stats)),
+                parry = 20 + unarmed / 2,
+            };
+            var defense = new Defense
+            {
+                armor = 0,
+                evasion = Formulae.Evasion(stats),
+                fortitude = Formulae.Fortitude(stats),
+                mental = Formulae.Mental(stats)
             };
 
             // If creature has natural attack, override
             if (world.ecs.TryGet(entity, out NaturalAttack naturalAttack))
             {
                 unarmed = naturalAttack.baseSkill + skills.GetRank(SkillType.MartialArts);
-                combat.damage = new Extent(
-                    Math.Max(1, naturalAttack.damage.min + Formulae.MeleeDamage(stats)),
-                    Math.Max(2, naturalAttack.damage.max + Formulae.MeleeDamage(stats))
-                );
-                combat.dodge = Formulae.BaseSkill(SkillType.Dodge, stats) + skills.GetRank(SkillType.Dodge) + (int)(unarmed * .33f);
+                attack.minDamage = Math.Max(1, naturalAttack.damage.min + Formulae.MeleeDamage(stats));
+                attack.maxDamage = Math.Max(2, naturalAttack.damage.max + Formulae.MeleeDamage(stats));
+                attack.parry = 20 + unarmed / 2;
 
                 if (naturalAttack.castOnStrike != null)
                 {
@@ -134,56 +136,53 @@ namespace WasteDrudgers.Entities
 
                 if (equipped.entity == entity)
                 {
-                    combat.dodge += shield.baseBlock + skills.GetRank(SkillType.Shield);
+                    attack.parry = shield.baseBlock + skills.GetRank(SkillType.Shield);
                     isShieldEquipped = true;
                 }
             }
 
             // Check equipped armor
-            foreach (var e in world.ecs.View<Equipped, Defense>())
+            foreach (var e in world.ecs.View<Equipped, Armor>())
             {
                 ref var equipped = ref world.ecs.GetRef<Equipped>(e);
-                ref var defense = ref world.ecs.GetRef<Defense>(e);
+                ref var armor = ref world.ecs.GetRef<Armor>(e);
 
                 if (equipped.entity == entity)
                 {
-                    combat.dodge += defense.dodge;
-                    combat.armor += defense.armor;
+                    defense.armor += armor.armor;
                 }
             }
 
             // Check if equipped with weapon, and set attack accordingly
-            foreach (var e in world.ecs.View<Equipped, Item, Weapon>())
+            foreach (var e in world.ecs.View<Equipped, Item, Attack>())
             {
                 ref var equipped = ref world.ecs.GetRef<Equipped>(e);
                 ref var item = ref world.ecs.GetRef<Item>(e);
-                ref var attack = ref world.ecs.GetRef<Weapon>(e);
+                ref var weapon = ref world.ecs.GetRef<Attack>(e);
 
                 if (equipped.entity == entity && equipped.slot == Slot.MainHand)
                 {
                     var skillType = item.type.GetWeaponSkill();
-                    var skill = Formulae.BaseSkill(skillType, stats) + skills.GetRank(skillType) + attack.chance;
-                    combat.wielding = Wielding.SingleWeapon;
-                    combat.hitChance = skill;
-                    combat.damage = new Extent(
-                        Math.Max(1, attack.damage.min + Formulae.MeleeDamage(stats)),
-                        Math.Max(2, attack.damage.max + Formulae.MeleeDamage(stats))
-                    );
+                    var skill = Formulae.BaseSkill(skillType, stats) + skills.GetRank(skillType) + weapon.hitChance;
+                    attack.minDamage = Math.Max(1, weapon.minDamage + Formulae.MeleeDamage(stats));
+                    attack.maxDamage = Math.Max(2, weapon.maxDamage + Formulae.MeleeDamage(stats));
 
-                    // If no shield, add weapon parry to dodge
+                    // If no shield, use weapon parry instead
                     if (!isShieldEquipped)
                     {
-                        combat.dodge += (int)(skill * attack.parry);
-
+                        attack.parry = weapon.parry + skill / 2;
+                        // TODO: Reimplement Versatile with flags
+                        /*
                         // If versatile and without shield, add +2 to damage rolls
                         if (attack.style == WeaponStyle.Versatile)
                         {
                             combat.damage = new Extent(combat.damage.min + 2, combat.damage.max + 2);
-                        }
+                        }*/
                     }
                 }
             }
-            world.ecs.AssignOrReplace(entity, combat);
+            world.ecs.AssignOrReplace(entity, attack);
+            world.ecs.AssignOrReplace(entity, defense);
 
             // Apply buff/debuff effects
             var activeEffects = world.ecs.Pools<ActiveEffect>();

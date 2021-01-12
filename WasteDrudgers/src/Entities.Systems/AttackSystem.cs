@@ -1,3 +1,5 @@
+using System;
+
 namespace WasteDrudgers.Entities
 {
     public static partial class Systems
@@ -5,9 +7,11 @@ namespace WasteDrudgers.Entities
         public static void AttackSystem(IContext ctx, World world)
         {
             var playerData = world.PlayerData;
-            var (intents, combats, positions) = world.ecs.Pools<IntentionAttack, Combat, Position>();
 
-            foreach (var e in world.ecs.View<Actor, IntentionAttack, Combat>())
+            var (intents, attacks, defenses, positions) =
+                world.ecs.Pools<IntentionAttack, Attack, Defense, Position>();
+
+            foreach (var e in world.ecs.View<Actor, IntentionAttack, Attack>())
             {
                 ref var intent = ref intents[e];
 
@@ -16,15 +20,22 @@ namespace WasteDrudgers.Entities
                     playerData.lastTarget = intent.target;
                 }
 
-                ref var attacker = ref combats[e];
-                var defender = combats[intent.target];
+                ref var attack = ref attacks[e];
+                ref var defense = ref defenses[intent.target];
 
-                var result = RNG.OpposingCheck(attacker.hitChance, defender.dodge);
+                var isParrying = (defense.parry >= defense.evasion);
+                var result = RNG.OpposingCheck(attack.hitChance, isParrying ? defense.parry : defense.evasion);
+                // Each subsequent parry reduces ability to parry incoming attacks by 20%
+                if (isParrying)
+                {
+                    defense.parry = Math.Max(0, (int)(defense.parry * 0.8f));
+                }
+
                 (var damage, var message) = result.Item1 switch
                 {
-                    Attempt.Critical => (attacker.CriticalDamage, "hit_critical"),
-                    Attempt.Special => (attacker.SpecialDamage, "hit_special"),
-                    Attempt.Success => (attacker.Damage, "hit"),
+                    Attempt.Critical => (attack.CriticalDamage, "hit_critical"),
+                    Attempt.Special => (attack.SpecialDamage, "hit_special"),
+                    Attempt.Success => (attack.Damage, "hit"),
                     Attempt.Fumble => (0, "miss_critical"),
                     Attempt.Failure => (0, "miss")
                 };
@@ -34,7 +45,7 @@ namespace WasteDrudgers.Entities
                 {
                     world.WriteToLog(message, pos.coords, LogArgs.Actor(e), LogArgs.Actor(intent.target));
                 }
-                else if (result.Item1 != Attempt.Critical && damage - defender.armor <= 0)
+                else if (result.Item1 != Attempt.Critical && damage - defense.armor <= 0)
                 {
                     world.WriteToLog("hit_no_damage", pos.coords, LogArgs.Actor(e), LogArgs.Actor(intent.target));
                 }
@@ -42,7 +53,7 @@ namespace WasteDrudgers.Entities
                 {
                     if (result.Item1 != Attempt.Critical)
                     {
-                        damage -= defender.armor;
+                        damage -= defense.armor;
                     }
                     world.WriteToLog(message, pos.coords, LogArgs.Actor(e), LogArgs.Actor(intent.target), LogArgs.Num(damage));
                     VisualEffects.Create(world, pos.coords);

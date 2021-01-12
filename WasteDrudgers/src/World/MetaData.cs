@@ -18,9 +18,9 @@ namespace WasteDrudgers
         public string currentLevel;
         public int turns;
 
+        // Temporary player specific stuff
         [JsonIgnore]
         public Vec2 coords;
-
         [JsonIgnore]
         public Entity? lastTarget;
     }

@@ -54,13 +54,12 @@ namespace WasteDrudgers.Entities
                 }
                 else
                 {
-                    world.ecs.Assign(entity, new Weapon
+                    var bonus = (material.DamageBonus - baseMaterial.DamageBonus);
+                    world.ecs.Assign(entity, new Attack
                     {
-                        chance = wpn.BaseSkill,
-                        damage = new Extent(
-                            wpn.Damage.min + (material.DamageBonus - baseMaterial.DamageBonus),
-                            wpn.Damage.max + (material.DamageBonus - baseMaterial.DamageBonus)
-                        ),
+                        hitChance = wpn.BaseSkill,
+                        minDamage = wpn.Damage.min + bonus,
+                        maxDamage = wpn.Damage.max + bonus,
                         parry = wpn.Parry,
                     });
                 }
@@ -69,9 +68,9 @@ namespace WasteDrudgers.Entities
             if (raw.Type.IsApparel())
             {
                 var apr = (DBApparel)raw;
-                world.ecs.Assign(entity, new Defense
+                world.ecs.Assign(entity, new Armor
                 {
-                    dodge = apr.Dodge,
+                    evasionPenalty = apr.Penalty,
                     armor = apr.Armor + (material.ArmorBonus - baseMaterial.ArmorBonus),
                 });
             }

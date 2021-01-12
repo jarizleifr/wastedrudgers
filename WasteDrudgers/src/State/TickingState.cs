@@ -65,6 +65,9 @@ namespace WasteDrudgers.State
                 world.ecs.Clear<Death>();
 
                 Systems.InitiativeSystem(ctx, world);
+                // Reset active defenses for entities with turns
+                Systems.ActiveDefenseSystem(ctx, world);
+
                 Systems.AISystem(ctx, world);
 
                 // Check for repeat interrupts

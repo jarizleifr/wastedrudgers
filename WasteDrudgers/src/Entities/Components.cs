@@ -344,7 +344,7 @@ namespace WasteDrudgers
         }
     }
 
-    public enum Wielding
+    public enum WieldingType
     {
         Unarmed,
         SingleWeapon,
@@ -363,43 +363,42 @@ namespace WasteDrudgers
         public string spellId;
     }
 
-    public struct Combat : IComponent
-    {
-        public Wielding wielding;
-        public int hitChance;
-        public Extent damage;
-        public int dodge;
-        public int armor;
-
-        [JsonIgnore]
-        public int SpecialDamage => Damage + Damage;
-        [JsonIgnore]
-        public int CriticalDamage => damage.max;
-        [JsonIgnore]
-        public int Damage => RNG.IntInclusive(damage.min, damage.max);
-        [JsonIgnore]
-        public float Average => (damage.min + damage.max) / 2;
-    }
-
     public struct Shield : IComponent
     {
         public int baseBlock;
     }
 
-    public struct Weapon : IComponent
+    public struct Attack : IComponent
     {
-        public int chance;
-        public Extent damage;
-        public float parry;
-        public WeaponStyle style;
+        public int hitChance;
+        public int minDamage;
+        public int maxDamage;
+        public int parry;
 
         [JsonIgnore]
-        public float Average => (damage.min + damage.max) / 2;
+        public int SpecialDamage => Damage + Damage;
+        [JsonIgnore]
+        public int CriticalDamage => maxDamage;
+        [JsonIgnore]
+        public int Damage => RNG.IntInclusive(minDamage, maxDamage);
+        [JsonIgnore]
+        public float Average => (minDamage + maxDamage) / 2;
+        [JsonIgnore]
+        public string DamageString => $"{minDamage}─{maxDamage}";
     }
 
     public struct Defense : IComponent
     {
-        public int dodge;
+        public int parry;
+        public int armor;
+        public int evasion;
+        public int fortitude;
+        public int mental;
+    }
+
+    public struct Armor : IComponent
+    {
+        public int evasionPenalty;
         public int armor;
     }
 }

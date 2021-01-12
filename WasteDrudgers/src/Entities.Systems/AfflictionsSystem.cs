@@ -6,7 +6,6 @@ namespace WasteDrudgers.Entities
         {
             if (world.GameTicks % 10 == 0)
             {
-                // TODO: Once we implement Defense component with fortitude, we don't need stats anymore
                 var (afflictions, stats, positions) = world.ecs.Pools<Afflictions, Stats, Position>();
                 foreach (var e in world.ecs.View<Afflictions, Stats, Position>())
                 {

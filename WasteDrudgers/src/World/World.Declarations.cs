@@ -38,16 +38,17 @@ namespace WasteDrudgers
 
             ecs.Declare<Stats>();
             ecs.Declare<Skills>();
-            ecs.Declare<Combat>();
             ecs.Declare<Pools>();
             ecs.Declare<Experience>();
 
             ecs.Declare<HungerClock>();
 
+            ecs.Declare<Attack>();
+            ecs.Declare<Defense>();
+
             // Item components
             ecs.Declare<Item>();
-            ecs.Declare<Weapon>();
-            ecs.Declare<Defense>();
+            ecs.Declare<Armor>();
             ecs.Declare<Shield>();
 
             ecs.Declare<Obfuscated>();

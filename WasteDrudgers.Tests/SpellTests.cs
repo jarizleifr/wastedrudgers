@@ -18,7 +18,7 @@ namespace WasteDrudgers.Tests
             var e1 = Creatures.Create(world, "mutorc", new Vec2(0, 2));
 
             var playerData = world.PlayerData;
-            Spells.CastSpellOn(world, playerData.entity, e1, "poison_weak");
+            Effects.CastSpell(world, e1, "poison_weak", playerData.entity);
 
             int i = 0;
             foreach (var e in world.ecs.View<ActiveEffect, PlayerInitiated>())
@@ -40,7 +40,7 @@ namespace WasteDrudgers.Tests
             var playerData = world.PlayerData;
             Items.PickUpItem(world, playerData.entity, e1);
             Items.PickUpItem(world, playerData.entity, e2);
-            Spells.CastSpellOn(world, null, playerData.entity, "identify");
+            Effects.CastSpell(world, playerData.entity, "identify", null);
 
             var item1 = world.ecs.GetRef<Item>(e1);
             var item2 = world.ecs.GetRef<Item>(e2);

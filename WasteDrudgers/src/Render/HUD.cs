@@ -1,12 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using Blaggard.Common;
 using Blaggard.Graphics;
-using ManulECS;
-
 using WasteDrudgers.Entities;
-using WasteDrudgers.Level;
 
 namespace WasteDrudgers.Render
 {
@@ -194,6 +190,7 @@ namespace WasteDrudgers.Render
             var player = playerData.entity;
 
             var rect = ctx.UIData.sidebar;
+            int y = rect.y;
             int o = rect.width < 14 ? 0 : 1;
 
             c.DefaultFore = ctx.Theme.windowFrame;
@@ -204,13 +201,34 @@ namespace WasteDrudgers.Render
             c.Rect(rect.x, rect.y + 3, rect.width, rect.height - 3, ' ');
             c.Print(o, rect.y + 3, playerData.name, ctx.Theme.caption);
 
-            var health = world.ecs.GetRef<Pools>(player);
-            DrawPlayerPool(ctx, c, o, rect.y + 4, "VIG", health.vigor, Data.Colors.white, Data.Colors.blue, true);
-            DrawPlayerPool(ctx, c, o, rect.y + 5, "HLT", health.health, Data.Colors.white, Data.Colors.redLight, true);
+            var pools = world.ecs.GetRef<Pools>(player);
 
-            var combat = world.ecs.GetRef<Combat>(player);
-            DrawAttack(c, ctx.Theme, o, rect.y + 7, combat);
-            DrawDefense(c, ctx.Theme, o, rect.y + 11, combat);
+            c.PutChar(o + 1, y + 4, '↔', Data.Colors.blue);
+            c.Print(o + 8, y + 4, $"{pools.vigor.Current}/{pools.vigor.Base}", Data.Colors.white, TextAlignment.Center);
+            RenderUtils.DrawPool(c, o + 4, y + 4, 9, pools.vigor, Data.Colors.blue, Data.Colors.blueDark);
+
+            c.PutChar(o + 1, y + 5, '♥', Data.Colors.redLight);
+            c.Print(o + 8, y + 5, $"{pools.health.Current}/{pools.health.Base}", Data.Colors.white, TextAlignment.Center);
+            RenderUtils.DrawPool(c, o + 4, y + 5, 9, pools.health, Data.Colors.redLight, Data.Colors.redDark);
+
+            var attack = world.ecs.GetRef<Attack>(player);
+            c.Print(o, rect.y + 7, Locale.attack, ctx.Theme.caption);
+            c.Print(o + 4, rect.y + 8, $"{attack.hitChance}%", ctx.Theme.text, TextAlignment.Right);
+            c.Print(o + 12, rect.y + 8, attack.DamageString, ctx.Theme.text, TextAlignment.Right);
+
+            var defense = world.ecs.GetRef<Defense>(player);
+            c.Print(o, rect.y + 11, Locale.parry, ctx.Theme.caption);
+            c.Print(o + 13, rect.y + 11, $"{attack.parry}%", ctx.Theme.text, TextAlignment.Right);
+            c.Print(o, rect.y + 12, Locale.armor, ctx.Theme.caption);
+            c.Print(o + 12, rect.y + 12, defense.armor.ToString(), ctx.Theme.text, TextAlignment.Right);
+
+            c.Print(o, rect.y + 14, Locale.evasion, ctx.Theme.caption);
+            c.Print(o + 13, rect.y + 14, $"{defense.evasion}%", ctx.Theme.text, TextAlignment.Right);
+            c.Print(o, rect.y + 15, Locale.fortitude, ctx.Theme.caption);
+            c.Print(o + 13, rect.y + 15, $"{defense.fortitude}%", ctx.Theme.text, TextAlignment.Right);
+            c.Print(o, rect.y + 16, Locale.mental, ctx.Theme.caption);
+            c.Print(o + 13, rect.y + 16, $"{defense.mental}%", ctx.Theme.text, TextAlignment.Right);
+
             //layer.Print(o, rect.y + 22, "¢¶¥[=\"≈π!♀ôôδ", Color.white);
         }
 
@@ -230,36 +248,18 @@ namespace WasteDrudgers.Render
                 var renderable = world.ecs.GetRef<Renderable>(target);
                 var health = world.ecs.GetRef<Pools>(target);
 
-                var attacker = world.ecs.GetRef<Combat>(playerData.entity);
-                var defender = world.ecs.GetRef<Combat>(target);
+                var attack = world.ecs.GetRef<Attack>(playerData.entity);
+                var defense = world.ecs.GetRef<Defense>(target);
 
-                var hitChance = Math.Max(1, (attacker.hitChance * (100 - defender.dodge)) / 100);
+                var hitChance = Math.Max(1, (attack.hitChance * (100 - defense.parry)) / 100);
                 layer.PutChar(x + 1, y, renderable.character, renderable.color);
                 var cur = health.health.Current + health.vigor.Current;
                 var max = health.health.Max + health.vigor.Max;
-                DrawEnemyPool(ctx, layer, x + 4, y, 9, cur, max);
+
+                int amount = (int)(9 * ((float)cur / (float)max));
+                layer.LineHoriz(x + 4, y, amount, '=', Data.Colors.white);
                 layer.Print(x + 4 + 9 / 2, y + 1, $"Hit: {hitChance}%", ctx.Theme.text, TextAlignment.Center);
             }
-        }
-
-        public static void DrawAttack(IBlittable layer, Theme theme, int x, int y, Combat combat)
-        {
-            var wieldString = combat.wielding switch
-            {
-                Wielding.Unarmed => Locale.unarmed,
-                Wielding.SingleWeapon => Locale.weapon,
-                Wielding.DualWield => Locale.weapons,
-            };
-            layer.Print(x, y, wieldString, theme.caption);
-            //layer.Print(x + 9, y, "(]{‼", Color.white);
-            DrawPercentage(layer, theme, x, y + 1, 4, "", combat.hitChance);
-            DrawCustomValue(layer, theme, x, y + 1, 13, "", combat.damage.ToString());
-        }
-
-        public static void DrawExperience(IBlittable layer, Theme theme, int x, int y, Experience exp)
-        {
-            DrawNumeric(layer, theme, x, y, 12, Locale.level, exp.level);
-            DrawNumeric(layer, theme, x, y + 1, 12, Locale.next, Formulae.ExperienceNeededForLevel(exp.level + 1) - exp.experience);
         }
 
         public static void DrawClock(IContext ctx, World world, int hours)
@@ -277,75 +277,6 @@ namespace WasteDrudgers.Render
                 var cell = clock[ch];
                 c.SetCell(x + i, viewport.y, cell.ch, cell.fore, cell.back);
             }
-        }
-
-        private static void DrawEnemyPool(IContext ctx, IBlittable layer, int x, int y, int l, int cur, int max)
-        {
-            int amount = (int)(l * ((float)cur / (float)max));
-            layer.LineHoriz(x, y, amount, '=', Data.Colors.white);
-        }
-
-        private static void DrawPool(IContext ctx, IBlittable layer, int x, int y, int l, int cur, int max, Color fore, Color back, bool text = false)
-        {
-            int amount = (int)(l * ((float)cur / (float)max));
-
-            layer.LineHoriz(x, y, l, ' ', fore, Data.Colors.black);
-            layer.LineHoriz(x, y, amount, ' ', fore, back);
-
-            if (text)
-            {
-                layer.Print(x + l / 2, y, string.Format("{0}/{1}", cur, max), fore, TextAlignment.Center);
-            }
-        }
-
-        private static void DrawPlayerPool(IContext ctx, IBlittable layer, int x, int y, string caption, Stat stat, Color fore, Color back, bool text = false)
-        {
-            layer.Print(x, y, caption, ctx.Theme.text);
-            //DrawPool(ctx, layer, x + 4, y, 9, stat.Current, stat.Max, color, ctx.Theme.black, true);
-            var cur = stat.Current;
-            var max = stat.Max;
-            var l = 9;
-            int amount = (int)(l * ((float)cur / (float)max));
-
-            layer.LineHoriz(x + 4, y, l, ' ', fore, Data.Colors.black);
-            layer.LineHoriz(x + 4, y, amount, ' ', fore, back);
-
-            if (text)
-            {
-                layer.Print(x + 4 + l / 2, y, string.Format("{0}/{1}", cur, max), fore, TextAlignment.Center);
-            }
-        }
-
-        private static void DrawDefense(IBlittable layer, Theme theme, int x, int y, Combat combat)
-        {
-            DrawPercentage(layer, theme, x, y, 13, Locale.dodge, combat.dodge);
-            DrawNumeric(layer, theme, x, y + 1, 12, Locale.armor, combat.armor);
-        }
-
-        // TODO: Drawing colors for stat numbers.
-        // TODO: Show modifiers via color
-        private static void DrawNumeric(IBlittable layer, Theme theme, int x, int y, int offset, string caption, int value)
-        {
-            layer.Print(x, y, caption, theme.caption);
-            layer.Print(x + offset, y, value.ToString(), theme.text, TextAlignment.Right);
-        }
-
-        private static void DrawPercentage(IBlittable layer, Theme theme, int x, int y, int offset, string caption, int value)
-        {
-            layer.Print(x, y, caption, theme.caption);
-            layer.Print(x + offset, y, $"{value}%", theme.text, TextAlignment.Right);
-        }
-
-        private static void DrawCustomValue(IBlittable layer, Theme theme, int x, int y, int offset, string caption, string value)
-        {
-            layer.Print(x, y, caption, theme.caption);
-            layer.Print(x + offset, y, value, theme.text, TextAlignment.Right);
-        }
-
-        private static void DrawModifier(IBlittable layer, Theme theme, int x, int y, int offset, string caption, int value)
-        {
-            layer.Print(x, y, caption, theme.caption);
-            layer.Print(x + offset, y, StringUtils.ModifierToString(value), theme.text, TextAlignment.Right);
         }
     }
 }

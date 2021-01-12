@@ -44,13 +44,13 @@ namespace WasteDrudgers
     public class DBWeapon : DBItem
     {
         public int BaseSkill { get; set; }
-        public float Parry { get; set; }
+        public int Parry { get; set; }
         public Extent Damage { get; set; }
     }
 
     public class DBApparel : DBItem
     {
-        public int Dodge { get; set; }
+        public int Penalty { get; set; }
         public int Armor { get; set; }
         public int SpellDefense { get; set; }
     }

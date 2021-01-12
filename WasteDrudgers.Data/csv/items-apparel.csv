@@ -1,10 +1,10 @@
-Id	Type	Name	Char	DL	LevelTags	Weight	Value	Material	MaterialTags	Evasion	Armor	UseSpell
+Id	Type	Name	Char	DL	LevelTags	Weight	Value	Material	MaterialTags	Penalty	Armor	UseSpell
 cap	Helmet	cap	¢	0	common	10	10	leather	fabric	0	1	
 cloak	Cloak	cloak	¶	0	common	10	10	cloth	fabric	0	0	
-scale_armor	Armor	scale armor	¥	0	common	10	10	iron	metal	0	2	
-breastplate	Armor	breastplate	¥	0	common	10	10	iron	metal	0	3	
+scale_armor	Armor	scale armor	¥	0	common	10	10	iron	metal	-5	2	
+breastplate	Armor	breastplate	¥	0	common	10	10	iron	metal	-5	3	
 padded_shirt	Undershirt	padded shirt	φ	0	common	10	10	cloth		0	1	
-hauberk	Undershirt	hauberk	φ	0	common	10	10	iron	metal	0	2	
+hauberk	Undershirt	hauberk	φ	0	common	10	10	iron	metal	-5	2	
 belt	Belt	belt	=	0	common	10	10	leather		0	0	
 bracers	Bracers	bracers	≈	0	common	10	10	leather		0	0	
 gauntlets	Gloves	gauntlets	""""	0	common	10	10	iron	metal	0	1	
