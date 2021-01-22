@@ -47,7 +47,7 @@
     "Name": "Strength Permanent",
     "Effects": [
       {
-        "Type": "PermanentStrength",
+        "Type": "StrengthBase",
         "Magnitude": "1-2",
         "Duration": 0
       }

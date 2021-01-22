@@ -109,7 +109,7 @@ namespace WasteDrudgers.Entities
             if (focus.IsStat())
             {
                 var type = focus.GetStat();
-                stats.SetBase(type, stats.Get(type).Base + 1);
+                stats[type]++;
             }
             else if (focus.IsPool())
             {

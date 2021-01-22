@@ -30,9 +30,9 @@ namespace WasteDrudgers.Entities
 
         public static int Speed(Stats stats) => 100 + (stats.finesse - BASE_ATTRIBUTE_VALUE);
 
-        public static int Evasion(Stats stats) => (stats.finesse * 5 + stats.awareness * 5) / 2;
-        public static int Fortitude(Stats stats) => (stats.endurance * 5 + stats.strength * 5) / 2;
-        public static int Mental(Stats stats) => (stats.intellect * 5 + stats.resolve * 5) / 2;
+        public static int Evasion(Stats stats) => (stats.finesse * 4 + stats.awareness * 3) / 2;
+        public static int Fortitude(Stats stats) => (stats.endurance * 4 + stats.strength * 3) / 2;
+        public static int Mental(Stats stats) => (stats.intellect * 3 + stats.resolve * 4) / 2;
 
         // Skill base
         public static int BaseSkill(SkillType type, Stats stats)

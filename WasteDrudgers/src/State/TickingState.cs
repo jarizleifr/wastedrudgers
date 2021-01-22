@@ -37,7 +37,6 @@ namespace WasteDrudgers.State
 
                 // Handle results
                 Systems.HungerClockSystem(ctx, world);
-                Systems.StatusSystem(ctx, world);
                 Systems.AfflictionsSystem(ctx, world);
                 Systems.TriggerSystem(ctx, world);
                 Systems.CreatureUpdateSystem(ctx, world);
@@ -50,7 +49,6 @@ namespace WasteDrudgers.State
                 world.ecs.Clear<EventMoved>();
                 world.ecs.Clear<EventActed>();
                 world.ecs.Clear<EventStatsUpdated>();
-                world.ecs.Clear<EventEffectsUpdated>();
                 world.ecs.Clear<EventInventoryUpdated>();
                 world.ecs.Clear<Turn>();
 

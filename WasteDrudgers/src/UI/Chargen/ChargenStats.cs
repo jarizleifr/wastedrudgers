@@ -80,7 +80,7 @@ namespace WasteDrudgers.UI
                 var stat = ((StatType)i);
 
                 Color c;
-                if (data != null && data.stats[stat] > 0)
+                if (data != null && data.stats[stat].Base > 0)
                 {
                     c = (i == menu.Selected) ? Data.Colors.bronzeLight : Data.Colors.white;
                 }

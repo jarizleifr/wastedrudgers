@@ -23,13 +23,20 @@ namespace WasteDrudgers.State
             world.ecs.Assign(player, new Experience { level = 1, experience = 0, characterPoints = 100 });
             world.ecs.Assign(player, new Skills { set = new List<Skill>() });
 
-            var stats = new Stats { strength = 10, endurance = 10, finesse = 10, intellect = 10, resolve = 10, awareness = 10 };
-            world.ecs.Assign(player, stats);
-            world.ecs.Assign(player, new Pools
+            world.ecs.Assign(player, new Stats
             {
-                vigor = Formulae.BaseVigor(stats),
-                health = Formulae.BaseHealth(stats)
+                strength = 10,
+                endurance = 10,
+                finesse = 10,
+                intellect = 10,
+                resolve = 10,
+                awareness = 10
             });
+
+            world.ecs.Assign(player, new Actor { });
+            world.ecs.Assign(player, new Pools { });
+            world.ecs.Assign(player, new Attack { });
+            world.ecs.Assign(player, new Defense { });
 
             var startingLevel = "dungeon_01";
             world.PlayerData = new PlayerData { entity = player, name = name, coords = Vec2.Zero, currentLevel = startingLevel, lastTarget = null };

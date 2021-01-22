@@ -27,7 +27,7 @@ namespace WasteDrudgers.Entities
 
                 if (state != clock.State)
                 {
-                    world.ecs.Assign<EventStatusUpdated>(e);
+                    world.ecs.Assign<EventStatsUpdated>(e);
                 }
             }
         }

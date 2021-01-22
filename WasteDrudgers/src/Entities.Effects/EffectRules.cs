@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using ManulECS;
-using WasteDrudgers.Common;
 
 namespace WasteDrudgers.Entities
 {
@@ -16,10 +15,16 @@ namespace WasteDrudgers.Entities
         {
             actions = new Dictionary<EffectType, Action<World, Entity, int>>();
 
-            actions.Add(EffectType.PermanentStrength, (w, e, i) =>
+            actions.Add(EffectType.StrengthBase, (w, e, i) =>
             {
                 ref var stats = ref w.ecs.GetRef<Stats>(e);
                 stats.strength.Base += i;
+            });
+
+            actions.Add(EffectType.StrengthMod, (w, e, i) =>
+            {
+                ref var stats = ref w.ecs.GetRef<Stats>(e);
+                stats.strength.Mod += i;
             });
 
             actions.Add(EffectType.PermanentEndurance, (w, e, i) =>
@@ -50,6 +55,18 @@ namespace WasteDrudgers.Entities
             {
                 ref var stats = ref w.ecs.GetRef<Stats>(e);
                 stats.awareness.Base += i;
+            });
+
+            actions.Add(EffectType.EvasionBonus, (w, e, i) =>
+            {
+                ref var defense = ref w.ecs.GetRef<Defense>(e);
+                defense.evasion += i;
+            });
+
+            actions.Add(EffectType.FortitudeBonus, (w, e, i) =>
+            {
+                ref var defense = ref w.ecs.GetRef<Defense>(e);
+                defense.fortitude += i;
             });
 
             actions.Add(EffectType.Identify, (w, e, i) =>
@@ -110,6 +127,17 @@ namespace WasteDrudgers.Entities
             {
                 actions[type].Invoke(world, entity, value);
             }
+        }
+
+        public static void ApplyHungerEffect(World world, Entity entity)
+        {
+            ref var stats = ref world.ecs.GetRef<Stats>(entity);
+            stats.strength.Mod -= 2;
+            stats.endurance.Mod -= 2;
+            stats.finesse.Mod -= 2;
+            stats.intellect.Mod -= 2;
+            stats.resolve.Mod -= 2;
+            stats.awareness.Mod -= 2;
         }
     }
 }

@@ -26,8 +26,6 @@ namespace WasteDrudgers
             ecs.Declare<EventActed>();
             ecs.Declare<EventStatsUpdated>();
             ecs.Declare<EventInventoryUpdated>();
-            ecs.Declare<EventEffectsUpdated>();
-            ecs.Declare<EventStatusUpdated>();
 
             // Actor components
             ecs.Declare<Actor>();

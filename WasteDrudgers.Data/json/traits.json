@@ -18,6 +18,10 @@
       {
         "Type": "SizeMod",
         "Magnitude": 1
+      },
+      {
+        "Type": "StrengthMod",
+        "Magnitude": 2
       }
     ]
   }

@@ -143,17 +143,19 @@ namespace WasteDrudgers.Render
             for (int i = 0; i < 6; i++)
             {
                 var x = viewport.x + 2 + i * 6;
-                c.Print(x, y, ((AbbrStats)i).ToString(), ctx.Theme.caption);
+                var type = (StatType)i;
+                c.Print(x, y, type.Abbr().ToString(), ctx.Theme.caption);
                 c.PutChar(x + 2, y, ':', ctx.Theme.text);
 
-                var mod = stats[(StatType)i].Mod;
+                var stat = stats[type];
+                var mod = stat.Mod;
                 var statColor = mod switch
                 {
                     var _ when mod < 0 => ctx.Theme.critical,
                     var _ when mod > 0 => ctx.Theme.fortified,
                     _ => Data.Colors.white
                 };
-                c.Print(x + 5, y, stats[(StatType)i].Current.ToString(), statColor, Data.Colors.black, TextAlignment.Right);
+                c.Print(x + 5, y, stat.Current.ToString(), statColor, Data.Colors.black, TextAlignment.Right);
 
                 if (i < 5)
                 {

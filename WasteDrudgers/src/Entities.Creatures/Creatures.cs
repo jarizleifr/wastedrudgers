@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using Blaggard.Common;
 using ManulECS;
 
-using WasteDrudgers.Common;
-
 namespace WasteDrudgers.Entities
 {
     public static class Creatures
@@ -39,17 +37,12 @@ namespace WasteDrudgers.Entities
             };
 
             world.ecs.Assign(entity, stats);
-            world.ecs.Assign(entity, new Actor
-            {
-                energy = 0,
-                speed = 50 + RNG.IntInclusive(0, 50),
-            });
-            world.ecs.Assign(entity, new Pools
-            {
-                vigor = Formulae.BaseVigor(stats),
-                health = Formulae.BaseHealth(stats)
-            });
             world.ecs.Assign(entity, new Skills { set = new List<Skill>() });
+            // These are recalculated on creature stats update
+            world.ecs.Assign(entity, new Actor { });
+            world.ecs.Assign(entity, new Pools { });
+            world.ecs.Assign(entity, new Attack { });
+            world.ecs.Assign(entity, new Defense { });
 
             ComponentUtils.ApplyProfession(world, entity, creature);
 
@@ -80,122 +73,6 @@ namespace WasteDrudgers.Entities
             return entity;
         }
 
-        public static void UpdateCreature(World world, Entity entity)
-        {
-            var stats = world.ecs.GetRef<Stats>(entity);
-            var skills = world.ecs.GetRef<Skills>(entity);
-
-            var exp = world.ecs.GetRef<Experience>(entity);
-
-            ref var health = ref world.ecs.GetRef<Pools>(entity);
-            ref var actor = ref world.ecs.GetRef<Actor>(entity);
-
-            health.vigor.Base = Formulae.BaseVigor(stats) + (exp.level - 1) * Formulae.VigorPerLevel(stats);
-            health.health.Base = Formulae.BaseHealth(stats) + (exp.level - 1) * Formulae.HealthPerLevel(stats);
-            actor.speed = Formulae.Speed(stats);
-
-            // Default combat stats for any creature
-            var unarmed = Formulae.BaseSkill(SkillType.MartialArts, stats) + skills.GetRank(SkillType.MartialArts);
-            var attack = new Attack
-            {
-                hitChance = unarmed,
-                minDamage = Math.Max(1, 1 + Formulae.MeleeDamage(stats)),
-                maxDamage = Math.Max(2, 2 + Formulae.MeleeDamage(stats)),
-                parry = 20 + unarmed / 2,
-            };
-            var defense = new Defense
-            {
-                armor = 0,
-                evasion = Formulae.Evasion(stats),
-                fortitude = Formulae.Fortitude(stats),
-                mental = Formulae.Mental(stats)
-            };
-
-            // If creature has natural attack, override
-            if (world.ecs.TryGet(entity, out NaturalAttack naturalAttack))
-            {
-                unarmed = naturalAttack.baseSkill + skills.GetRank(SkillType.MartialArts);
-                attack.minDamage = Math.Max(1, naturalAttack.damage.min + Formulae.MeleeDamage(stats));
-                attack.maxDamage = Math.Max(2, naturalAttack.damage.max + Formulae.MeleeDamage(stats));
-                attack.parry = 20 + unarmed / 2;
-
-                if (naturalAttack.castOnStrike != null)
-                {
-                    world.ecs.AssignOrReplace(entity, new CastOnStrike { spellId = naturalAttack.castOnStrike });
-                }
-            }
-
-            // TODO: Not all creatures can have equipment, should have some flag to check for that, so we don't loop through equipment unnecessarily
-
-            // Check equipped shield
-            bool isShieldEquipped = false;
-            foreach (var e in world.ecs.View<Equipped, Shield>())
-            {
-                ref var equipped = ref world.ecs.GetRef<Equipped>(e);
-                ref var shield = ref world.ecs.GetRef<Shield>(e);
-
-                if (equipped.entity == entity)
-                {
-                    attack.parry = shield.baseBlock + skills.GetRank(SkillType.Shield);
-                    isShieldEquipped = true;
-                }
-            }
-
-            // Check equipped armor
-            foreach (var e in world.ecs.View<Equipped, Armor>())
-            {
-                ref var equipped = ref world.ecs.GetRef<Equipped>(e);
-                ref var armor = ref world.ecs.GetRef<Armor>(e);
-
-                if (equipped.entity == entity)
-                {
-                    defense.armor += armor.armor;
-                }
-            }
-
-            // Check if equipped with weapon, and set attack accordingly
-            foreach (var e in world.ecs.View<Equipped, Item, Attack>())
-            {
-                ref var equipped = ref world.ecs.GetRef<Equipped>(e);
-                ref var item = ref world.ecs.GetRef<Item>(e);
-                ref var weapon = ref world.ecs.GetRef<Attack>(e);
-
-                if (equipped.entity == entity && equipped.slot == Slot.MainHand)
-                {
-                    var skillType = item.type.GetWeaponSkill();
-                    var skill = Formulae.BaseSkill(skillType, stats) + skills.GetRank(skillType) + weapon.hitChance;
-                    attack.minDamage = Math.Max(1, weapon.minDamage + Formulae.MeleeDamage(stats));
-                    attack.maxDamage = Math.Max(2, weapon.maxDamage + Formulae.MeleeDamage(stats));
-
-                    // If no shield, use weapon parry instead
-                    if (!isShieldEquipped)
-                    {
-                        attack.parry = weapon.parry + skill / 2;
-                        // TODO: Reimplement Versatile with flags
-                        /*
-                        // If versatile and without shield, add +2 to damage rolls
-                        if (attack.style == WeaponStyle.Versatile)
-                        {
-                            combat.damage = new Extent(combat.damage.min + 2, combat.damage.max + 2);
-                        }*/
-                    }
-                }
-            }
-            world.ecs.AssignOrReplace(entity, attack);
-            world.ecs.AssignOrReplace(entity, defense);
-
-            // Apply buff/debuff effects
-            var activeEffects = world.ecs.Pools<ActiveEffect>();
-            foreach (var e in world.ecs.View<ActiveEffect>())
-            {
-                var a = activeEffects[e];
-                if (a.target == entity)
-                {
-                    EffectRules.ApplyEffect(world, entity, a.effect.Type, a.effect.Power);
-                }
-            }
-        }
-
         public static void KillCreature(World world, Entity entity)
         {
             var pos = world.ecs.GetRef<Position>(entity);
@@ -224,7 +101,7 @@ namespace WasteDrudgers.Entities
             for (int i = 0; i < 6; i++)
             {
                 var type = (StatType)i;
-                characterPoints += stats.Get(type).Base * Formulae.GetStatCost(type);
+                characterPoints += stats[type].Base * Formulae.GetStatCost(type);
             }
 
             foreach (var s in skills.set)
@@ -233,6 +110,165 @@ namespace WasteDrudgers.Entities
             }
 
             return characterPoints;
+        }
+
+        public static void UpdateCreature(World world, Entity entity)
+        {
+            ref var stats = ref world.ecs.GetRef<Stats>(entity);
+            ResetStats(ref stats);
+
+            ref var attack = ref world.ecs.GetRef<Attack>(entity);
+            ResetAttack(world, entity, ref attack, out var primary, out var hasShield);
+
+            ref var defense = ref world.ecs.GetRef<Defense>(entity);
+            ResetDefense(world, entity, ref defense);
+
+            // Apply effects
+            var activeEffects = world.ecs.Pools<ActiveEffect>();
+            foreach (var e in world.ecs.View<ActiveEffect>())
+            {
+                var a = activeEffects[e];
+                if (a.target == entity)
+                {
+                    EffectRules.ApplyEffect(world, entity, a.effect.Type, a.effect.Power);
+                }
+            }
+            ApplyHunger(world, entity, ref stats);
+
+            ref var pools = ref world.ecs.GetRef<Pools>(entity);
+            pools.vigor.Base = Formulae.BaseVigor(stats);
+            pools.health.Base = Formulae.BaseHealth(stats);
+
+            ref var actor = ref world.ecs.GetRef<Actor>(entity);
+            actor.speed = Formulae.Speed(stats);
+
+            var skills = world.ecs.GetRef<Skills>(entity);
+            var skill = Formulae.BaseSkill(primary, stats) + skills.GetRank(primary);
+            attack.hitChance += skill;
+            attack.minDamage = Math.Max(1, attack.minDamage + Formulae.MeleeDamage(stats));
+            attack.maxDamage = Math.Max(2, attack.maxDamage + Formulae.MeleeDamage(stats));
+
+            attack.parry += hasShield
+                ? Formulae.BaseSkill(SkillType.Shield, stats) + skills.GetRank(SkillType.Shield)
+                : skill / 2;
+        }
+
+        private static void ResetStats(ref Stats stats)
+        {
+            stats.strength.Mod = 0;
+            stats.endurance.Mod = 0;
+            stats.finesse.Mod = 0;
+            stats.intellect.Mod = 0;
+            stats.resolve.Mod = 0;
+            stats.awareness.Mod = 0;
+        }
+
+        private static void ResetAttack(World world, Entity entity, ref Attack attack, out SkillType primary, out bool hasShield)
+        {
+            // Default values
+            primary = SkillType.MartialArts;
+            attack.hitChance = 0;
+            attack.minDamage = 1;
+            attack.maxDamage = 2;
+            attack.parry = 20;
+
+            // If creature has natural attack, override
+            if (world.ecs.TryGet(entity, out NaturalAttack naturalAttack))
+            {
+                attack.minDamage = naturalAttack.damage.min;
+                attack.maxDamage = naturalAttack.damage.max;
+                // TODO: Natural attack parry?
+
+                if (naturalAttack.castOnStrike != null)
+                {
+                    world.ecs.AssignOrReplace(entity, new CastOnStrike { spellId = naturalAttack.castOnStrike });
+                }
+            }
+
+            var (equippeds, shields, items, attacks) =
+                world.ecs.Pools<Equipped, Shield, Item, Attack>();
+
+            // Check if shield equipped
+            hasShield = false;
+            foreach (var e in world.ecs.View<Equipped, Shield>())
+            {
+                ref var equipped = ref equippeds[e];
+                ref var shield = ref shields[e];
+
+                if (equipped.entity == entity)
+                {
+                    hasShield = true;
+                    attack.parry = shield.baseBlock;
+                    break;
+                }
+            }
+
+            // Check if equipped with weapon, and set attack accordingly
+            foreach (var e in world.ecs.View<Equipped, Item, Attack>())
+            {
+                ref var equipped = ref equippeds[e];
+                ref var item = ref items[e];
+                ref var weapon = ref attacks[e];
+
+                if (equipped.entity == entity && equipped.slot == Slot.MainHand)
+                {
+                    primary = item.type.GetWeaponSkill();
+                    attack.hitChance = weapon.hitChance;
+                    attack.minDamage = weapon.minDamage;
+                    attack.maxDamage = weapon.maxDamage;
+
+                    // If no shield, use weapon parry instead
+                    if (!hasShield)
+                    {
+                        attack.parry = weapon.parry;
+                        // TODO: Reimplement Versatile with flags
+                        /*
+                        // If versatile and without shield, add +2 to damage rolls
+                        if (attack.style == WeaponStyle.Versatile)
+                        {
+                            combat.damage = new Extent(combat.damage.min + 2, combat.damage.max + 2);
+                        }*/
+
+                    }
+                    break;
+                }
+            }
+        }
+
+        private static void ResetDefense(World world, Entity entity, ref Defense defense)
+        {
+            defense.armor = 0;
+            defense.evasion = 0;
+            defense.fortitude = 0;
+            defense.mental = 0;
+
+            // Check equipped armor
+            foreach (var e in world.ecs.View<Equipped, Armor>())
+            {
+                ref var equipped = ref world.ecs.GetRef<Equipped>(e);
+                ref var armor = ref world.ecs.GetRef<Armor>(e);
+
+                if (equipped.entity == entity)
+                {
+                    defense.armor += armor.armor;
+                }
+            }
+        }
+
+        private static void ApplyHunger(World world, Entity entity, ref Stats stats)
+        {
+            if (world.ecs.TryGet<HungerClock>(entity, out var hungerClock))
+            {
+                if (hungerClock.State == HungerState.Hungry)
+                {
+                    stats.strength.Mod -= 2;
+                    stats.endurance.Mod -= 2;
+                    stats.finesse.Mod -= 2;
+                    stats.intellect.Mod -= 2;
+                    stats.resolve.Mod -= 2;
+                    stats.awareness.Mod -= 2;
+                }
+            }
         }
     }
 }

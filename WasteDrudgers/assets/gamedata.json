@@ -1538,7 +1538,7 @@
       "Name": "Strength Permanent",
       "Effects": [
         {
-          "Type": "PermanentStrength",
+          "Type": "StrengthBase",
           "Magnitude": "1-2",
           "Duration": 0
         }
@@ -1679,6 +1679,10 @@
         {
           "Type": "SizeMod",
           "Magnitude": 1
+        },
+        {
+          "Type": "StrengthMod",
+          "Magnitude": 2
         }
       ]
     }

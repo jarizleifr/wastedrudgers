@@ -88,7 +88,7 @@ namespace WasteDrudgers.Tests
             Systems.AttackSystem(ctx, world);
 
             var def = world.ecs.GetRef<Defense>(e2);
-            Assert.Equal(80, def.parry);
+            Assert.Equal(60, def.parry);
         }
 
         [Fact]

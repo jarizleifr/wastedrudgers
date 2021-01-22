@@ -1,5 +1,6 @@
 using Blaggard.Common;
 using Blaggard.Graphics;
+using WasteDrudgers.Common;
 using WasteDrudgers.Entities;
 
 namespace WasteDrudgers.Render
@@ -156,9 +157,16 @@ namespace WasteDrudgers.Render
         {
             for (int i = 0; i < 6; i++)
             {
-                var stat = (StatType)i;
-                layer.Print(x + i * 3, y, stat.Abbr(), ctx.Theme.caption);
-                layer.Print(x + i * 3, y + 1, stats[stat].Base.ToString(), ctx.Theme.text);
+                var type = (StatType)i;
+                layer.Print(x + i * 3, y, type.Abbr(), ctx.Theme.caption);
+                var stat = stats[type];
+                var c = stat switch
+                {
+                    var _ when stat.Mod < 0 => Data.Colors.fuchsiaLight,
+                    var _ when stat.Mod > 0 => Data.Colors.tealLight,
+                    _ => ctx.Theme.text,
+                };
+                layer.Print(x + i * 3, y + 1, stat.Current.ToString(), c);
             }
         }
 

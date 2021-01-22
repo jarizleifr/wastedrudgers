@@ -9,12 +9,15 @@ namespace WasteDrudgers.Entities
 
     public enum EffectType
     {
-        PermanentStrength,
+        StrengthBase,
+        StrengthMod,
         PermanentEndurance,
         PermanentFinesse,
         PermanentIntellect,
         PermanentResolve,
         PermanentAwareness,
+        EvasionBonus,
+        FortitudeBonus,
         Identify,
         HealVigor,
         HealHealth,
@@ -31,7 +34,7 @@ namespace WasteDrudgers.Entities
         {
             switch (type)
             {
-                case EffectType.PermanentStrength:
+                case EffectType.StrengthBase:
                 case EffectType.PermanentEndurance:
                 case EffectType.PermanentFinesse:
                 case EffectType.PermanentIntellect:
@@ -42,6 +45,7 @@ namespace WasteDrudgers.Entities
                 case EffectType.HealHealth:
                 case EffectType.HealVigor:
                     return EffectProcType.Repeated;
+                case EffectType.StrengthMod:
                 case EffectType.MeleeHitChanceMod:
                 case EffectType.MeleeHitChanceModShortBlade:
                 case EffectType.SizeMod:
@@ -49,34 +53,6 @@ namespace WasteDrudgers.Entities
                     return EffectProcType.Sustained;
             }
             return EffectProcType.Once;
-        }
-
-        public static bool IsFireAndForget(this EffectType type)
-        {
-            switch (type)
-            {
-                case EffectType.PermanentStrength:
-                case EffectType.PermanentEndurance:
-                case EffectType.PermanentFinesse:
-                case EffectType.PermanentIntellect:
-                case EffectType.PermanentResolve:
-                case EffectType.PermanentAwareness:
-                case EffectType.Identify:
-                case EffectType.HealHealth:
-                case EffectType.HealVigor:
-                    return true;
-            }
-            return false;
-        }
-
-        public static bool IsIncremental(this EffectType type)
-        {
-            switch (type)
-            {
-                case EffectType.InflictPoison:
-                    return true;
-            }
-            return false;
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Blaggard.Common;
 using Blaggard.Graphics;
@@ -77,8 +78,6 @@ namespace WasteDrudgers
 
     public struct EventStatsUpdated : ITag { }
     public struct EventInventoryUpdated : ITag { }
-    public struct EventEffectsUpdated : ITag { }
-    public struct EventStatusUpdated : ITag { }
     public struct Turn : ITag { }
     public struct AI : ITag { }
 
@@ -179,84 +178,47 @@ namespace WasteDrudgers
 
     public struct Stats : IComponent
     {
-        public Stat strength;
-        public Stat endurance;
-        public Stat finesse;
-        public Stat intellect;
-        public Stat resolve;
-        public Stat awareness;
+        public Attrib strength;
+        public Attrib endurance;
+        public Attrib finesse;
+        public Attrib intellect;
+        public Attrib resolve;
+        public Attrib awareness;
 
-        public Stat Get(StatType type) => type switch
+        public Attrib this[StatType type]
         {
-            StatType.Strength => strength,
-            StatType.Endurance => endurance,
-            StatType.Finesse => finesse,
-            StatType.Intellect => intellect,
-            StatType.Resolve => resolve,
-            StatType.Awareness => awareness,
-        };
-
-        public Stat this[StatType type]
-        {
-            get => Get(type);
-            set => SetBase(type, value);
-        }
-
-        public void SetBase(StatType type, int value)
-        {
-            switch (type)
+            get => type switch
             {
-                case StatType.Strength:
-                    strength.Base = value;
-                    break;
-                case StatType.Endurance:
-                    endurance.Base = value;
-                    break;
-                case StatType.Finesse:
-                    finesse.Base = value;
-                    break;
-                case StatType.Intellect:
-                    intellect.Base = value;
-                    break;
-                case StatType.Resolve:
-                    resolve.Base = value;
-                    break;
-                case StatType.Awareness:
-                    awareness.Base = value;
-                    break;
-            }
-        }
-
-        public void SetMod(StatType type, int value)
-        {
-            switch (type)
+                StatType.Strength => strength,
+                StatType.Endurance => endurance,
+                StatType.Finesse => finesse,
+                StatType.Intellect => intellect,
+                StatType.Resolve => resolve,
+                StatType.Awareness => awareness,
+            };
+            set
             {
-                case StatType.Strength:
-                    strength.Mod = value;
-                    break;
-                case StatType.Endurance:
-                    endurance.Mod = value;
-                    break;
-                case StatType.Finesse:
-                    finesse.Mod = value;
-                    break;
-                case StatType.Intellect:
-                    intellect.Mod = value;
-                    break;
-                case StatType.Resolve:
-                    resolve.Mod = value;
-                    break;
-                case StatType.Awareness:
-                    awareness.Mod = value;
-                    break;
-            }
-        }
-
-        public void SetMods(int value)
-        {
-            for (int i = 0; i < 6; i++)
-            {
-                SetMod((StatType)i, value);
+                switch (type)
+                {
+                    case StatType.Strength:
+                        strength.Base = value;
+                        break;
+                    case StatType.Endurance:
+                        endurance.Base = value;
+                        break;
+                    case StatType.Finesse:
+                        finesse.Base = value;
+                        break;
+                    case StatType.Intellect:
+                        intellect.Base = value;
+                        break;
+                    case StatType.Resolve:
+                        resolve.Base = value;
+                        break;
+                    case StatType.Awareness:
+                        awareness.Base = value;
+                        break;
+                }
             }
         }
     }

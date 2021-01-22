@@ -15,7 +15,7 @@ namespace WasteDrudgers.Entities
                 clock.food = Items.GetRations(world, e);
                 if (clock.State != state)
                 {
-                    world.ecs.Assign<EventStatusUpdated>(e);
+                    world.ecs.Assign<EventStatsUpdated>(e);
                 }
             }
 
@@ -43,7 +43,7 @@ namespace WasteDrudgers.Entities
                 }
                 if (clock.State != state)
                 {
-                    world.ecs.Assign<EventStatusUpdated>(e);
+                    world.ecs.Assign<EventStatsUpdated>(e);
                 }
             }
 

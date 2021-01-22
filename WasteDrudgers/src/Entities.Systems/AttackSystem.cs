@@ -28,7 +28,7 @@ namespace WasteDrudgers.Entities
                 // Each subsequent parry reduces ability to parry incoming attacks by 20%
                 if (isParrying)
                 {
-                    defense.parry = Math.Max(0, (int)(defense.parry * 0.8f));
+                    defense.parry = Math.Max(0, defense.parry - 20);
                 }
 
                 (var damage, var message) = result.Item1 switch
