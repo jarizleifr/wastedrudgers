@@ -1,13 +1,11 @@
 using Blaggard.Graphics;
-using WasteDrudgers.Render;
 
 namespace WasteDrudgers.State
 {
-    public class MoreMessagesState : IRunState
+    [InputDomains("game")]
+    public class MoreMessagesState : GameScene
     {
-        public string[] InputDomains { get; set; } = { "game" };
-
-        public void Run(IContext ctx, World world)
+        public override void Update(IContext ctx, World world)
         {
             var root = ctx.QueueCanvas(RenderLayer.Root);
             root.Print(root.Width - 1, 2, "-MORE-", Data.Colors.white, TextAlignment.Right);
@@ -22,8 +20,6 @@ namespace WasteDrudgers.State
             {
                 world.SetState(ctx, RunState.AwaitingInput);
             }
-
-            Views.DrawGameView(ctx, world);
         }
     }
 }

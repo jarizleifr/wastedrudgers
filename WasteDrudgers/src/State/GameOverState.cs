@@ -3,11 +3,10 @@ using WasteDrudgers.Render;
 
 namespace WasteDrudgers.State
 {
-    public class GameOverState : IRunState
+    [InputDomains("menu")]
+    public class GameOverState : Scene
     {
-        public string[] InputDomains { get; set; } = { "menu" };
-
-        public void Initialize(IContext ctx, World world)
+        public override void Initialize(IContext ctx, World world)
         {
             // Delete save game on game over
             var playerData = world.PlayerData;
@@ -18,7 +17,7 @@ namespace WasteDrudgers.State
             world.spatial.Clear();
         }
 
-        public void Run(IContext ctx, World world)
+        public override void Update(IContext ctx, World world)
         {
             switch (ctx.Command)
             {

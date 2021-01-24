@@ -4,21 +4,20 @@ using WasteDrudgers.UI;
 
 namespace WasteDrudgers.State
 {
-    internal class MainMenuState : IRunState
+    [InputDomains("menu")]
+    internal class MainMenuState : Scene
     {
         public int selection;
         private string[] items = { "New Game", "Load Game", "Configure", "Quit Game" };
 
-        public string[] InputDomains { get; set; } = { "menu" };
-
         private SimpleMenu menu;
 
-        public void Initialize(IContext ctx, World world)
+        public override void Initialize(IContext ctx, World world)
         {
             menu = new SimpleMenu(2, TextAlignment.Left, items);
         }
 
-        public void Run(IContext ctx, World world)
+        public override void Update(IContext ctx, World world)
         {
             switch (ctx.Command)
             {

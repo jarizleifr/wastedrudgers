@@ -25,16 +25,15 @@ namespace WasteDrudgers.State
 
     // TODO: Show some metadata with saves
     // TODO: Implement save deletion
-    internal class LoadGameState : IRunState
+    [InputDomains("menu")]
+    internal class LoadGameState : Scene
     {
         public int selection;
 
         private int offset = 0;
         private SaveWrapper[] items;
 
-        public string[] InputDomains { get; set; } = { "menu" };
-
-        public void Initialize(IContext ctx, World world)
+        public override void Initialize(IContext ctx, World world)
         {
             var path = SerializationUtils.GetSaveFolderPath();
             var dir = new DirectoryInfo(path);
@@ -42,7 +41,7 @@ namespace WasteDrudgers.State
             items = dir.GetFiles().Select(f => new SaveWrapper(f.Name)).ToArray();
         }
 
-        public void Run(IContext ctx, World world)
+        public override void Update(IContext ctx, World world)
         {
 
             int l = items.Length;

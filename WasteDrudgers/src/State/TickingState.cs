@@ -2,11 +2,11 @@ using WasteDrudgers.Entities;
 
 namespace WasteDrudgers.State
 {
-    internal class TickingState : IRunState
+    internal class TickingState : Scene
     {
         private PlayerData playerData;
 
-        public void Run(IContext ctx, World world)
+        public override void Update(IContext ctx, World world)
         {
             playerData ??= world.PlayerData;
             playerData.lastTarget = null;

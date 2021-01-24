@@ -2,10 +2,10 @@ using Blaggard.FileIO;
 
 namespace WasteDrudgers.State
 {
-    internal class LevelTransitionState : IRunState
+    internal class LevelTransitionState : Scene
     {
         public string levelName;
-        public void Run(IContext ctx, World world)
+        public override void Update(IContext ctx, World world)
         {
             var playerData = world.PlayerData;
 
@@ -18,7 +18,7 @@ namespace WasteDrudgers.State
             var global = ZipUtils.LoadJsonFromZip(savePath, "global.json");
             world.ecs.Deserialize(global);
 
-            IRunState newState;
+            Scene newState;
             if (ZipUtils.TryLoadJsonFromZip(savePath, levelName + ".json", out var level))
             {
                 world.ecs.Deserialize(level);

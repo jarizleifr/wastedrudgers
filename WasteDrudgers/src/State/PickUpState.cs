@@ -5,23 +5,22 @@ using WasteDrudgers.Render;
 
 namespace WasteDrudgers.State
 {
-    public class PickUpState : IRunState
+    [InputDomains("menu", "inventory", "selection")]
+    public class PickUpState : GameScene
     {
         public int selected;
         public int offset;
 
-        public string[] InputDomains { get; set; } = { "menu", "inventory", "selection" };
-
         private PlayerData playerData;
         private Inventory inventory;
 
-        public void Initialize(IContext ctx, World world)
+        public override void Initialize(IContext ctx, World world)
         {
             playerData = world.PlayerData;
             inventory = Inventory.FromItemsOnGround(world, playerData.coords);
         }
 
-        public void Run(IContext ctx, World world)
+        public override void Update(IContext ctx, World world)
         {
             var menu = ctx.QueueCanvas(RenderLayer.MenuOverlay);
             var rect = RenderUtils.TerminalWindow(ctx);
@@ -59,7 +58,6 @@ namespace WasteDrudgers.State
                 return;
             }
 
-            Views.DrawGameView(ctx, world);
             InventoryUI.DrawInventory(ctx, world, selected, offset, 0, inventory, "Pick up items");
         }
 

@@ -1,14 +1,14 @@
 using WasteDrudgers.Render;
+
 namespace WasteDrudgers.State
 {
-    internal class EscapeMenuState : IRunState
+    [InputDomains("menu")]
+    internal class EscapeMenuState : GameScene
     {
         public int selection;
         private string[] items = { "Save and Exit to Menu", "Save and Quit Game", "Retire Character", "Return to Game" };
 
-        public string[] InputDomains { get; set; } = { "menu" };
-
-        public void Run(IContext ctx, World world)
+        public override void Update(IContext ctx, World world)
         {
             switch (ctx.Command)
             {
@@ -37,7 +37,6 @@ namespace WasteDrudgers.State
             }
 
             var offsets = RenderUtils.GetTerminalWindowOffsets(ctx);
-            Views.DrawGameView(ctx, world);
 
             var layer = ctx.QueueCanvas(RenderLayer.MenuOverlay);
             layer.Clear();

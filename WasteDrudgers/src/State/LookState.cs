@@ -1,18 +1,16 @@
 using Blaggard;
 using Blaggard.Common;
 
-using WasteDrudgers.Level;
 using WasteDrudgers.Render;
 
 namespace WasteDrudgers.State
 {
-    public class LookState : IRunState
+    [InputDomains("game")]
+    public class LookState : Scene
     {
         public Vec2 coords;
 
-        public string[] InputDomains { get; set; } = { "game" };
-
-        public void Run(IContext ctx, World world)
+        public override void Update(IContext ctx, World world)
         {
             var cmd = ctx.Command;
             switch (cmd)

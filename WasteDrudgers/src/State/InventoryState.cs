@@ -4,13 +4,12 @@ using WasteDrudgers.Render;
 
 namespace WasteDrudgers.State
 {
-    public class InventoryState : IRunState
+    [InputDomains("menu", "inventory", "selection")]
+    public class InventoryState : GameScene
     {
         public int selected;
         public int offset;
         public InventoryCategory category;
-
-        public string[] InputDomains { get; set; } = { "menu", "inventory", "selection" };
 
         private PlayerData playerData;
         private Inventory inventory;
@@ -18,7 +17,7 @@ namespace WasteDrudgers.State
         private bool droppedItem;
         private bool changedEquipment;
 
-        public void Initialize(IContext ctx, World world)
+        public override void Initialize(IContext ctx, World world)
         {
             playerData = world.PlayerData;
             UpdateInventory(world, playerData);
@@ -26,7 +25,7 @@ namespace WasteDrudgers.State
             changedEquipment = false;
         }
 
-        public void Run(IContext ctx, World world)
+        public override void Update(IContext ctx, World world)
         {
             var menu = ctx.QueueCanvas(RenderLayer.MenuOverlay);
             var rect = RenderUtils.TerminalWindow(ctx);
@@ -97,7 +96,6 @@ namespace WasteDrudgers.State
                     break;
             }
 
-            Views.DrawGameView(ctx, world);
             InventoryUI.DrawInventory(ctx, world, selected, offset, category, inventory, "Inventory");
         }
 

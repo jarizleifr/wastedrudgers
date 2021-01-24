@@ -1,11 +1,11 @@
 namespace WasteDrudgers.State
 {
-    internal class SaveGameState : IRunState
+    internal class SaveGameState : Scene
     {
         public string saveName;
-        public IRunState nextState;
+        public Scene nextState;
 
-        public void Run(IContext ctx, World world)
+        public override void Update(IContext ctx, World world)
         {
             SerializationUtils.Save(world);
             world.Clear();

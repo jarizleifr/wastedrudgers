@@ -5,10 +5,9 @@ using WasteDrudgers.UI;
 
 namespace WasteDrudgers.State
 {
-    public class CharacterUpgradeState : IRunState
+    [InputDomains("menu")]
+    public class CharacterUpgradeState : Scene
     {
-        public string[] InputDomains { get; set; } = { "menu" };
-
         private Tabs tabs;
         private IUIComponent current;
         private Func<ChargenData, IUIComponent>[] stateFactories = new Func<ChargenData, IUIComponent>[]
@@ -21,14 +20,14 @@ namespace WasteDrudgers.State
         private string[] captions = { "Stats", "Skills", "Talents" };
         private ChargenData data;
 
-        public void Initialize(IContext ctx, World world)
+        public override void Initialize(IContext ctx, World world)
         {
             tabs = new Tabs(captions);
             data = new ChargenData();
             current = stateFactories[tabs.Selected](data);
         }
 
-        public void Run(IContext ctx, World world)
+        public override void Update(IContext ctx, World world)
         {
             var root = ctx.QueueCanvas(RenderLayer.Root);
             var rect = RenderUtils.OffsetTerminalWindow(ctx);

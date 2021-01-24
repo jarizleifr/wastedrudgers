@@ -3,19 +3,18 @@ using WasteDrudgers.Render;
 
 namespace WasteDrudgers.State
 {
-    internal class ConfigState : IRunState
+    [InputDomains("menu")]
+    internal class ConfigState : Scene
     {
         public int selection;
-        public string[] InputDomains { get; set; } = { "menu" };
-
         private Config tempConfig;
 
-        public void Initialize(IContext ctx, World world)
+        public override void Initialize(IContext ctx, World world)
         {
             tempConfig = ((Config)ctx.Config).Clone();
         }
 
-        public void Run(IContext ctx, World world)
+        public override void Update(IContext ctx, World world)
         {
             var items = CreateItems(tempConfig);
             switch (ctx.Command)

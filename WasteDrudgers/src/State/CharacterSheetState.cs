@@ -4,10 +4,9 @@ using WasteDrudgers.UI;
 
 namespace WasteDrudgers.State
 {
-    public class CharacterSheetState : IRunState
+    [InputDomains("menu")]
+    public class CharacterSheetState : GameScene
     {
-        public string[] InputDomains { get; set; } = { "menu" };
-
         private Tabs tabs;
         private IUIComponent current;
         private Func<CharacterSheetData, IUIComponent>[] stateFactories = new Func<CharacterSheetData, IUIComponent>[]
@@ -19,14 +18,14 @@ namespace WasteDrudgers.State
         private string[] captions = { "Skills", "Talents" };
         private CharacterSheetData data;
 
-        public void Initialize(IContext ctx, World world)
+        public override void Initialize(IContext ctx, World world)
         {
             tabs = new Tabs(captions);
             data = new CharacterSheetData(world);
             current = stateFactories[tabs.Selected](data);
         }
 
-        public void Run(IContext ctx, World world)
+        public override void Update(IContext ctx, World world)
         {
             var layer = ctx.QueueCanvas(RenderLayer.MenuOverlay);
             var rect = RenderUtils.OffsetTerminalWindow(ctx);
@@ -47,8 +46,6 @@ namespace WasteDrudgers.State
                     world.SetState(ctx, RunState.AwaitingInput);
                     break;
             }
-
-            Views.DrawGameView(ctx, world);
 
             tabs.Draw(0, 0, layer);
             current.Run(ctx, world, command);

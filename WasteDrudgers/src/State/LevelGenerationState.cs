@@ -4,13 +4,13 @@ using WasteDrudgers.Level;
 
 namespace WasteDrudgers.State
 {
-    internal class LevelGenerationState : IRunState
+    internal class LevelGenerationState : Scene
     {
         public string levelName;
         public Map map = null;
         public bool newGame;
 
-        public void Run(IContext ctx, World world)
+        public override void Update(IContext ctx, World world)
         {
             bool initial = map == null;
 

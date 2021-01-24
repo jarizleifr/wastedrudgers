@@ -1,13 +1,11 @@
 using Blaggard.Graphics;
-using WasteDrudgers.Render;
 using WasteDrudgers.UI;
 
 namespace WasteDrudgers.State
 {
-    public class RestMenuState : IRunState
+    [InputDomains("menu")]
+    public class RestMenuState : Scene
     {
-        public string[] InputDomains { get; set; } = { "menu" };
-
         private SimpleMenu menu;
         private static string[] items = new[]
         {
@@ -16,12 +14,12 @@ namespace WasteDrudgers.State
             "Break camp"
         };
 
-        public void Initialize(IContext ctx, World world)
+        public override void Initialize(IContext ctx, World world)
         {
             menu = new SimpleMenu(2, TextAlignment.Center, items);
         }
 
-        public void Run(IContext ctx, World world)
+        public override void Update(IContext ctx, World world)
         {
             switch (ctx.Command)
             {

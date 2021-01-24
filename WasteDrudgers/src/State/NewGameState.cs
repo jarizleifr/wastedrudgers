@@ -6,9 +6,9 @@ using WasteDrudgers.Entities;
 
 namespace WasteDrudgers.State
 {
-    internal class NewGameState : IRunState
+    internal class NewGameState : Scene
     {
-        public void Run(IContext ctx, World world)
+        public override void Update(IContext ctx, World world)
         {
             world.ecs.Clear();
 

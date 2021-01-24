@@ -26,30 +26,6 @@ namespace WasteDrudgers.Render
             return (root, viewport);
         }
 
-        public static void DrawGameView(IContext ctx, World world)
-        {
-            // Queue game layers for rendering, even if they're not rerendered 
-            (var root, var viewport) = QueueGameLayers(ctx);
-
-            if (world.ShouldRedraw)
-            {
-                var playerData = world.PlayerData;
-                var map = world.Map;
-                var calendar = world.Calendar;
-
-                HUD.DrawBoxes(ctx);
-                HUD.DrawSidebar(ctx, world);
-                HUD.DrawStatsBar(ctx, world);
-                HUD.DrawStatusBar(ctx, world);
-                HUD.DrawFooter(ctx, world, LevelUtils.GetDescription(world, playerData.coords));
-                HUD.DrawLog(ctx, world);
-                HUD.DrawClock(ctx, world, calendar.Hour);
-                Viewport.Draw(ctx, world, playerData.coords);
-
-                world.ShouldRedraw = false;
-            }
-        }
-
         public static void DrawLookView(IContext ctx, World world, Vec2 cursor)
         {
             (var root, var viewport) = QueueGameLayers(ctx);

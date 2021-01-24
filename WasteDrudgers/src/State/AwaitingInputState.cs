@@ -1,22 +1,19 @@
 using System;
 using Blaggard.Common;
 using WasteDrudgers.Entities;
-using WasteDrudgers.Render;
 
 namespace WasteDrudgers.State
 {
-    internal class AwaitingInputState : IRunState
+    [InputDomains("game")]
+    internal class AwaitingInputState : GameScene
     {
         private PlayerData playerData;
 
-        public string[] InputDomains { get; set; } = { "game" };
+        public override void Initialize(IContext ctx, World world) => playerData = world.PlayerData;
 
-        public void Initialize(IContext ctx, World world) => playerData = world.PlayerData;
-
-        public void Run(IContext ctx, World world)
+        public override void Update(IContext ctx, World world)
         {
             Systems.VisualEffectSystem(ctx, world);
-            Views.DrawGameView(ctx, world);
 
             Command command = Command.None;
             if (world.repeatActionQueue.Count > 0)
@@ -65,7 +62,7 @@ namespace WasteDrudgers.State
             world.SetState(ctx, nextState);
         }
 
-        private IRunState WaitExtended(World world)
+        private Scene WaitExtended(World world)
         {
             for (int i = 0; i < 20; i++)
             {
@@ -74,7 +71,7 @@ namespace WasteDrudgers.State
             return Wait(world);
         }
 
-        private IRunState Operate(World world)
+        private Scene Operate(World world)
         {
             if (world.spatial.TryGetFeature(playerData.coords, out var feature))
             {
@@ -87,7 +84,7 @@ namespace WasteDrudgers.State
             return this;
         }
 
-        private IRunState MoveRepeat(World world, Direction direction)
+        private Scene MoveRepeat(World world, Direction direction)
         {
             world.repeatActionQueue.Enqueue(direction switch
             {
@@ -104,21 +101,21 @@ namespace WasteDrudgers.State
             return Move(world, direction);
         }
 
-        private IRunState Move(World world, Direction direction)
+        private Scene Move(World world, Direction direction)
         {
             world.ecs.Assign(playerData.entity, new IntentionMove { transform = Vec2.FromDirection(direction) });
             playerData.turns++;
             return RunState.Ticking;
         }
 
-        private IRunState Wait(World world)
+        private Scene Wait(World world)
         {
             ref var actor = ref world.ecs.GetRef<Actor>(playerData.entity);
             world.ecs.Assign<EventActed>(playerData.entity, new EventActed { energyLoss = 1000, nutritionLoss = 1 });
             return RunState.Ticking;
         }
 
-        private IRunState GetItem(World world)
+        private Scene GetItem(World world)
         {
             if (world.spatial.ItemsCountAt(playerData.coords) == 1)
             {

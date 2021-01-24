@@ -4,17 +4,17 @@ using WasteDrudgers.UI;
 
 namespace WasteDrudgers.State
 {
-    internal class ManualState : IRunState
+    [InputDomains("menu")]
+    internal class ManualState : GameScene
     {
-        public string[] InputDomains { get; set; } = { "menu" };
         private TextFileReader reader;
 
-        public void Initialize(IContext ctx, World world)
+        public override void Initialize(IContext ctx, World world)
         {
             reader = new TextFileReader(Path.Combine("assets", "manual.txt"), 23);
         }
 
-        public void Run(IContext ctx, World world)
+        public override void Update(IContext ctx, World world)
         {
             switch (ctx.Command)
             {
@@ -33,7 +33,6 @@ namespace WasteDrudgers.State
             }
 
             var offsets = RenderUtils.GetTerminalWindowOffsets(ctx);
-            Views.DrawGameView(ctx, world);
 
             var layer = ctx.QueueCanvas(RenderLayer.MenuOverlay);
             var rect = RenderUtils.TerminalWindow(ctx);

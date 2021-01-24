@@ -22,7 +22,7 @@ namespace WasteDrudgers
         public int GameTicks { get; private set; }
         public bool ShouldRedraw { get; set; }
 
-        public IRunState State { get; private set; }
+        public Scene State { get; private set; }
 
         private ECSResource<PlayerData> playerData;
         public PlayerData PlayerData
@@ -65,7 +65,7 @@ namespace WasteDrudgers
             repeatActionQueue = new Queue<Command>();
         }
 
-        public void SetState(IContext ctx, IRunState nextState)
+        public void SetState(IContext ctx, Scene nextState)
         {
             // Always initialize and redraw on state change
             if (nextState != null && (State == null || State.GetType() != nextState.GetType()))
